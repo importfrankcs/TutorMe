@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:tutor_me_demo/main.dart';
 import 'package:tutor_me_demo/studentPages/profile_page.dart';
+import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ModulesPage extends StatefulWidget {
   static String tag = 'modules-page';
@@ -10,6 +14,11 @@ class ModulesPage extends StatefulWidget {
 
 //Modules and their Respective COntainer colors
 class _MyModules extends State<ModulesPage> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   final List<String> entries = <String>[
     'IFS01',
     'CSC02',
@@ -54,35 +63,6 @@ class _MyModules extends State<ModulesPage> {
     400,
   ];
 
-  Widget list() {
-    return RaisedButton(
-      onPressed: () {
-        Navigator.push(
-          context,
-          new MaterialPageRoute(
-           // builder: (context) => ProfilePage(detailsUser: null,),
-          ),
-        );
-      },
-      child: Container(
-        child: ListView.separated(
-          padding: const EdgeInsets.all(8.0),
-          itemCount: entries.length,
-          itemBuilder: (BuildContext context, int index) {
-            return Container(
-              height: 50,
-              //color: Colors.blue
-
-              child: Center(child: Text('Module: ${entries[index]}')),
-              color: Colors.blue[colorCodes[index]],
-            );
-          },
-          separatorBuilder: (BuildContext context, int index) =>
-              const Divider(),
-        ),
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -162,22 +142,61 @@ class _MyModules extends State<ModulesPage> {
           ),
         ),
       ),
-      body: Stack(
-        children: <Widget>[
-          //list(),
-          list(),
-          SafeArea(
-            child: SingleChildScrollView(
-              child: Column(
-                children: <Widget>[
-                  SizedBox(height: screenSize.height / 6.4),
-                  //_tile(),
-                ],
-              ),
-            ),
-          )
-        ],
-      ),
+      body:new ModuleList(),
+    );
+  }
+
+}
+class ModuleList extends StatelessWidget {
+  Widget build(BuildContext context) {
+    return new StreamBuilder(
+      stream: Firestore.instance.collection('Modules').snapshots(),
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (!snapshot.hasData) return new Text('Loading...');
+        return new ListView(
+          children: snapshot.data.documents.map((document) {
+            return new ListTile(
+              title: new Center(child:Text(document['Code']),),
+              subtitle: new Center(child: Text(document['Title']),),
+              onTap: () {},
+            );
+          }).toList(),
+        );
+      },
     );
   }
 }
+
+//child: ListView.separated(
+//padding: const EdgeInsets.all(8.0),
+//itemCount: entries.length,
+//itemBuilder: (BuildContext context, int index) {
+//return Container(
+//height: 50,
+//color: Colors.blue
+
+//child: Center(child: Text('Module: ${entries[index]}')),
+//color: Colors.blue[colorCodes[index]],
+//);
+//},
+//separatorBuilder: (BuildContext context, int index) =>
+//const Divider(),
+//),
+
+
+
+//Stack(
+//children: <Widget>[
+//list(),
+//SafeArea(
+//child: SingleChildScrollView(
+//child: Column(
+//children: <Widget>[
+//SizedBox(height: screenSize.height / 6.4),
+//_tile(),
+//],
+//),
+//),
+//)
+//],
+//),
