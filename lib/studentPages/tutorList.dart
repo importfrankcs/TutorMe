@@ -209,10 +209,7 @@ class FirestoreListView extends StatelessWidget {
                         EdgeInsets.symmetric(horizontal: 6.0, vertical: 6.0),
                     child: IconButton(
                       icon: Icon(Icons.check_box),
-                      onPressed: () {
-                        print(dts.details);
-                        print(dts.details);
-                      },
+                      onPressed: () {},
                       color: Colors.green,
                     ),
                   ),

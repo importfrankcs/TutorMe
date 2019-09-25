@@ -27,20 +27,13 @@ class MyApp extends StatelessWidget {
   final routes = <String, WidgetBuilder>{
     LandingPage.tag: (context) => LandingPage(),
     TutorLogin.tag: (context) => TutorLogin(),
-    //StudentLogin.tag: (context) => StudentLogin(),
     GoogleSignApp.tag: (context) => GoogleSignApp(),
-    //TutorProfileMainPage.tag: (context) => TutorProfileMainPage(),
-    //TutorProfile.tag: (context) => TutorProfile(detailsUser),
-    //ProfilePage.tag: (context) => ProfilePage(),
     ModulesPage.tag: (context) => ModulesPage(),
     TutorRegister.tag: (context) => TutorRegister(),
     Schedule.tag: (context) => Schedule(),
-
     StudentReviews.tag: (conext) => StudentReviews(),
     CompletedSessions.tag: (context) => CompletedSessions(),
     TutorModules.tag: (context) => TutorModules(),
-    //ProfileScreen.tag: (context) => TutorModules(),
-    //ProfileScreen.tag: (context) => ProfileScreen(detailsUser: UserDetails,)
   };
 
   @override
@@ -50,10 +43,11 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryColor: Color(0xFF285AE6),
-        accentColor: Color(0xFF285AE6),//Color(0xFF6BCDFD),
+        accentColor: Color(0xFF285AE6), //Color(0xFF6BCDFD),
       ),
       initialRoute: LandingPage.tag,
       routes: routes,
+      //even this can be a change* theis is for testing purposes
     );
   }
 }
