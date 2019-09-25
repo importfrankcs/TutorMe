@@ -211,6 +211,7 @@ class FirestoreListView extends StatelessWidget {
                       icon: Icon(Icons.check_box),
                       onPressed: () {
                         print(dts.details);
+                        print(dts.details);
                       },
                       color: Colors.green,
                     ),

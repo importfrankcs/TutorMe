@@ -8,34 +8,31 @@ import 'package:tutor_me_demo/Login_Authentification/LoginPage.dart';
 import 'package:tutor_me_demo/constants.dart';
 import 'package:tutor_me_demo/tutorPages/tutor_schedule.dart';
 
-
-
-
-
 class ProfilePage extends StatefulWidget {
   final DocumentReference detailsUser;
   final Widget respectiveDrawer;
   //detailsUser = FirebaseDatabase.getInstance().getReference();
-  ProfilePage({Key key,this.respectiveDrawer, @required this.detailsUser}) : super(key: key);
-
+  ProfilePage({Key key, this.respectiveDrawer, @required this.detailsUser})
+      : super(key: key);
   @override
   _ProfilePageState createState() => _ProfilePageState();
 }
 
+class Details {
+  DocumentReference details;
+  Details({this.details});
+}
+
+final dts = Details(details: null);
+
 class _ProfilePageState extends State<ProfilePage> {
-
-  
-
-  
-
-  
   final GoogleSignIn _gSignIn = GoogleSignIn();
 
   static String tag = 'Student profile page';
   final String _fullName = '';
   final String _status = "INFOMATION SYSTEM STUDENT";
   final String _bio = "NothingSTUD";
-      //"\"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\"";
+  //"\"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\"";
 
   Widget _buildCoverImage(Size screenSize) {
     //print('google name = ' + googlename);
@@ -52,25 +49,29 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Widget _buildProfileImage() {
     return FutureBuilder<DocumentSnapshot>(
-  future: widget.detailsUser.get(), // a previously-obtained Future<String> or null
-  builder: (BuildContext context, snapshot) {
-    return Center(
-      child: Container(
-        width: 128.0,
-        height: 128.0,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: NetworkImage(snapshot.data == null ? "" : snapshot.data.data["photoURL"]),
-            fit: BoxFit.cover,
-          ),
-          borderRadius: BorderRadius.circular(80.0),
-          border: Border.all(
-            color: Colors.white,
-            width: 7.0,
-          ),
-        ),
-      ),
-    );});
+        future: widget.detailsUser
+            .get(), // a previously-obtained Future<String> or null
+        builder: (BuildContext context, snapshot) {
+          return Center(
+            child: Container(
+              width: 128.0,
+              height: 128.0,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: NetworkImage(snapshot.data == null
+                      ? ""
+                      : snapshot.data.data["photoURL"]),
+                  fit: BoxFit.cover,
+                ),
+                borderRadius: BorderRadius.circular(80.0),
+                border: Border.all(
+                  color: Colors.white,
+                  width: 7.0,
+                ),
+              ),
+            ),
+          );
+        });
   }
 
   Widget _buildFullName() {
@@ -198,60 +199,63 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<DocumentSnapshot>(
-  future: widget.detailsUser.get(), // a previously-obtained Future<String> or null
-  builder: (BuildContext context, snapshot) {
-    Size screenSize = MediaQuery.of(context).size;
-    return Scaffold(
-      appBar: new AppBar(
-        backgroundColor: Color(0xFF6BCDFD),
-        elevation: 0.0,
-        actions: <Widget>[
-          IconButton(
-             icon: Icon(
-              Icons.exit_to_app,
-              size: 20.0,
-              color: Colors.white,
-              ),
-            onPressed: (){
-              _gSignIn.signOut();
-              print('Signed out');
-               Navigator.pop(context);
-              
-            },
-          )
-
-        ],
-        /*StudentDrawer({this.accName, this.accEmail, this.accImage});*/
-      ),
-      drawer: StudentDrawer(
-        accName: Text(snapshot.data == null ? "" : snapshot.data.data["displayName"]),
-        accEmail: Text(snapshot.data == null ? "" : snapshot.data.data["email"]),
-        accImage: NetworkImage(snapshot.data == null ? "" : snapshot.data.data["photoURL"]),
-      ),
-      body: Stack(
-        children: <Widget>[
-          _buildCoverImage(screenSize),
-          SafeArea(
-            child: SingleChildScrollView(
-              child: Column(
-                children: <Widget>[
-                  SizedBox(height: screenSize.height / 14),
-                  _buildProfileImage(),
-                  _buildFullName(),
-                  _buildStatus(context),
-                  _buildStarRating(),
-                  _buildBio(context),
-                  _buildSeparator(screenSize),
-                  SizedBox(height: 10.0),
-                  SizedBox(height: 8.0),
-                  _buildButtons(),
-                ],
-              ),
+        future: widget.detailsUser
+            .get(), // a previously-obtained Future<String> or null
+        builder: (BuildContext context, snapshot) {
+          Size screenSize = MediaQuery.of(context).size;
+          return Scaffold(
+            appBar: new AppBar(
+              backgroundColor: Color(0xFF6BCDFD),
+              elevation: 0.0,
+              actions: <Widget>[
+                IconButton(
+                  icon: Icon(
+                    Icons.exit_to_app,
+                    size: 20.0,
+                    color: Colors.white,
+                  ),
+                  onPressed: () {
+                    _gSignIn.signOut();
+                    print('Signed out');
+                    Navigator.pop(context);
+                  },
+                )
+              ],
+              /*StudentDrawer({this.accName, this.accEmail, this.accImage});*/
             ),
-          ),
-        ],
-      ),
-    );});
+            drawer: StudentDrawer(
+              accName: Text(snapshot.data == null
+                  ? ""
+                  : snapshot.data.data["displayName"]),
+              accEmail: Text(
+                  snapshot.data == null ? "" : snapshot.data.data["email"]),
+              accImage: NetworkImage(
+                  snapshot.data == null ? "" : snapshot.data.data["photoURL"]),
+            ),
+            body: Stack(
+              children: <Widget>[
+                _buildCoverImage(screenSize),
+                SafeArea(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: <Widget>[
+                        SizedBox(height: screenSize.height / 14),
+                        _buildProfileImage(),
+                        _buildFullName(),
+                        _buildStatus(context),
+                        _buildStarRating(),
+                        _buildBio(context),
+                        _buildSeparator(screenSize),
+                        SizedBox(height: 10.0),
+                        SizedBox(height: 8.0),
+                        _buildButtons(),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        });
   }
-  
 }

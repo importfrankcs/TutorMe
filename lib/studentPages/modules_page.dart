@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:tutor_me_demo/landing_page.dart';
 import 'package:tutor_me_demo/main.dart';
 import 'package:tutor_me_demo/studentPages/profile_page.dart';
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tutor_me_demo/studentPages/tutorList.dart';
 
 class ModulesPage extends StatefulWidget {
   static String tag = 'modules-page';
@@ -12,57 +14,19 @@ class ModulesPage extends StatefulWidget {
   _MyModules createState() => _MyModules();
 }
 
-//Modules and their Respective COntainer colors
+class ButtonIndex {
+  String btnIndex;
+  ButtonIndex({this.btnIndex});
+}
+
+final btnIn = ButtonIndex(btnIndex: '');
+
+//Modules and their Respective Container colors
 class _MyModules extends State<ModulesPage> {
   @override
   void initState() {
     super.initState();
   }
-
-  final List<String> entries = <String>[
-    'IFS01',
-    'CSC02',
-    'ACC03',
-    'PHY04',
-    'IFS05',
-    'CSC06',
-    'TEST',
-    'PHY08',
-    'IFS09',
-    'CSC10',
-    'ACC11',
-    'TEST',
-    'CSC14',
-    'ACC15',
-    'PHY16'
-  ];
-  final List<int> colorCodes = <int>[
-    50,
-    100,
-    200,
-    300,
-    400,
-    50,
-    100,
-    200,
-    300,
-    400,
-    50,
-    100,
-    200,
-    300,
-    400,
-    100,
-    200,
-    300,
-    400,
-    50,
-    100,
-    200,
-    300,
-    400,
-  ];
-
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +66,6 @@ class _MyModules extends State<ModulesPage> {
                   title: Text('Home Page'),
                 ),
               ),
-              
               FlatButton(
                 onPressed: () {},
                 child: ListTile(
@@ -110,7 +73,6 @@ class _MyModules extends State<ModulesPage> {
                   title: Text('Consultation Sessions'),
                 ),
               ),
-              
               FlatButton(
                 onPressed: () {},
                 child: ListTile(
@@ -142,11 +104,12 @@ class _MyModules extends State<ModulesPage> {
           ),
         ),
       ),
-      body:new ModuleList(),
+      body: new ModuleList(),
     );
   }
-
 }
+
+// Module list button class, enable paths to different specific tutors
 class ModuleList extends StatelessWidget {
   Widget build(BuildContext context) {
     return new StreamBuilder(
@@ -156,9 +119,23 @@ class ModuleList extends StatelessWidget {
         return new ListView(
           children: snapshot.data.documents.map((document) {
             return new ListTile(
-              title: new Center(child:Text(document['Code']),),
-              subtitle: new Center(child: Text(document['Title']),),
-              onTap: () {},
+              title: new Center(
+                child: Text(document['Code']),
+              ),
+              subtitle: new Center(
+                child: Text(document['Title']),
+              ),
+              onTap: () {
+                btnIn.btnIndex = document.data.values.elementAt(1);
+
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => TutorList(
+                            buttonIndex: btnIn.btnIndex,
+                          )),
+                );
+              },
             );
           }).toList(),
         );
@@ -166,37 +143,3 @@ class ModuleList extends StatelessWidget {
     );
   }
 }
-
-//child: ListView.separated(
-//padding: const EdgeInsets.all(8.0),
-//itemCount: entries.length,
-//itemBuilder: (BuildContext context, int index) {
-//return Container(
-//height: 50,
-//color: Colors.blue
-
-//child: Center(child: Text('Module: ${entries[index]}')),
-//color: Colors.blue[colorCodes[index]],
-//);
-//},
-//separatorBuilder: (BuildContext context, int index) =>
-//const Divider(),
-//),
-
-
-
-//Stack(
-//children: <Widget>[
-//list(),
-//SafeArea(
-//child: SingleChildScrollView(
-//child: Column(
-//children: <Widget>[
-//SizedBox(height: screenSize.height / 6.4),
-//_tile(),
-//],
-//),
-//),
-//)
-//],
-//),
