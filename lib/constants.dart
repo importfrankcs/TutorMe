@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:tutor_me_demo/ProfileScreen.dart';
+
 import 'package:tutor_me_demo/landing_page.dart';
 import 'package:tutor_me_demo/studentPages/consultation.dart';
 import 'package:tutor_me_demo/studentPages/modules_page.dart';
+import 'package:tutor_me_demo/tutorPages/ProfileScreen.dart';
 
 import 'package:tutor_me_demo/tutorPages/Tutor_student_reviews.dart';
 import 'package:tutor_me_demo/tutorPages/tutor_completed.dart';

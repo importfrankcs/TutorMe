@@ -1,79 +1,104 @@
 import 'package:flutter/material.dart';
+import 'package:tutor_me_demo/Login_Authentification/LoginPage.dart';
 import 'package:tutor_me_demo/constants.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RequestsPage extends StatefulWidget {
   static String tag = 'tutor_requests';
+  final DocumentSnapshot requests;
+  final DocumentReference detailsUser;
+  RequestsPage({this.requests, this.detailsUser, Key key}) : super(key: key);
   @override
   _RequestsPageState createState() => _RequestsPageState();
 }
 
 class _RequestsPageState extends State<RequestsPage> {
   static String tag = 'tutor_requests';
-  List names = [
-    'Farouk Francis',
-    'Farouk Francis',
-    'Farouk Francis',
-    'Calvin Harrison',
-    'Farouk Francis',
-    'Ibraaheem Allie'
-  ];
-  List module = [
-    'IFS 361',
-    'CSC312',
-    'ABC123',
-    'Information Systems',
-    'Computer Science',
-    'Something Else'
-  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
       appBar: AppBar(
         backgroundColor: Color(0xFF6BCDFD),
         title: Text('My Requests'),
       ),
       drawer: ActualDrawer(),
-      body: ListView.builder(
-          itemCount: 5,
-          shrinkWrap: true,
-          itemBuilder: (BuildContext context, int index) => Container(
-                width: MediaQuery.of(context).size.width,
-                padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+      body: StreamBuilder(
+        stream: Firestore.instance
+            .collection('Requests')
+            .where("To",
+                isEqualTo:
+                    "${usern.username}") //button name, enable dynamic var
+            .snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (!snapshot.hasData)
+            return Center(
+                child: CircularProgressIndicator(
+              valueColor: new AlwaysStoppedAnimation(Colors.blueAccent),
+            ));
+          return getRequests(documents: snapshot.data.documents);
+        },
+      ),
+    );
+  }
+}
+
+class getRequests extends StatelessWidget {
+  final List<DocumentSnapshot> documents;
+
+  getRequests({this.documents});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+        itemCount: documents.length,
+        itemExtent: 110.0,
+        itemBuilder: (BuildContext context, int index) {
+          String from = documents[index].data['From'].toString();
+          String title = ('${from[0].toUpperCase()} ${from.split(" ").last[0].toUpperCase()}${from.split(" ").last.toString().substring(1).toLowerCase()}');
+
+          return Padding(
+            padding: const EdgeInsets.only(
+                left: 0.0, top: 4.0, right: 0.0, bottom: 4.0),
+            child: ListTile(
+              title: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10.0),
+                  border: Border.all(color: Colors.black),
+                ),
+                padding: EdgeInsets.all(5.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      //crossAxisAlignment: CrossAxisAlignment.center,
+                      //mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
                         Container(
-                          width: 40.0,
-                          height: 40.0,
+                          width: 50.0,
+                          height: 50.0,
                           child: CircleAvatar(
                               backgroundColor: Colors.green,
                               foregroundColor: Colors.green,
                               backgroundImage:
-                                  AssetImage('images/profilePic.jpg')),
+                                  NetworkImage('${documents[index].data['PhotoURL'].toString()}')),
                         ),
                         SizedBox(
                           width: 8.0,
                         ),
                         Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text(names[index],
+                            Text(title,
+                                textAlign: TextAlign.center,
                                 style: TextStyle(
                                     color: Colors.black,
-                                    fontSize: 18.0,
+                                    fontSize: 12.0,
                                     fontWeight: FontWeight.bold)),
                             SizedBox(
                               height: 5.0,
                             ),
-                            Text(module[index],
-                                style: TextStyle(color: Colors.grey)),
                           ],
                         )
                       ],
@@ -87,10 +112,12 @@ class _RequestsPageState extends State<RequestsPage> {
                         onPressed: () {
                           showDialog(
                               context: context,
+                              // {Please work
                               builder: (BuildContext context) {
                                 return AlertDialog(
-                                  title: new Text('Request'),
-                                  content: new Text('Farouk Francis'),
+                                  title: new Text('Request from:'),
+                                  content: new Text(
+                                      '${from} '),
                                   actions: <Widget>[
                                     new FlatButton(
                                       child: new Text('Close'),
@@ -110,7 +137,7 @@ class _RequestsPageState extends State<RequestsPage> {
                       padding:
                           EdgeInsets.symmetric(horizontal: 6.0, vertical: 6.0),
                       child: IconButton(
-                        icon: Icon(Icons.check),
+                        icon: Icon(Icons.check_box),
                         onPressed: () {},
                         color: Colors.green,
                       ),
@@ -127,7 +154,9 @@ class _RequestsPageState extends State<RequestsPage> {
                     ),
                   ],
                 ),
-              )),
-    );
+              ),
+            ),
+          );
+        });
   }
 }

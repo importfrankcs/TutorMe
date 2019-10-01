@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:tutor_me_demo/ProfileScreen.dart';
+import 'package:tutor_me_demo/tutorPages/ProfileScreen.dart';
 import 'package:tutor_me_demo/landing_page.dart';
 import 'package:tutor_me_demo/studentPages/profile_page.dart';
 
@@ -25,19 +25,26 @@ class MyApp extends StatelessWidget {
 
 class GoogleSignApp extends StatefulWidget {
   static String tag = 'goggle';
+
   bool type;
   GoogleSignApp({Key key, this.type}) : super(key: key);
-
   @override
   _GoogleSignAppState createState() => _GoogleSignAppState();
 }
 
-class Details {
-  String details;
-  Details({this.details});
+class Username {
+  String username;
+  Username({this.username});
 }
 
-final dts = Details(details: 'poes');
+final usern = Username(username: 'test');
+  
+class Picture {
+  String photo;
+  Picture({this.photo});
+}
+
+final phot = Picture(photo: 'test');
 
 class _GoogleSignAppState extends State<GoogleSignApp> {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
@@ -58,54 +65,58 @@ class _GoogleSignAppState extends State<GoogleSignApp> {
       idToken: googleAuth.idToken,
     );
 
-    //FirebaseUser userDetails = await _firebaseAuth.signInWithCredential(credential);
-    //ProviderDetails providerInfo = new ProviderDetails(userDetails.providerId);
-
     final AuthResult authResult =
         await _firebaseAuth.signInWithCredential(credential);
     final FirebaseUser user = authResult.user;
-
     updateUserData(user);
     print("signed in " + user.displayName);
-    //loading.add(false);
+    usern.username = user.displayName;
+    phot.photo = user.photoUrl;
+
     return user;
   }
 
-  Future<void> updateUserData(FirebaseUser user) {
-    DocumentReference refStud = _db.collection('Student').document(user.uid);
+  Future<void> updateUserData(FirebaseUser user) async {
+    DocumentReference refStud =  _db.collection('Student').document(user.uid);
     DocumentReference refTut = _db.collection('Tutor').document(user.uid);
-    //MaterialButton(
-    if (type.userType) {
-      Navigator.push(
-        context,
-        new MaterialPageRoute(
-          builder: (context) => ProfileScreen(detailsUserTutor: refTut),
-        ),
-      );
-      return refStud.setData({
+    
+    refStud.setData({
         'uid': user.uid,
         'email': user.email,
         'photoURL': user.photoUrl,
         'displayName': user.displayName,
         'lastSeen': DateTime.now()
       }, merge: true);
-    } else {
+
+    refTut.setData({
+        'uid': user.uid,
+        'email': user.email,
+        'photoURL': user.photoUrl,
+        'displayName': user.displayName,
+        'lastSeen': DateTime.now()
+      }, merge: true);
+    
+     if (type.userType) {
+      
       Navigator.push(
         context,
         new MaterialPageRoute(
-          builder: (context) => ProfilePage(detailsUser: refStud),
+          builder: (context) => ProfileScreen(detailsUserTutor: refStud),
+        ),
+      );
+      
+    } else {
+      
+      Navigator.push(
+        context,
+        new MaterialPageRoute(
+          builder: (context) =>  ProfilePage(detailsUser: refTut),
         ),
       );
 
-      return refTut.setData({
-        'uid': user.uid,
-        'email': user.email,
-        'photoURL': user.photoUrl,
-        'displayName': user.displayName,
-        'lastSeen': DateTime.now()
-      }, merge: true);
+      
     }
-    // dts.details = refStud;
+  
   }
 
   @override
@@ -142,9 +153,7 @@ class _GoogleSignAppState extends State<GoogleSignApp> {
                             ),
                           ],
                         ),
-                        onPressed: () => _signIn(context)
-                            .then((FirebaseUser user) => print(user))
-                            .catchError((e) => print(e)),
+                        onPressed: () async => _signIn(context).then((FirebaseUser user) => print(user)).catchError((e) => print(e)),
                       ),
                     )),
               ],
@@ -156,72 +165,3 @@ class _GoogleSignAppState extends State<GoogleSignApp> {
   }
 }
 
-/*
-########################################
-
-This code allows me to add user details to firebase however does not allow for the
-user to choose different emails upon opening the app
-
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-
-
-import 'dart:async';
-
-class AuthService {
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final Firestore _db = Firestore.instance;
-
-  Future<FirebaseUser> get getUser => _auth.currentUser();
-
-  Stream<FirebaseUser> get user => _auth.onAuthStateChanged;
-
-  static String tag = 'LoginPage';
-
-  Future<FirebaseUser> googleSignIn() async {
-    try {
-      GoogleSignInAccount googleSignInAccount = await _googleSignIn.signIn();
-      GoogleSignInAuthentication googleAuth =
-          await googleSignInAccount.authentication;
-
-      final AuthCredential credential = GoogleAuthProvider.getCredential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
-
-      final AuthResult authResult = await _auth.signInWithCredential(credential);
-      final FirebaseUser user = authResult.user;
-
-      updateUserData(user);
-
-      print("signed in " + user.displayName);
-      //loading.add(false);
-      return user;
-    } catch (error) {
-      print(error);
-      return null;
-    }
-  }
-
-  Future<void> updateUserData(FirebaseUser user) {
-    DocumentReference ref = _db.collection('reports').document(user.uid);
-
-    return ref.setData({
-      'uid': user.uid,
-      'email': user.email,
-      'photoURL': user.photoUrl,
-      'displayName': user.displayName,
-      'lastSeen': DateTime.now()
-    }, merge: true);
-
-  }
-
-  Future<void> signOut() {
-    return _auth.signOut();
-  }
-
-}
-final AuthService authService = AuthService();
-*/

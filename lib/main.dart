@@ -1,26 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:tutor_me_demo/Login_Authentification/LoginPage.dart';
-import 'package:tutor_me_demo/ProfileScreen.dart';
-
 import 'package:tutor_me_demo/tutorPages/Tutor_student_reviews.dart';
 import 'package:tutor_me_demo/tutorPages/tutor_completed.dart';
 import 'package:tutor_me_demo/tutorPages/tutor_modules.dart';
 import 'package:tutor_me_demo/tutorPages/tutor_schedule.dart';
-
 import 'landing_page.dart';
 import 'package:tutor_me_demo/landing_page.dart';
 import 'package:tutor_me_demo/studentPages/modules_page.dart';
-
-//import 'package:tutor_me_demo/Login_Authentification/StudentLogin.dart';
 import 'package:tutor_me_demo/Login_Authentification/TutorLogin.dart';
 import 'package:tutor_me_demo/tutorPages/tutor_registerPage.dart';
-import 'package:flutter_redux/flutter_redux.dart';
 
-//import 'package:firebase_core/firebase_core.dart';
-//import 'package:firebase_auth/firebase_auth.dart';
-//import 'package:cloud_firestore/cloud_firestore.dart';
-//import 'package:google_sign_in/google_sign_in.dart';
-// this is also very useless text for test purpsoes
+// 01/0ct changes
 
 void main() => runApp(MyApp());
 
@@ -43,7 +33,7 @@ class MyApp extends StatelessWidget {
       title: 'MainPage',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primaryColor: Color(0xFF285AE6),
+        primaryColor: Colors.blueAccent, //Color(0xFF285AE6),
         accentColor: Color(0xFF285AE6), //Color(0xFF6BCDFD),
       ),
       initialRoute: LandingPage.tag,

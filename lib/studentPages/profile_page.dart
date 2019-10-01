@@ -18,17 +18,10 @@ class ProfilePage extends StatefulWidget {
   _ProfilePageState createState() => _ProfilePageState();
 }
 
-class Details {
-  DocumentReference details;
-  Details({this.details});
-}
-
-final dts = Details(details: null);
-
 class _ProfilePageState extends State<ProfilePage> {
   final GoogleSignIn _gSignIn = GoogleSignIn();
 
-  static String tag = 'Student profile page';
+  static String tag = 'STUDENT PROFILE PAGE';
   final String _fullName = '';
   final String _status = "INFOMATION SYSTEM STUDENT";
   final String _bio = "NothingSTUD";

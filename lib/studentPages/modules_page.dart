@@ -115,7 +115,8 @@ class ModuleList extends StatelessWidget {
     return new StreamBuilder(
       stream: Firestore.instance.collection('Modules').snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (!snapshot.hasData) return new Text('Loading...');
+        if (!snapshot.hasData)
+          return Center(child: CircularProgressIndicator());
         return new ListView(
           children: snapshot.data.documents.map((document) {
             return new ListTile(
