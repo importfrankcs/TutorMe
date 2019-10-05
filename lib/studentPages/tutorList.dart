@@ -36,7 +36,13 @@ class _TutorList extends State<TutorList> {
     Size screenSize = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF6BCDFD),
+        flexibleSpace: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    colors: [Color(0xFF285AE6), Color(0xFF41B7FC)]),
+              ),
+            ),
+        //backgroundColor: Color(0xFF6BCDFD),
         title: Text('Pick a tutor'),
       ),
       //drawer: 

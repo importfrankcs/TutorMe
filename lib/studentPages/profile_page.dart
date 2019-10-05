@@ -22,7 +22,7 @@ class _ProfilePageState extends State<ProfilePage> {
   final GoogleSignIn _gSignIn = GoogleSignIn();
 
   static String tag = 'STUDENT PROFILE PAGE';
-  final String _fullName = '';
+  final String _fullName = 'FAROUK';
   final String _status = "INFOMATION SYSTEM STUDENT";
   final String _bio = "NothingSTUD";
   //"\"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\"";
@@ -45,22 +45,20 @@ class _ProfilePageState extends State<ProfilePage> {
         future: widget.detailsUser
             .get(), // a previously-obtained Future<String> or null
         builder: (BuildContext context, snapshot) {
-          return Center(
-            child: Container(
-              width: 128.0,
-              height: 128.0,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: NetworkImage(snapshot.data == null
-                      ? ""
-                      : snapshot.data.data["photoURL"]),
-                  fit: BoxFit.cover,
-                ),
-                borderRadius: BorderRadius.circular(80.0),
-                border: Border.all(
-                  color: Colors.white,
-                  width: 7.0,
-                ),
+          return Container(
+            width: 80.0,
+            height: 80.0,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: NetworkImage(snapshot.data == null
+                    ? ""
+                    : snapshot.data.data["photoURL"]),
+                fit: BoxFit.cover,
+              ),
+              borderRadius: BorderRadius.circular(100.0),
+              border: Border.all(
+                color: Colors.white,
+                width: 5.0,
               ),
             ),
           );
@@ -68,16 +66,22 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Widget _buildFullName() {
-    TextStyle _nameTextStyle = TextStyle(
-      fontFamily: 'Roboto',
-      color: Colors.black,
-      fontSize: 28.0,
-      fontWeight: FontWeight.w700,
-    );
+    return FutureBuilder<DocumentSnapshot>(
+      future: widget.detailsUser
+          .get(), // a previously-obtained Future<String> or null
+      builder: (BuildContext context, snapshot) {
+        TextStyle _nameTextStyle = TextStyle(
+          fontFamily: 'Roboto',
+          color: Colors.black,
+          fontSize: 20.0,
+          fontWeight: FontWeight.w700,
+        );
 
-    return Text(
-      _fullName,
-      style: _nameTextStyle,
+        return Text(
+          snapshot.data == null ? "" : snapshot.data.data["displayName"],
+          style: _nameTextStyle,
+        );
+      },
     );
   }
 
@@ -198,7 +202,13 @@ class _ProfilePageState extends State<ProfilePage> {
           Size screenSize = MediaQuery.of(context).size;
           return Scaffold(
             appBar: new AppBar(
-              backgroundColor: Color(0xFF6BCDFD),
+              flexibleSpace: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                      colors: [Color(0xFF285AE6), Color(0xFF41B7FC)]),
+                ),
+              ),
+              //backgroundColor: Color(0xFF6BCDFD),
               elevation: 0.0,
               actions: <Widget>[
                 IconButton(
@@ -228,21 +238,30 @@ class _ProfilePageState extends State<ProfilePage> {
             body: Stack(
               children: <Widget>[
                 _buildCoverImage(screenSize),
+                Container(
+                    margin: EdgeInsets.fromLTRB(170, 130, 0, 0),
+                    child: _buildProfileImage()),
                 SafeArea(
                   child: SingleChildScrollView(
-                    child: Column(
-                      children: <Widget>[
-                        SizedBox(height: screenSize.height / 14),
-                        _buildProfileImage(),
-                        _buildFullName(),
-                        _buildStatus(context),
-                        _buildStarRating(),
-                        _buildBio(context),
-                        _buildSeparator(screenSize),
-                        SizedBox(height: 10.0),
-                        SizedBox(height: 8.0),
-                        _buildButtons(),
-                      ],
+                    child: Container(
+                      margin: EdgeInsets.fromLTRB(50, 150, 0, 0),
+                      child: Column(
+                        children: <Widget>[
+                          SizedBox(height: screenSize.height / 14),
+
+                          _buildFullName(),
+                          _buildStatus(context),
+                          _buildStarRating(),
+                          _buildBio(context),
+                          _buildSeparator(screenSize),
+                          SizedBox(height: 10.0),
+                          SizedBox(height: 8.0),
+                          // RoundedButton(
+                          // title: "SCHEDULE",
+                          // onPressed: () {},
+                          //)
+                        ],
+                      ),
                     ),
                   ),
                 ),

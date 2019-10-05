@@ -1,39 +1,34 @@
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:tutor_me_demo/constants.dart';
-
-
-
-
 import 'Login_Authentification/LoginPage.dart';
-
-
-
 
 class LandingPage extends StatefulWidget {
   static String tag = 'landing-page';
   @override
   _LandingPageState createState() => new _LandingPageState();
 }
-class Type{
+
+class Type {
   bool userType;
   Type({this.userType});
 }
+
 final type = Type(userType: true);
+
 class _LandingPageState extends State<LandingPage> {
   @override
   Widget build(BuildContext context) {
     final logo = Hero(
       tag: 'hero',
       child: CircleAvatar(
-        backgroundColor: Colors.transparent,
-        radius: 100.0,
+        backgroundColor: Colors.white,
+        radius: 120.0,
         child: Image.asset('assets/logo.png'),
       ),
     );
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.blueAccent,
       body: Center(
         child: ListView(
           shrinkWrap: true,
@@ -42,31 +37,33 @@ class _LandingPageState extends State<LandingPage> {
             logo,
             SizedBox(height: 100.0),
             RoundedButton(
+              textColor: Colors.blueAccent,
               type: false,
               title: 'SIGN IN AS A TUTOR',
-              colour: Color(0xFF6BCDFD),
-              ver: 8,
+              colour: Colors.white,
+              //ver: 8,
               //GoogleSignApp
-              hor:16,
+              //hor:16,
               onPressed: () {
-               //Navigator.pushNamed(context, GoogleSignApp.tag);
-               type.userType = true;
-               Navigator.push(context, new MaterialPageRoute(
-                builder: (context) => GoogleSignApp(type: true)
-               ));
+                //Navigator.pushNamed(context, GoogleSignApp.tag);
+                type.userType = true;
+                Navigator.push(
+                    context,
+                    new MaterialPageRoute(
+                        builder: (context) => GoogleSignApp(type: true)));
               },
             ),
             RoundedButton(
+              textColor: Colors.blueAccent,
               type: true,
               title: 'SIGN IN AS A STUDENT',
-              colour: Color(0xFF6BCDFD),
-              ver: 8,
-              hor:16,
+              colour: Colors.white,
               onPressed: () {
                 type.userType = false;
-                Navigator.push(context, new MaterialPageRoute(
-                builder: (context) => GoogleSignApp(type: false)
-               ));
+                Navigator.push(
+                    context,
+                    new MaterialPageRoute(
+                        builder: (context) => GoogleSignApp(type: false)));
                 //Navigator.pushNamed(context, GoogleSignApp.tag);
               },
             ),
@@ -76,4 +73,3 @@ class _LandingPageState extends State<LandingPage> {
     );
   }
 }
-

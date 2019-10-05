@@ -15,30 +15,28 @@ import 'package:tutor_me_demo/tutorPages/tutor_schedule.dart';
 
 class RoundedButton extends StatelessWidget {
   RoundedButton(
-      {this.type,this.title, this.colour, this.ver, this.hor, @required this.onPressed});
+      {this.type,
+      this.textColor,
+      this.title,
+      this.colour,
+      @required this.onPressed});
 
   final Color colour;
   final String title;
   final Function onPressed;
-  final double ver;
-  final double hor;
+  final Color textColor;
   final bool type;
-  
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: ver, horizontal: hor),
-      //
-      child: RaisedButton(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(24),
-        ),
-        onPressed: onPressed,
-        padding: EdgeInsets.all(12),
-        color: colour,
-        child: Text(title, style: TextStyle(color: Colors.white)),
+    return RaisedButton(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(24),
       ),
+      onPressed: onPressed,
+      padding: EdgeInsets.all(12),
+      color: colour,
+      child: Text(title, style: TextStyle(color: textColor)),
     );
   }
 }
@@ -171,7 +169,7 @@ class StudentDrawer extends StatelessWidget {
         color: Colors.grey[200],
         child: Column(
           children: <Widget>[
-             UserAccountsDrawerHeader(
+            UserAccountsDrawerHeader(
               currentAccountPicture: CircleAvatar(
                 backgroundImage: accImage,
               ),

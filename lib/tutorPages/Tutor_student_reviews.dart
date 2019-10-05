@@ -17,12 +17,17 @@ class _StudentReviews extends State<StudentReviews> {
   final dio = new Dio();
   var rating = 0.0;
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
+    return Scaffold(
         appBar: AppBar(
+          flexibleSpace: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    colors: [Color(0xFF285AE6), Color(0xFF41B7FC)]),
+              ),
+            ),
           title: Text('Student Reviews'),
         ),
-        drawer: ActualDrawer(),
+        
         body: ListView(
           scrollDirection: Axis.vertical,
           children: <Widget>[
@@ -82,7 +87,7 @@ class _StudentReviews extends State<StudentReviews> {
             ),
           ],
         ),
-      ),
-    );
+      );
+    
   }
 }

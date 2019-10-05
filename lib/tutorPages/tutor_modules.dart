@@ -12,10 +12,16 @@ class _TutorModulesState extends State<TutorModules> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        flexibleSpace: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    colors: [Color(0xFF285AE6), Color(0xFF41B7FC)]),
+              ),
+            ),
         title: Text('Tutor Modules',textAlign: TextAlign.center,)
 
       ),
-      drawer: ActualDrawer(),
+      
     );
   }
 }

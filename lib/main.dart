@@ -3,6 +3,7 @@ import 'package:tutor_me_demo/Login_Authentification/LoginPage.dart';
 import 'package:tutor_me_demo/tutorPages/Tutor_student_reviews.dart';
 import 'package:tutor_me_demo/tutorPages/tutor_completed.dart';
 import 'package:tutor_me_demo/tutorPages/tutor_modules.dart';
+import 'package:tutor_me_demo/tutorPages/tutor_requests.dart';
 import 'package:tutor_me_demo/tutorPages/tutor_schedule.dart';
 import 'landing_page.dart';
 import 'package:tutor_me_demo/landing_page.dart';
@@ -22,9 +23,10 @@ class MyApp extends StatelessWidget {
     ModulesPage.tag: (context) => ModulesPage(),
     TutorRegister.tag: (context) => TutorRegister(),
     Schedule.tag: (context) => Schedule(),
-    StudentReviews.tag: (conext) => StudentReviews(),
+    StudentReviews.tag: (context) => StudentReviews(),
     CompletedSessions.tag: (context) => CompletedSessions(),
     TutorModules.tag: (context) => TutorModules(),
+    //RequestsPage.tag: (context) => RequestsPage(),
   };
 
   @override

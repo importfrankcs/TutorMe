@@ -14,6 +14,12 @@ class _CompletedSessionsState extends State<CompletedSessions> {
       
       Scaffold(
         appBar: AppBar(
+          flexibleSpace: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    colors: [Color(0xFF285AE6), Color(0xFF41B7FC)]),
+              ),
+            ),
           title: Text('Completed Sessions'),
         ),
           body: Container(
@@ -22,25 +28,25 @@ class _CompletedSessionsState extends State<CompletedSessions> {
             scrollDirection: Axis.horizontal,
             children: <Widget>[
               Container(
-                child: Text("Student"),
+                child: Text("Student", style: TextStyle(color: Colors.white),),
                 width:120.0,
                 color:Colors.blue,
               ),
 
               Container(
-                child: Text("Day"),
+                child: Text("Day",style: TextStyle(color: Colors.white)),
                 width:120.0,
                 color:Colors.blue,
               ),
 
               Container(
-                child: Text("Time"),
+                child: Text("Time",style: TextStyle(color: Colors.white)),
                 width:120.0,
                 color:Colors.blue,
               ),
 
               Container(
-                child: Text("Status"),
+                child: Text("Status",style: TextStyle(color: Colors.white)),
                 width:120.0,
                 color:Colors.blue,
               ),
