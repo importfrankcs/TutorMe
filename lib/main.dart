@@ -13,7 +13,7 @@ import 'package:tutor_me_demo/studentPages/modules_page.dart';
 import 'package:tutor_me_demo/studentPages/consultation.dart';
 import 'package:tutor_me_demo/tutorPages/tutor_registerPage.dart';
 
-// 01/0ct changes
+// 10th Oct. HOPEFULLY THIS WORKS
 
 void main() => runApp(MyApp());
 
