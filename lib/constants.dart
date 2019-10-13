@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:tutor_me_demo/landing_page.dart';
 import 'package:tutor_me_demo/studentPages/consultation.dart';
+import 'package:tutor_me_demo/studentPages/edit_bio.dart';
 import 'package:tutor_me_demo/studentPages/modules_page.dart';
 import 'package:tutor_me_demo/tutorPages/ProfileScreen.dart';
 
@@ -10,8 +11,8 @@ import 'package:tutor_me_demo/tutorPages/tutor_completed.dart';
 import 'package:tutor_me_demo/tutorPages/tutor_modules.dart';
 import 'package:tutor_me_demo/tutorPages/tutor_requests.dart';
 import 'package:tutor_me_demo/tutorPages/tutor_schedule.dart';
-
-//The standard Blue rounded button that will remain constant throughout the app
+import 'package:flutter_rating/flutter_rating.dart';
+import 'package:card_settings/card_settings.dart';
 
 class RoundedButton extends StatelessWidget {
   RoundedButton(
@@ -185,10 +186,10 @@ class StudentDrawer extends StatelessWidget {
             ),
             FlatButton(
               onPressed: () {
-                /*Navigator.push(
+                Navigator.push(
                   context,
-                  new MaterialPageRoute(builder: (context) => ProfileScreen(detailsUser, )),
-                );*/
+                  new MaterialPageRoute(builder: (context) => Bioedit()),
+                );
               },
               child: ListTile(
                 leading: Icon(Icons.search),
@@ -211,8 +212,7 @@ class StudentDrawer extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  new MaterialPageRoute(
-                      builder: (context) => StudentConsultation()),
+                  new MaterialPageRoute(builder: (context) => Consultation()),
                 );
               },
               child: ListTile(
@@ -228,25 +228,6 @@ class StudentDrawer extends StatelessWidget {
               ),
             ),
             Divider(),
-            Expanded(
-              child: Align(
-                alignment: FractionalOffset.bottomCenter,
-                child: FlatButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      new MaterialPageRoute(
-                        builder: (context) => LandingPage(),
-                      ),
-                    );
-                  },
-                  child: ListTile(
-                    leading: Icon(Icons.power_settings_new),
-                    title: Text('Log Out'),
-                  ),
-                ),
-              ),
-            ),
           ],
         ),
       ),
@@ -282,6 +263,35 @@ class LogoWidget extends StatelessWidget {
         backgroundColor: Colors.transparent,
         radius: 48.0,
         child: Image.asset('assets/logo.png'),
+      ),
+    );
+  }
+}
+
+//
+class Review extends StatefulWidget {
+  final int size;
+  Review({this.size});
+  @override
+  _ReviewState createState() => new _ReviewState();
+}
+
+class _ReviewState extends State<Review> {
+  double rating = 0;
+  int starCount = 5;
+
+  @override
+  Widget build(BuildContext context) {
+    return StarRating(
+      size: 40,
+      rating: rating,
+      color: Colors.lightBlueAccent,
+      borderColor: Colors.white,
+      starCount: starCount,
+      onRatingChanged: (rating) => setState(
+        () {
+          this.rating = rating;
+        },
       ),
     );
   }

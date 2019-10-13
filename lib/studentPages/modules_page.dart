@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tutor_me_demo/constants.dart';
 import 'package:tutor_me_demo/landing_page.dart';
 import 'package:tutor_me_demo/main.dart';
 import 'package:tutor_me_demo/studentPages/profile_page.dart';
@@ -30,86 +31,30 @@ class _MyModules extends State<ModulesPage> {
 
   @override
   Widget build(BuildContext context) {
-    Size screenSize = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF6BCDFD),
-        title: Text('Module List'),
-      ),
-      drawer: Drawer(
-        child: Container(
-          color: Colors.grey[200],
-          child: Column(
-            children: <Widget>[
-              UserAccountsDrawerHeader(
-                currentAccountPicture: CircleAvatar(
-                  backgroundImage: AssetImage('images/profilePic.jpg'),
-                ),
-                decoration: BoxDecoration(
-                  color: Color(0xFF6BCDFD),
-                ),
-                accountEmail: Text('3689674@myuwc.ac.za'),
-                accountName: Text('Alex Knox'),
-              ),
-              FlatButton(
-                onPressed: () {
-                  /*Navigator.push(
-                    context,
-                    new MaterialPageRoute(
-                      builder: (context) => ProfilePage(),
-                    ),
-                  );*/
-                },
-                child: ListTile(
-                  //Todo: Chip and or trialing for alerts!
-                  leading: Icon(Icons.account_circle),
-                  title: Text('Home Page'),
-                ),
-              ),
-              FlatButton(
-                onPressed: () {},
-                child: ListTile(
-                  leading: Icon(Icons.question_answer),
-                  title: Text('Consultation Sessions'),
-                ),
-              ),
-              FlatButton(
-                onPressed: () {},
-                child: ListTile(
-                  leading: Icon(Icons.help_outline),
-                  title: Text('Support'),
-                ),
-              ),
-              Divider(),
-              Expanded(
-                child: Align(
-                  alignment: FractionalOffset.bottomCenter,
-                  child: FlatButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        new MaterialPageRoute(
-                          builder: (context) => MyApp(),
-                        ),
-                      );
-                    },
-                    child: ListTile(
-                      leading: Icon(Icons.power_settings_new),
-                      title: Text('LogOut'),
-                    ),
-                  ),
-                ),
-              ),
-            ],
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient:
+                LinearGradient(colors: [Color(0xFF285AE6), Color(0xFF41B7FC)]),
           ),
         ),
+        title: Text('Module List'),
       ),
       body: new ModuleList(),
     );
   }
 }
 
-// Module list button class, enable paths to different specific tutors
+var colorsarray = [
+  Colors.blueAccent,
+  Colors.redAccent,
+  Colors.greenAccent,
+  Colors.deepPurpleAccent,
+  Colors.orangeAccent,
+  Colors.purpleAccent,
+];
+
 class ModuleList extends StatelessWidget {
   Widget build(BuildContext context) {
     return new StreamBuilder(
@@ -117,7 +62,63 @@ class ModuleList extends StatelessWidget {
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (!snapshot.hasData)
           return Center(child: CircularProgressIndicator());
-        return new ListView(
+        return new GridView.count(
+          crossAxisCount: 2,
+          children: snapshot.data.documents.map((document) {
+            return GridView.builder(
+                itemCount: 1
+                ,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 1),
+                itemBuilder: (BuildContext context, int index) {
+                  return new Card(
+                    color:
+                        colorsarray[snapshot.data.documents.indexOf(document)],
+                    elevation: 5.0,
+                    child: InkWell(
+                      onTap: () {
+                        btnIn.btnIndex = document.data.values.elementAt(1);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => TutorList(
+                              buttonIndex: btnIn.btnIndex,
+                            ),
+                          ),
+                        );
+                      },
+                      child: new Container(
+                          alignment: Alignment.center,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Text(
+                                document['Code'],
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              Text(document['Title'],
+                                  style: TextStyle(color: Colors.white))
+                            ],
+                          )),
+                    ),
+                  );
+                });
+          }).toList(),
+        );
+      },
+    );
+  }
+}
+
+/*
+  class ModuleList extends StatelessWidget {
+  Widget build(BuildContext context) {
+    return new StreamBuilder(
+      stream: Firestore.instance.collection('Modules').snapshots(),
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (!snapshot.hasData)
+          return Center(child: CircularProgressIndicator());
+        return ListView(
           children: snapshot.data.documents.map((document) {
             return new ListTile(
               title: new Center(
@@ -144,3 +145,4 @@ class ModuleList extends StatelessWidget {
     );
   }
 }
+  */

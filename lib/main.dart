@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tutor_me_demo/Login_Authentification/LoginPage.dart';
+import 'package:tutor_me_demo/studentPages/edit_bio.dart';
 import 'package:tutor_me_demo/tutorPages/Tutor_student_reviews.dart';
+import 'package:tutor_me_demo/tutorPages/editProfile.dart';
 import 'package:tutor_me_demo/tutorPages/tutor_completed.dart';
 import 'package:tutor_me_demo/tutorPages/tutor_modules.dart';
 import 'package:tutor_me_demo/tutorPages/tutor_requests.dart';
@@ -8,7 +10,7 @@ import 'package:tutor_me_demo/tutorPages/tutor_schedule.dart';
 import 'landing_page.dart';
 import 'package:tutor_me_demo/landing_page.dart';
 import 'package:tutor_me_demo/studentPages/modules_page.dart';
-import 'package:tutor_me_demo/Login_Authentification/TutorLogin.dart';
+import 'package:tutor_me_demo/studentPages/consultation.dart';
 import 'package:tutor_me_demo/tutorPages/tutor_registerPage.dart';
 
 // 01/0ct changes
@@ -18,7 +20,6 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   final routes = <String, WidgetBuilder>{
     LandingPage.tag: (context) => LandingPage(),
-    TutorLogin.tag: (context) => TutorLogin(),
     GoogleSignApp.tag: (context) => GoogleSignApp(),
     ModulesPage.tag: (context) => ModulesPage(),
     TutorRegister.tag: (context) => TutorRegister(),
@@ -26,7 +27,10 @@ class MyApp extends StatelessWidget {
     StudentReviews.tag: (context) => StudentReviews(),
     CompletedSessions.tag: (context) => CompletedSessions(),
     TutorModules.tag: (context) => TutorModules(),
-    //RequestsPage.tag: (context) => RequestsPage(),
+    RequestsPage.tag: (context) => RequestsPage(),
+    Consultation.tag: (context) => Consultation(),
+    Bioedit.tag: (context) => Bioedit(),
+    TutorBioEdit.tag: (context) => TutorBioEdit(),
   };
 
   @override

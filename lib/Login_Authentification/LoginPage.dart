@@ -48,6 +48,13 @@ class Picture {
 
 final phot = Picture(photo: 'test');
 
+class User {
+  DocumentReference mens;
+  User({this.mens});
+}
+
+final currmens = User(mens: null);
+
 class _GoogleSignAppState extends State<GoogleSignApp> {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final Firestore _db = Firestore.instance;
@@ -85,6 +92,7 @@ class _GoogleSignAppState extends State<GoogleSignApp> {
   Future<void> updateUserData(FirebaseUser user) async {
     DocumentReference refStud = _db.collection('Student').document(user.uid);
     DocumentReference refTut = _db.collection('Tutor').document(user.uid);
+    currmens.mens = refTut;
 
     refStud.setData({
       'uid': user.uid,

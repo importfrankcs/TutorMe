@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:tutor_me_demo/Login_Authentification/LoginPage.dart';
-import 'package:tutor_me_demo/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:tutor_me_demo/main.dart';
 
 class RequestsPage extends StatefulWidget {
   static String tag = 'tutor_requests';
@@ -12,6 +11,11 @@ class RequestsPage extends StatefulWidget {
   RequestsPage({Key key, this.requests, this.detailsUser});
   @override
   _RequestsPageState createState() => _RequestsPageState();
+}
+
+void inputData() async {
+  DocumentReference user = currmens.mens;
+  user.collection("Requests").snapshots();
 }
 
 class _RequestsPageState extends State<RequestsPage> {
@@ -51,9 +55,10 @@ class _RequestsPageState extends State<RequestsPage> {
   }
 }
 
+String username = usern.username;
+
 class getRequests extends StatelessWidget {
   final List<DocumentSnapshot> documents;
-
   getRequests({this.documents});
 
   Widget build(BuildContext context) {
@@ -62,9 +67,26 @@ class getRequests extends StatelessWidget {
       itemExtent: 110.0,
       itemBuilder: (BuildContext context, int index) {
         String from = documents[index].data['From'].toString();
+        String day = documents[index].data['Day'].toString();
+        String modu = documents[index].data['Module'].toString();
+        String time = documents[index].data['Time'].toString();
+        String ven = documents[index].data['Venue'].toString();
+        String com = documents[index].data['comment'].toString();
         String title =
             ('${from[0].toUpperCase()} ${from.split(" ").last[0].toUpperCase()}${from.split(" ").last.toString().substring(1).toLowerCase()}');
+        String daytitle =
+            ('${day[0].toUpperCase()} ${day.split(" ").last[0].toUpperCase()}${day.split(" ").last.toString().substring(1).toLowerCase()}');
+         String module =
+            ('${modu[0].toUpperCase()} ${modu.split(" ").last[0].toUpperCase()}${modu.split(" ").last.toString().substring(1).toLowerCase()}');
 
+         String times =
+            ('${time[0].toUpperCase()} ${time.split(" ").last[0].toUpperCase()}${time.split(" ").last.toString().substring(1).toLowerCase()}');
+
+         String venue =
+            ('${ven[0].toUpperCase()} ${ven.split(" ").last[0].toUpperCase()}${ven.split(" ").last.toString().substring(1).toLowerCase()}');
+
+         String comment =
+            ('${com[0].toUpperCase()} ${com.split(" ").last[0].toUpperCase()}${com.split(" ").last.toString().substring(1).toLowerCase()}');
         return Padding(
           padding: const EdgeInsets.only(
               left: 0.0, top: 4.0, right: 0.0, bottom: 4.0),
@@ -72,20 +94,19 @@ class getRequests extends StatelessWidget {
             color: Colors.grey[200],
             child: ListTile(
               title: Container(
-                //padding: EdgeInsets.all(5.0),
+                
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Row(
-                      //crossAxisAlignment: CrossAxisAlignment.center,
-                      //mainAxisAlignment: MainAxisAlignment.start,
+                      
                       children: <Widget>[
                         Container(
                           width: 50.0,
                           height: 50.0,
                           child: CircleAvatar(
-                              backgroundColor: Colors.green,
-                              foregroundColor: Colors.green,
+                              backgroundColor: Colors.grey,
+                             
                               backgroundImage: NetworkImage(
                                   '${documents[index].data['PhotoURL'].toString()}')),
                         ),
@@ -120,41 +141,56 @@ class getRequests extends StatelessWidget {
                               context: context,
                               // {Please work
                               builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: new Text('Request from:'),
-                                  content: new Text('${from} '),
-                                  actions: <Widget>[
-                                    new FlatButton(
-                                      child: new Text('Close'),
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                    )
-                                  ],
+                                return Center(
+                                  child: Column(
+                                    children: <Widget>[
+                                      Center(
+                                        child: AlertDialog(
+                                          title: new Text('Request From:\n$from'),
+                                          content: Text('Module: $modu\nDay: $day\nTime: $time\nVenue: $ven\nDetails: \n$com'),
+                                          actions: <Widget>[
+                                            FlatButton(
+                                              child: new Text('ACCEPT', style: TextStyle(color: Colors.green),),
+                                              onPressed: () {
+                                                Firestore.instance.collection('Consultations').document().setData({
+                                                  'Tutor': '${usern.username}',
+                                                  'Module': '$modu',
+                                                  'Day': '$day',
+                                                  'Time': '$time',
+                                                  'Venue': '$ven',
+                                                  'Student': '$from'
+                                                  
+
+                                                });
+                                              },
+                                            ),
+                                            FlatButton(
+                                            
+                                              child: new Text('DECLINE', style: TextStyle(color: Colors.red),),
+                                              onPressed: () {
+                                                documents[index].reference.delete();
+                                              },
+                                            ),
+                                             FlatButton(
+                                              child: new Text('CLOSE', style: TextStyle(color: Colors.blue),),
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                            ),
+                                            
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 );
                               });
                         },
                         color: Colors.blueAccent,
                       ),
                     ),
-                    Container(
-                      alignment: Alignment.center,
-                      child: IconButton(
-                        icon: Icon(Icons.check_box),
-                        onPressed: () {},
-                        color: Colors.green,
-                      ),
-                    ),
-                    Container(
-                      alignment: Alignment.center,
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 6.0, vertical: 6.0),
-                      child: IconButton(
-                        icon: Icon(Icons.delete),
-                        onPressed: () {},
-                        color: Colors.red,
-                      ),
-                    ),
+                    
+                    
                   ],
                 ),
               ),

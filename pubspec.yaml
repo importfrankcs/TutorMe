@@ -22,7 +22,7 @@ dependencies:
   
   http: ^0.12.0+2
   dio: ^1.0.14
-  smooth_star_rating: 1.0.3
+  
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   shared_preferences: ^0.5.3+4
@@ -37,6 +37,9 @@ dependencies:
   font_awesome_flutter: ^8.5.0
   flutter_redux: ^0.5.3
   dropdownfield: ^1.0.3
+  flutter_rating: ^0.0.2
+  card_settings: ^1.4.2
+  smooth_star_rating: 1.0.3
 
 dev_dependencies:
   flutter_test:

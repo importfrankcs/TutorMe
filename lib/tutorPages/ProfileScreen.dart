@@ -5,6 +5,7 @@ import 'package:tutor_me_demo/constants.dart';
 
 class ProfileScreen extends StatefulWidget {
   final DocumentReference detailsUserTutor;
+  
 
   ProfileScreen({Key key, @required this.detailsUserTutor}); //super(key: key);
   static String tag = 'screeny';
@@ -18,6 +19,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   static String tag = 'tutor profile page';
   final String _status = "IFS312";
   final String _bio = "The Dynamic bio is being built\n";
+  final int star = 0;
 
   Widget _buildCoverImage(Size screenSize) {
     return Container(
@@ -101,7 +103,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       mainAxisSize: MainAxisSize.min,
       children: List.generate(5, (index) {
         return Icon(
-          index < 3.8 ? Icons.star : Icons.star_border,
+          index < star ? Icons.star : Icons.star_border,
         );
       }),
     );
