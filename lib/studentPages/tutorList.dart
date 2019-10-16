@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tutor_me_demo/constants.dart';
 import 'package:tutor_me_demo/studentPages/modules_page.dart';
 import 'package:card_settings/card_settings.dart';
+import 'package:tutor_me_demo/studentPages/pick_tut_time.dart';
 
 class TutorList extends StatefulWidget {
   final DocumentSnapshot tuts;
@@ -61,6 +62,30 @@ class _TutorList extends State<TutorList> {
 
 TextEditingController _textFieldController = TextEditingController();
 
+class Tutname {
+  String name;
+  Tutname({this.name});
+}
+
+final tutname = Tutname(name: "");
+
+class TutorReference {
+  DocumentReference ref;
+  TutorReference({this.ref});
+}
+
+final tutref = TutorReference(ref: null);
+
+class Allthedata {
+  String to;
+  String mod;
+  String from;
+  String photo;
+  Allthedata({this.to, this.mod, this.from, this.photo});
+}
+
+final alldata = Allthedata(to: null, mod: null, from: null, photo: null);
+
 class FirestoreListView extends StatelessWidget {
   final List<DocumentSnapshot> documents;
   String timeValue;
@@ -104,151 +129,63 @@ class FirestoreListView extends StatelessWidget {
               ),
             ),
             trailing: FlatButton(
-              onPressed: (){
-showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: new Text('Select Time Slot'),
-                      content: Column(
-                        children: <Widget>[
-                          Row(
-                            children: <Widget>[
-                              new Expanded(
-                                  child: new DropdownButton<String>(
-                                hint: Text("Select day"),
-                                items: <String>[
-                                  'Monday',
-                                  'Tuesday',
-                                  'Wednesday',
-                                  'Thursday',
-                                  'Friday'
-                                ].map((value) {
-                                  return new DropdownMenuItem<String>(
-                                    value: value,
-                                    child: new Text(value),
-                                  );
-                                }).toList(),
-                                onChanged: (value) {
-                                  dayValue = value;
-                                },
-                              )),
-                              Expanded(
-                                  child: new DropdownButton<String>(
-                                hint: Text("Select Time"),
-                                items: <String>[
-                                  '9:00-10:00',
-                                  '10:00-11:00',
-                                  '12:00-13:00',
-                                  '14:00-15:00'
-                                ].map((String value) {
-                                  return new DropdownMenuItem<String>(
-                                    value: value,
-                                    child: new Text(value),
-                                  );
-                                }).toList(),
-                                onChanged: (value) {
-                                  timeValue = value;
-                                },
-                              )),
-                            ],
-                          ),
-                          new Expanded(
-                              child: new DropdownButton<String>(
-                            hint: Text("Select a venue."),
-                            items: <String>['N22', 'SC2', 'SC3', 'B1', 'O2']
-                                .map((value) {
-                              return new DropdownMenuItem<String>(
-                                value: value,
-                                child: new Text(value),
-                              );
-                            }).toList(),
-                            onChanged: (value) {
-                              venValue = value;
-                            },
-                          )),
-                          TextField(
-                            controller: com,
-                            decoration:
-                                InputDecoration(hintText: "How can I help?"),
-                            onChanged: (value) {
-                              comment = com.text;
-                            },
-                          ),
-                        ],
-                      ),
-                      actions: <Widget>[
-                        new FlatButton(
-                          child: new Text('SUBMIT REQUEST'),
-                          onPressed: () {
-                            print(
-                                "To : " + documents[index].data['displayName']);
-                            String tut = documents[index].data['displayName'];
-                            print("Module: " + btnIn.btnIndex);
-                            String mod = btnIn.btnIndex;
-                            print("From :" + prefix0.usern.username);
-                            String from = prefix0.usern.username;
-
-                            print(Firestore.instance
-                                .collection('Requests')
-                                .document()
-                                .setData({
-                              'To': tut,
-                              'Module': mod,
-                              'From': from,
-                              'Day': dayValue,
-                              'Time': timeValue,
-                              'comment': comment,
-                              'Venue': venValue,
-                              'PhotoURL': documents[index].data['photoURL'],
-                            }));
-                            Navigator.of(context).pop();
-                          },
-                        )
-                      ],
-                    );
-                  });
+              onPressed: () {
+                tutref.ref = documents[index].data['documentReference'];
+                tutname.name = documents[index].data['displayName'].toString();
+                alldata.to = documents[index].data['displayName'];
+                alldata.mod = btnIn.btnIndex;
+                alldata.from = prefix0.usern.username;
+                alldata.photo = documents[index].data['photoURL'];
+                Navigator.push(
+                  context,
+                  new MaterialPageRoute(
+                    builder: (context) => new pick_time_of_tut(),
+                  ),
+                );
               },
-              child: Text('REQUEST', style: TextStyle(color: Colors.blueAccent),),
+              child: Text(
+                'REQUEST',
+                style: TextStyle(color: Colors.blueAccent),
+              ),
             ),
             onLongPress: () {
               showDialog(
-                    context: context,
-                    // {Please work
-                    builder: (BuildContext context) {
-                      return Center(
-                        child: Column(
-                          children: <Widget>[
-                            Center(
-                              child: Center(
-                                child: AlertDialog(
-                                  title: Text(''),
-                                  content: Text(''),
-                                  actions: <Widget>[
-                                    FlatButton(
-                                      child: new Text(
-                                        'RATE',
-                                        style: TextStyle(color: Colors.green),
-                                      ),
-                                      onPressed: () {},
+                  context: context,
+                  // {Please work
+                  builder: (BuildContext context) {
+                    return Center(
+                      child: Column(
+                        children: <Widget>[
+                          Center(
+                            child: Center(
+                              child: AlertDialog(
+                                title: Text(''),
+                                content: Text(''),
+                                actions: <Widget>[
+                                  FlatButton(
+                                    child: new Text(
+                                      'RATE',
+                                      style: TextStyle(color: Colors.green),
                                     ),
-                                    FlatButton(
-                                      child: new Text(
-                                        'CLOSE',
-                                        style: TextStyle(color: Colors.blue),
-                                      ),
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
+                                    onPressed: () {},
+                                  ),
+                                  FlatButton(
+                                    child: new Text(
+                                      'CLOSE',
+                                      style: TextStyle(color: Colors.blue),
                                     ),
-                                  ],
-                                ),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                ],
                               ),
                             ),
-                          ],
-                        ),
-                      );
-                    });
+                          ),
+                        ],
+                      ),
+                    );
+                  });
             },
             //trailing: , Place Rating here
           );

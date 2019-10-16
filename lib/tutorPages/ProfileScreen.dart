@@ -1,11 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:tutor_me_demo/Login_Authentification/LoginPage.dart';
 import 'package:tutor_me_demo/constants.dart';
+import 'package:tutor_me_demo/tutorPages/editProfile.dart';
 
 class ProfileScreen extends StatefulWidget {
   final DocumentReference detailsUserTutor;
-  
 
   ProfileScreen({Key key, @required this.detailsUserTutor}); //super(key: key);
   static String tag = 'screeny';
@@ -15,7 +16,6 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  final GoogleSignIn _gSignIn = GoogleSignIn();
   static String tag = 'tutor profile page';
   final String _status = "IFS312";
   final String _bio = "The Dynamic bio is being built\n";
@@ -38,20 +38,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
       future: widget.detailsUserTutor
           .get(), // a previously-obtained Future<String> or null
       builder: (BuildContext context, snapshot) {
-        return Container(
-          width: 80.0,
-          height: 80.0,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: NetworkImage(
-                  snapshot.data == null ? "" : snapshot.data.data["photoURL"],
-                  scale: 0.1),
-              fit: BoxFit.cover,
-            ),
-            borderRadius: BorderRadius.circular(80.0),
-            border: Border.all(
-              color: Colors.white,
-              width: 4.0,
+        return Center(
+          child: Container(
+            width: 80.0,
+            height: 80.0,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: NetworkImage(
+                    snapshot.data == null ? "" : snapshot.data.data["photoURL"],
+                    scale: 0.1),
+                fit: BoxFit.cover,
+              ),
+              borderRadius: BorderRadius.circular(80.0),
+              border: Border.all(
+                color: Colors.white,
+                width: 4.0,
+              ),
             ),
           ),
         );
@@ -67,8 +69,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
         TextStyle _nameTextStyle = TextStyle(
           fontFamily: 'Roboto',
           color: Colors.black,
-          fontSize: 28.0,
-          fontWeight: FontWeight.w400,
+          fontSize: 20.0,
+          fontWeight: FontWeight.w700,
         );
 
         return Text(
@@ -98,6 +100,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
+  Widget _buildCirt() {
+    TextStyle _nameTextStyle = TextStyle(
+      fontFamily: 'Roboto',
+      color: Colors.black,
+      fontSize: 15.0,
+      fontWeight: FontWeight.w600,
+    );
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Icon(
+          Icons.cloud_done,
+          color: Colors.lightBlueAccent,
+          size: 20.0,
+        ),
+        Text(
+          " Cirtified Tutor",
+          style: _nameTextStyle,
+        ),
+      ],
+    );
+  }
+
   Widget _buildStarRating() {
     return Row(
       mainAxisSize: MainAxisSize.min,
@@ -110,22 +135,54 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget _buildBio(BuildContext context) {
-    TextStyle bioTextStyle = TextStyle(
-      fontFamily: 'Spectral',
-      fontWeight: FontWeight.w400,
-      fontStyle: FontStyle.italic,
-      //color: Color(0xFF799497),
-      fontSize: 16.0,
+    return StreamBuilder(
+      stream: currmens.mens
+          .snapshots(), // a previously-obtained Future<String> or null
+      builder: (BuildContext context, snapshot) {
+        TextStyle bioTextStyle = TextStyle(
+          fontFamily: 'Spectral',
+          fontWeight: FontWeight.w400,
+          fontStyle: FontStyle.italic,
+          color: Color(0xFF799497),
+          fontSize: 16.0,
+        );
+        String doc = snapshot.data['Bio'];
+        return Container(
+          color: Theme.of(context).scaffoldBackgroundColor,
+          padding: EdgeInsets.all(8.0),
+          child: Text(
+            //snapshot.data['Bio'],
+            (doc == null ? 'loading...' : snapshot.data['Bio']),
+            textAlign: TextAlign.center,
+            style: bioTextStyle,
+          ),
+        );
+      },
     );
+  }
 
-    return Container(
-      //color: Theme.of(context).scaffoldBackgroundColor,
-      padding: EdgeInsets.all(8.0),
-      child: Text(
-        _bio,
-        textAlign: TextAlign.center,
-        style: bioTextStyle,
-      ),
+  Widget _buildvarsity(BuildContext context) {
+    return StreamBuilder(
+      stream: currmens.mens
+          .snapshots(), // a previously-obtained Future<String> or null
+      builder: (BuildContext context, snapshot) {
+        TextStyle bioTextStyle = TextStyle(
+          fontFamily: 'Spectral',
+          fontWeight: FontWeight.w400,
+          fontStyle: FontStyle.italic,
+          color: Color(0xFF799497),
+          fontSize: 16.0,
+        );
+        return Container(
+          color: Theme.of(context).scaffoldBackgroundColor,
+          padding: EdgeInsets.all(8.0),
+          child: Text(
+            snapshot.data['uni'],
+            textAlign: TextAlign.center,
+            style: bioTextStyle,
+          ),
+        );
+      },
     );
   }
 
@@ -146,7 +203,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       builder: (BuildContext context, snapshot) {
         Size screenSize = MediaQuery.of(context).size;
         return Scaffold(
-          backgroundColor: Colors.blueGrey[50],
+          //backgroundColor: Colors.blueGrey[50],
           appBar: AppBar(
             iconTheme: IconThemeData(color: Colors.white),
             flexibleSpace: Container(
@@ -158,12 +215,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
             actions: <Widget>[
               IconButton(
                 onPressed: () {
-                  _gSignIn.signOut();
-                  print('Signed out');
-                  Navigator.pop(context);
+                  Navigator.push(
+                      context,
+                      new MaterialPageRoute(
+                          builder: (context) => new TutorBioEdit()));
                 },
                 icon: Icon(
-                  Icons.exit_to_app,
+                  Icons.border_color,
                   size: 20.0,
                   color: Colors.white,
                 ),
@@ -182,33 +240,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
           body: Stack(
             children: <Widget>[
               _buildCoverImage(screenSize),
-              Container(
-                  margin: EdgeInsets.fromLTRB(170, 130, 0, 0),
-                  child: _buildProfileImage()),
               SafeArea(
                 child: SingleChildScrollView(
-                  child: Container(
-                    margin: EdgeInsets.fromLTRB(80, 150, 0, 0),
-                    child: Column(
-                      children: <Widget>[
-                        SizedBox(height: screenSize.height / 14),
-
-                        _buildFullName(),
-                        _buildStatus(context),
-                        _buildStarRating(),
-                        _buildBio(context),
-                        _buildSeparator(screenSize),
-                        SizedBox(height: 10.0),
-                        SizedBox(height: 8.0),
-                        // RoundedButton(
-                        // title: "SCHEDULE",
-                        // onPressed: () {},
-                        //)
-                      ],
-                    ),
+                  child: Column(
+                    children: <Widget>[
+                      SizedBox(height: screenSize.height / 6.4),
+                      _buildProfileImage(),
+                      _buildFullName(),
+                      _buildStarRating(),
+                      _buildCirt(),
+                      _buildvarsity(context),
+                      //_buildrating(),
+                      //_buildvarsity(context),
+                      _buildSeparator(screenSize),
+                      _buildBio(context),
+                    ],
                   ),
                 ),
-              ),
+              )
             ],
           ),
         );

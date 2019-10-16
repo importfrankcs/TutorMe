@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import 'package:tutor_me_demo/landing_page.dart';
 import 'package:tutor_me_demo/studentPages/consultation.dart';
@@ -43,6 +44,7 @@ class RoundedButton extends StatelessWidget {
 }
 
 class ActualDrawer extends StatelessWidget {
+  final GoogleSignIn _gSignIn = GoogleSignIn();
   ActualDrawer({this.accName, this.accEmail, this.accImage});
 
   final NetworkImage accImage;
@@ -68,18 +70,6 @@ class ActualDrawer extends StatelessWidget {
               )),
               accountEmail: accEmail,
               accountName: accName,
-            ),
-            DrawerButtonWidget(
-              title: 'My profile',
-              iconVar: Icon(Icons.account_circle),
-              onPressed: () {
-                Navigator.pushNamed(context, ProfileScreen.tag);
-                Navigator.push(
-                    context,
-                    new MaterialPageRoute(
-                      builder: (context) => null,
-                    ));
-              },
             ),
             DrawerButtonWidget(
               title: 'Requests',
@@ -142,11 +132,10 @@ class ActualDrawer extends StatelessWidget {
                     title: 'Log Out',
                     iconVar: Icon(Icons.power_settings_new),
                     onPressed: () {
-                      //Navigator.pushNamed(context, StudentReviews.tag);
-                      Navigator.push(
-                          context,
-                          new MaterialPageRoute(
-                              builder: (context) => LandingPage()));
+                      _gSignIn.signOut();
+                      print('Signed out');
+                      Navigator.pop(context);
+                      Navigator.of(context, rootNavigator: true).pop();
                     },
                   )),
             ),
@@ -158,6 +147,7 @@ class ActualDrawer extends StatelessWidget {
 }
 
 class StudentDrawer extends StatelessWidget {
+  final GoogleSignIn _gSignIn = GoogleSignIn();
   StudentDrawer({this.accName, this.accEmail, this.accImage});
   final NetworkImage accImage;
   final Widget accEmail;
@@ -183,18 +173,6 @@ class StudentDrawer extends StatelessWidget {
               )),
               accountEmail: accEmail,
               accountName: accName,
-            ),
-            FlatButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  new MaterialPageRoute(builder: (context) => Bioedit()),
-                );
-              },
-              child: ListTile(
-                leading: Icon(Icons.search),
-                title: Text('My Profile'),
-              ),
             ),
             FlatButton(
               onPressed: () {
@@ -228,6 +206,18 @@ class StudentDrawer extends StatelessWidget {
               ),
             ),
             Divider(),
+            FlatButton(
+              onPressed: () {
+                _gSignIn.signOut();
+                print('Signed out');
+                Navigator.pop(context);
+                Navigator.of(context, rootNavigator: true).pop();
+              },
+              child: ListTile(
+                leading: Icon(Icons.exit_to_app),
+                title: Text('Log Out'),
+              ),
+            ),
           ],
         ),
       ),

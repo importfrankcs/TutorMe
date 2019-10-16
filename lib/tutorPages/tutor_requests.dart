@@ -76,16 +76,16 @@ class getRequests extends StatelessWidget {
             ('${from[0].toUpperCase()} ${from.split(" ").last[0].toUpperCase()}${from.split(" ").last.toString().substring(1).toLowerCase()}');
         String daytitle =
             ('${day[0].toUpperCase()} ${day.split(" ").last[0].toUpperCase()}${day.split(" ").last.toString().substring(1).toLowerCase()}');
-         String module =
+        String module =
             ('${modu[0].toUpperCase()} ${modu.split(" ").last[0].toUpperCase()}${modu.split(" ").last.toString().substring(1).toLowerCase()}');
 
-         String times =
+        String times =
             ('${time[0].toUpperCase()} ${time.split(" ").last[0].toUpperCase()}${time.split(" ").last.toString().substring(1).toLowerCase()}');
 
-         String venue =
+        String venue =
             ('${ven[0].toUpperCase()} ${ven.split(" ").last[0].toUpperCase()}${ven.split(" ").last.toString().substring(1).toLowerCase()}');
 
-         String comment =
+        String comment =
             ('${com[0].toUpperCase()} ${com.split(" ").last[0].toUpperCase()}${com.split(" ").last.toString().substring(1).toLowerCase()}');
         return Padding(
           padding: const EdgeInsets.only(
@@ -94,19 +94,16 @@ class getRequests extends StatelessWidget {
             color: Colors.grey[200],
             child: ListTile(
               title: Container(
-                
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Row(
-                      
                       children: <Widget>[
                         Container(
                           width: 50.0,
                           height: 50.0,
                           child: CircleAvatar(
                               backgroundColor: Colors.grey,
-                             
                               backgroundImage: NetworkImage(
                                   '${documents[index].data['PhotoURL'].toString()}')),
                         ),
@@ -146,38 +143,55 @@ class getRequests extends StatelessWidget {
                                     children: <Widget>[
                                       Center(
                                         child: AlertDialog(
-                                          title: new Text('Request From:\n$from'),
-                                          content: Text('Module: $modu\nDay: $day\nTime: $time\nVenue: $ven\nDetails: \n$com'),
+                                          title:
+                                              new Text('Request From:\n$from'),
+                                          content: Text(
+                                              'Module: $modu\nDay: $day\nTime: $time\nVen: $ven\nDetails: \n$com'),
                                           actions: <Widget>[
                                             FlatButton(
-                                              child: new Text('ACCEPT', style: TextStyle(color: Colors.green),),
+                                              child: new Text(
+                                                'ACCEPT',
+                                                style: TextStyle(
+                                                    color: Colors.green),
+                                              ),
                                               onPressed: () {
-                                                Firestore.instance.collection('Consultations').document().setData({
+                                                Firestore.instance
+                                                    .collection('Consultations')
+                                                    .document()
+                                                    .setData({
                                                   'Tutor': '${usern.username}',
                                                   'Module': '$modu',
                                                   'Day': '$day',
                                                   'Time': '$time',
                                                   'Venue': '$ven',
-                                                  'Student': '$from'
-                                                  
-
+                                                  'Student': '$from',
+                                                  'comment': '$com',
                                                 });
                                               },
                                             ),
                                             FlatButton(
-                                            
-                                              child: new Text('DECLINE', style: TextStyle(color: Colors.red),),
+                                              child: new Text(
+                                                'DECLINE',
+                                                style: TextStyle(
+                                                    color: Colors.red),
+                                              ),
                                               onPressed: () {
-                                                documents[index].reference.delete();
+                                                documents[index]
+                                                    .reference
+                                                    .delete();
+                                                Navigator.of(context).pop();
                                               },
                                             ),
-                                             FlatButton(
-                                              child: new Text('CLOSE', style: TextStyle(color: Colors.blue),),
+                                            FlatButton(
+                                              child: new Text(
+                                                'CLOSE',
+                                                style: TextStyle(
+                                                    color: Colors.blue),
+                                              ),
                                               onPressed: () {
                                                 Navigator.of(context).pop();
                                               },
                                             ),
-                                            
                                           ],
                                         ),
                                       ),
@@ -189,8 +203,6 @@ class getRequests extends StatelessWidget {
                         color: Colors.blueAccent,
                       ),
                     ),
-                    
-                    
                   ],
                 ),
               ),

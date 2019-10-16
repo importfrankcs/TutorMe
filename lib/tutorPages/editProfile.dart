@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:tutor_me_demo/Login_Authentification/LoginPage.dart';
 import 'package:tutor_me_demo/constants.dart';
 import 'package:flutter/material.dart';
 
@@ -10,35 +12,75 @@ class TutorBioEdit extends StatefulWidget {
 }
 
 class _TutorBioEditState extends State<TutorBioEdit> {
-  final myController = TextEditingController();
+  final tutorbioController = TextEditingController();
+  final tutoruniController = TextEditingController();
 
   @override
   void dispose() {
-    myController.dispose();
+    // Clean up the controller when the widget is disposed.
+    tutorbioController.dispose();
+    tutoruniController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text("Edit your details"),
+      appBar: AppBar(
+        title: Text("Edit your details"),
+      ),
+      body: SafeArea(
+        top: false,
+        bottom: false,
+        child: Form(
+          autovalidate: true,
+          child: new ListView(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            children: <Widget>[
+              new TextFormField(
+                controller: tutoruniController,
+                decoration: const InputDecoration(
+                  icon: const Icon(Icons.account_balance),
+                  hintText: 'Insert what university you attend',
+                  labelText: 'University',
+                ),
+              ),
+              TextFormField(
+                controller: tutorbioController,
+                decoration: const InputDecoration(
+                  icon: const Icon(Icons.library_books),
+                  hintText: 'How can you help students',
+                  labelText: 'Bio',
+                ),
+              ),
+            ],
+          ),
         ),
-        body: Container(
-            child: Column(
-          children: <Widget>[
-            TextFormField(
-              controller: myController,
-              keyboardType: TextInputType.multiline,
-              maxLines: 3,
-              decoration: new InputDecoration(
-                  border: InputBorder.none,
-                  focusedBorder: InputBorder.none,
-                  contentPadding:
-                      EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
-                  hintText: 'EDIT YOUR BIO HERE'),
-            )
-          ],
-        )));
+      ),
+
+      /*Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: TextField(
+          controller: myController,
+        ),
+      ),*/
+      floatingActionButton: FloatingActionButton(
+        // When the user presses the button, show an alert dialog containing
+        // the text that the user has entered into the text field.
+        onPressed: () {
+          Firestore.instance
+              .collection('Tutor')
+              .document(currmens.mens.documentID)
+              .updateData({'Bio': tutorbioController.text});
+          Firestore.instance
+              .collection('Tutor')
+              .document(currmens.mens.documentID)
+              .updateData({'uni': tutoruniController.text});
+        },
+
+        tooltip: 'Show me the value!',
+        child: Icon(Icons.text_fields),
+      ),
+    );
   }
 }

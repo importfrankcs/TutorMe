@@ -64,10 +64,12 @@ class getConsultations extends StatefulWidget {
   @override
   _getConsultationsState createState() => _getConsultationsState();
 }
+
 TextEditingController com = new TextEditingController();
 String comment;
 
 class _getConsultationsState extends State<getConsultations> {
+  final ratingcomment = TextEditingController();
   var rating = 0.0;
   Widget build(BuildContext context) {
     return ListView.builder(
@@ -135,15 +137,38 @@ class _getConsultationsState extends State<getConsultations> {
                                 'Thank you For\nusing TUTOR ME',
                                 style: TextStyle(color: Colors.blueAccent),
                               ),
-                              content: Text(
-                                'Please Rate your experience',
-                                style: TextStyle(color: Colors.blueAccent),
+                              content: Column(
+                                children: <Widget>[
+                                  Text(
+                                    'Please Rate your experience',
+                                    style: TextStyle(color: Colors.blueAccent),
+                                  ),
+                                  /*SafeArea(
+                                    top: false,
+                                    bottom: false,
+                                    child: Form(
+                                      autovalidate: true,
+                                      child: new ListView(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 16.0),
+                                        children: <Widget>[
+                                          new TextFormField(
+                                            controller: ratingcomment,
+                                            decoration: const InputDecoration(
+                                              icon: const Icon(
+                                                  Icons.account_balance),
+                                              hintText:
+                                                  'Insert what university you attend',
+                                              labelText: 'University',
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  )*/
+                                ],
                               ),
-                              actions: <Widget>[
-                                
-                              ],
                             ),
-                            
                             Review(),
                             FlatButton(
                               child: Text(

@@ -6,6 +6,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart';
 import 'package:tutor_me_demo/Login_Authentification/LoginPage.dart';
 import 'package:tutor_me_demo/constants.dart';
+import 'package:tutor_me_demo/studentPages/edit_bio.dart';
 import 'package:tutor_me_demo/tutorPages/tutor_schedule.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -24,7 +25,7 @@ class _ProfilePageState extends State<ProfilePage> {
   static String tag = 'STUDENT PROFILE PAGE';
   final String _fullName = 'FAROUK';
   final String _status = "INFOMATION SYSTEM STUDENT";
-  final String _bio = "NothingSTUD";
+  final String _bio = '';
   //"\"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\"";
 
   Widget _buildCoverImage(Size screenSize) {
@@ -42,10 +43,11 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Widget _buildProfileImage() {
     return FutureBuilder<DocumentSnapshot>(
-        future: widget.detailsUser
-            .get(), // a previously-obtained Future<String> or null
-        builder: (BuildContext context, snapshot) {
-          return Container(
+      future: widget.detailsUser
+          .get(), // a previously-obtained Future<String> or null
+      builder: (BuildContext context, snapshot) {
+        return Center(
+          child: Container(
             width: 80.0,
             height: 80.0,
             decoration: BoxDecoration(
@@ -61,8 +63,10 @@ class _ProfilePageState extends State<ProfilePage> {
                 width: 5.0,
               ),
             ),
-          );
-        });
+          ),
+        );
+      },
+    );
   }
 
   Widget _buildFullName() {
@@ -85,7 +89,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Widget _buildStatus(BuildContext context) {
+  Widget _buildvarsity(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 6.0),
       decoration: BoxDecoration(
@@ -104,34 +108,65 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Widget _buildStarRating() {
+  Widget _buildrating() {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: List.generate(5, (index) {
         return Icon(
           index < 2 ? Icons.star : Icons.star_border,
+          size: 15,
         );
       }),
     );
   }
 
   Widget _buildBio(BuildContext context) {
-    TextStyle bioTextStyle = TextStyle(
-      fontFamily: 'Spectral',
-      fontWeight: FontWeight.w400,
-      fontStyle: FontStyle.italic,
-      color: Color(0xFF799497),
-      fontSize: 16.0,
+    return StreamBuilder(
+      stream: othermens.mens
+          .snapshots(), // a previously-obtained Future<String> or null
+      builder: (BuildContext context, snapshot) {
+        TextStyle bioTextStyle = TextStyle(
+          fontFamily: 'Spectral',
+          fontWeight: FontWeight.w400,
+          fontStyle: FontStyle.italic,
+          color: Color(0xFF799497),
+          fontSize: 16.0,
+        );
+        return Container(
+          color: Theme.of(context).scaffoldBackgroundColor,
+          padding: EdgeInsets.all(8.0),
+          child: Text(
+            snapshot.data['Bio'],
+            textAlign: TextAlign.center,
+            style: bioTextStyle,
+          ),
+        );
+      },
     );
+  }
 
-    return Container(
-      color: Theme.of(context).scaffoldBackgroundColor,
-      padding: EdgeInsets.all(8.0),
-      child: Text(
-        _bio,
-        textAlign: TextAlign.center,
-        style: bioTextStyle,
-      ),
+  Widget _buildVarsity(BuildContext context) {
+    return StreamBuilder(
+      stream: othermens.mens
+          .snapshots(), // a previously-obtained Future<String> or null
+      builder: (BuildContext context, snapshot) {
+        TextStyle bioTextStyle = TextStyle(
+          fontFamily: 'Spectral',
+          fontWeight: FontWeight.w400,
+          fontStyle: FontStyle.italic,
+          color: Color(0xFF799497),
+          fontSize: 16.0,
+        );
+        return Container(
+          color: Theme.of(context).scaffoldBackgroundColor,
+          padding: EdgeInsets.all(8.0),
+          child: Text(
+            snapshot.data['University'],
+            textAlign: TextAlign.center,
+            style: bioTextStyle,
+          ),
+        );
+      },
     );
   }
 
@@ -208,19 +243,19 @@ class _ProfilePageState extends State<ProfilePage> {
                       colors: [Color(0xFF285AE6), Color(0xFF41B7FC)]),
                 ),
               ),
-              //backgroundColor: Color(0xFF6BCDFD),
               elevation: 0.0,
               actions: <Widget>[
                 IconButton(
                   icon: Icon(
-                    Icons.exit_to_app,
+                    Icons.border_color,
                     size: 20.0,
                     color: Colors.white,
                   ),
                   onPressed: () {
-                    _gSignIn.signOut();
-                    print('Signed out');
-                    Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      new MaterialPageRoute(builder: (context) => Bioedit()),
+                    );
                   },
                 )
               ],
@@ -238,33 +273,21 @@ class _ProfilePageState extends State<ProfilePage> {
             body: Stack(
               children: <Widget>[
                 _buildCoverImage(screenSize),
-                Container(
-                    margin: EdgeInsets.fromLTRB(170, 130, 0, 0),
-                    child: _buildProfileImage()),
                 SafeArea(
                   child: SingleChildScrollView(
-                    child: Container(
-                      margin: EdgeInsets.fromLTRB(50, 150, 0, 0),
-                      child: Column(
-                        children: <Widget>[
-                          SizedBox(height: screenSize.height / 14),
-
-                          _buildFullName(),
-                          _buildStatus(context),
-                          _buildStarRating(),
-                          _buildBio(context),
-                          _buildSeparator(screenSize),
-                          SizedBox(height: 10.0),
-                          SizedBox(height: 8.0),
-                          // RoundedButton(
-                          // title: "SCHEDULE",
-                          // onPressed: () {},
-                          //)
-                        ],
-                      ),
+                    child: Column(
+                      children: <Widget>[
+                        SizedBox(height: screenSize.height / 6.4),
+                        _buildProfileImage(),
+                        _buildFullName(),
+                        _buildrating(),
+                        _buildvarsity(context),
+                        _buildSeparator(screenSize),
+                        _buildBio(context),
+                      ],
                     ),
                   ),
-                ),
+                )
               ],
             ),
           );

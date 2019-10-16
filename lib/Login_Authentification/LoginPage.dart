@@ -55,6 +55,13 @@ class User {
 
 final currmens = User(mens: null);
 
+class User2 {
+  DocumentReference mens;
+  User2({this.mens});
+}
+
+final othermens = User(mens: null);
+
 class _GoogleSignAppState extends State<GoogleSignApp> {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final Firestore _db = Firestore.instance;
@@ -93,13 +100,16 @@ class _GoogleSignAppState extends State<GoogleSignApp> {
     DocumentReference refStud = _db.collection('Student').document(user.uid);
     DocumentReference refTut = _db.collection('Tutor').document(user.uid);
     currmens.mens = refTut;
+    othermens.mens = refStud;
 
     refStud.setData({
       'uid': user.uid,
       'email': user.email,
       'photoURL': user.photoUrl,
       'displayName': user.displayName,
-      'lastSeen': DateTime.now()
+      'lastSeen': DateTime.now(),
+      'documentReference': refStud,
+      // 'Bio': 'update Bio',
     }, merge: true);
 
     refTut.setData({
@@ -107,7 +117,9 @@ class _GoogleSignAppState extends State<GoogleSignApp> {
       'email': user.email,
       'photoURL': user.photoUrl,
       'displayName': user.displayName,
-      'lastSeen': DateTime.now()
+      'lastSeen': DateTime.now(),
+      'documentReference': refTut,
+      //'Bio': 'update Bio',
     }, merge: true);
 
     if (type.userType) {
