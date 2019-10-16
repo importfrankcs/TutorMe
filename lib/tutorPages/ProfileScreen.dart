@@ -4,6 +4,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:tutor_me_demo/Login_Authentification/LoginPage.dart';
 import 'package:tutor_me_demo/constants.dart';
 import 'package:tutor_me_demo/tutorPages/editProfile.dart';
+import 'package:smooth_star_rating/smooth_star_rating.dart';
 
 class ProfileScreen extends StatefulWidget {
   final DocumentReference detailsUserTutor;
@@ -17,32 +18,32 @@ class ProfileScreen extends StatefulWidget {
 
 var starcount = 0;
 
-class FirebaseAverage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return StreamBuilder(
-      stream: currmens.mens.collection("Ratings").snapshots(),
-      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (!snapshot.hasData) return new Text('Loading...');
-        return Card(
-          child: new FlatButton(
-            child: Text('test'), onPressed: () {
-            snapshot.data.documents.map((document) {
-            }).toList()
-          },
-          ),
-        );
-      },
-    );
-  }
-}
-
-
 class _ProfileScreenState extends State<ProfileScreen> {
+
+  double rating = 0.0;
+  bool _isLoading;
+  @override
+  void initState(){
+    super.initState();
+    _isLoading =true;
+    _loadData();
+  }
+
+  Future _loadData() async {
+    QuerySnapshot snapshot = await currmens.mens.collection('Ratings').getDocuments();
+    int total = snapshot.documents.map<int>((m)=> m['Rating']).reduce((a,b) => a + b);
+    setState(() {
+      rating = total/snapshot.documents.length;
+      _isLoading = false;
+    });
+    print(rating);
+  }
+
   static String tag = 'tutor profile page';
   final String _status = "IFS312";
   final String _bio = "The Dynamic bio is being built\n";
   final int star = 0;
+
 
   Widget _buildCoverImage(Size screenSize) {
     return Container(
@@ -262,7 +263,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               snapshot.data == null ? "" : snapshot.data.data["displayName"],
             ),
             accEmail:
-                Text(snapshot.data == null ? "" : snapshot.data.data["email"]),
+            Text(snapshot.data == null ? "" : snapshot.data.data["email"]),
             accImage: NetworkImage(
                 snapshot.data == null ? "" : snapshot.data.data["photoURL"]),
           ),
@@ -293,7 +294,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
       },
     );
   }
+
 }
+
 
 /*
 @override
