@@ -15,6 +15,29 @@ class ProfileScreen extends StatefulWidget {
   _ProfileScreenState createState() => _ProfileScreenState();
 }
 
+var starcount = 0;
+
+class FirebaseAverage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder(
+      stream: currmens.mens.collection("Ratings").snapshots(),
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (!snapshot.hasData) return new Text('Loading...');
+        return Card(
+          child: new FlatButton(
+            child: Text('test'), onPressed: () {
+            snapshot.data.documents.map((document) {
+            }).toList()
+          },
+          ),
+        );
+      },
+    );
+  }
+}
+
+
 class _ProfileScreenState extends State<ProfileScreen> {
   static String tag = 'tutor profile page';
   final String _status = "IFS312";
@@ -121,6 +144,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
       ],
     );
+  }
+
+
+
+  void averageStar(){
+
   }
 
   Widget _buildStarRating() {
