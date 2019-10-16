@@ -1,12 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tutor_me_demo/constants.dart';
-import 'package:tutor_me_demo/landing_page.dart';
-import 'package:tutor_me_demo/main.dart';
-import 'package:tutor_me_demo/studentPages/profile_page.dart';
-import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tutor_me_demo/studentPages/tutorList.dart';
 
 class ModulesPage extends StatefulWidget {
