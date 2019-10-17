@@ -266,6 +266,13 @@ class Review extends StatefulWidget {
   _ReviewState createState() => new _ReviewState();
 }
 
+class RatingVal {
+  double rate;
+  RatingVal({this.rate});
+}
+
+final rates = RatingVal(rate: 0.0);
+
 class _ReviewState extends State<Review> {
   double rating = 0;
   int starCount = 5;
@@ -281,6 +288,7 @@ class _ReviewState extends State<Review> {
       onRatingChanged: (rating) => setState(
         () {
           this.rating = rating;
+          rates.rate = rating;
         },
       ),
     );

@@ -4,6 +4,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:tutor_me_demo/Login_Authentification/LoginPage.dart';
 import 'package:tutor_me_demo/constants.dart';
 import 'package:tutor_me_demo/tutorPages/editProfile.dart';
+import 'package:smooth_star_rating/smooth_star_rating.dart';
 
 class ProfileScreen extends StatefulWidget {
   final DocumentReference detailsUserTutor;
@@ -15,11 +16,40 @@ class ProfileScreen extends StatefulWidget {
   _ProfileScreenState createState() => _ProfileScreenState();
 }
 
+var starcount = 0;
+double rating = 0;
+
 class _ProfileScreenState extends State<ProfileScreen> {
+  bool _isLoading;
+  @override
+  void initState() {
+    _isLoading = true;
+    _loadData();
+    super.initState();
+    print(_loadData());
+  }
+
+  //ar test = initState();
+
+  Future _loadData() async {
+    QuerySnapshot snapshot =
+        await currmens.mens.collection('Ratings').getDocuments();
+    double total = snapshot.documents
+        .map<double>((m) => m['Rating'])
+        .reduce((a, b) => a + b);
+    setState(() {
+      rating = total / snapshot.documents.length;
+
+      print("this one ${snapshot.documents.length}");
+      _isLoading = false;
+    });
+    print(rating);
+  }
+
   static String tag = 'tutor profile page';
   final String _status = "IFS312";
   final String _bio = "The Dynamic bio is being built\n";
-  final int star = 0;
+  final double star = rating;
 
   Widget _buildCoverImage(Size screenSize) {
     return Container(
@@ -116,19 +146,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
           size: 20.0,
         ),
         Text(
-          " Cirtified Tutor",
+          " Certified Tutor",
           style: _nameTextStyle,
         ),
       ],
     );
   }
 
+  void averageStar() {}
+
   Widget _buildStarRating() {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: List.generate(5, (index) {
         return Icon(
-          index < star ? Icons.star : Icons.star_border,
+          index < rating ? Icons.star : Icons.star_border,
         );
       }),
     );
@@ -257,6 +289,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ],
                   ),
                 ),
+              ),
+              FloatingActionButton(
+                onPressed: () {
+                  _loadData();
+                  print(rating);
+                },
               )
             ],
           ),
@@ -326,9 +364,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
       },
     );
   }
-
-
-
     return FutureBuilder<DocumentSnapshot>(
       future: widget.detailsUserTutor
           .get(), // a previously-obtained Future<String> or null
@@ -336,5 +371,4 @@ class _ProfileScreenState extends State<ProfileScreen> {
         Size screenSize = MediaQuery.of(context).size;
   },
     );
-
 */

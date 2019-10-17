@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 import 'package:tutor_me_demo/Login_Authentification/LoginPage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -71,7 +70,8 @@ class getRequests extends StatelessWidget {
         String modu = documents[index].data['Module'].toString();
         String time = documents[index].data['Time'].toString();
         String ven = documents[index].data['Venue'].toString();
-        String com = documents[index].data['comment'].toString();
+        String com = documents[index].data['Comment'].toString();
+        String userid = documents[index].data['uid'].toString();
         String title =
             ('${from[0].toUpperCase()} ${from.split(" ").last[0].toUpperCase()}${from.split(" ").last.toString().substring(1).toLowerCase()}');
         String daytitle =
@@ -166,6 +166,7 @@ class getRequests extends StatelessWidget {
                                                   'Venue': '$ven',
                                                   'Student': '$from',
                                                   'comment': '$com',
+                                                  'uid': '$userid',
                                                 });
                                               },
                                             ),

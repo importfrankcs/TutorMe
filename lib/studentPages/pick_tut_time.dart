@@ -53,6 +53,7 @@ void submit(String ven, String time, String day, String comments) {
   Firestore.instance.collection('Requests').document().setData({
     'To': alldata.to,
     'Module': alldata.mod,
+    'uid': alldata.uid,
     'From': alldata.from,
     'PhotoURL': alldata.photo,
     'Day': day,

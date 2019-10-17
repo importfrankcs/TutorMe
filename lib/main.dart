@@ -31,6 +31,7 @@ class MyApp extends StatelessWidget {
     Consultation.tag: (context) => Consultation(),
     Bioedit.tag: (context) => Bioedit(),
     TutorBioEdit.tag: (context) => TutorBioEdit(),
+    //TutStudReviews.tag: (context)
   };
 
   @override

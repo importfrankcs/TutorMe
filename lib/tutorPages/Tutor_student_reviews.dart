@@ -51,9 +51,9 @@ class _StudentReviews extends State<StudentReviews> {
                             starCount: 5,
                             spacing: 2.0,
                             onRatingChanged: (value) {
-                            setState(() {
-                            rating = value;
-                            });
+                              setState(() {
+                                rating = value;
+                              });
                             },
                           ),
                         ),

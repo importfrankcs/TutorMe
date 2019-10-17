@@ -62,6 +62,15 @@ class User2 {
 
 final othermens = User(mens: null);
 
+class UserID {
+  String id;
+  UserID({this.id});
+}
+
+final currmensid = UserID(id: null);
+
+//FINDING A SPECIFICDOCUMENT IS EXISTING INSIDE A COLLECTION
+
 class _GoogleSignAppState extends State<GoogleSignApp> {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final Firestore _db = Firestore.instance;
@@ -101,6 +110,7 @@ class _GoogleSignAppState extends State<GoogleSignApp> {
     DocumentReference refTut = _db.collection('Tutor').document(user.uid);
     currmens.mens = refTut;
     othermens.mens = refStud;
+    currmensid.id = user.photoUrl;
 
     refStud.setData({
       'uid': user.uid,

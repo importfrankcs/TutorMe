@@ -135,11 +135,13 @@ class _ProfilePageState extends State<ProfilePage> {
         return Container(
           color: Theme.of(context).scaffoldBackgroundColor,
           padding: EdgeInsets.all(8.0),
-          child: Text(
-            snapshot.data['Bio'],
-            textAlign: TextAlign.center,
-            style: bioTextStyle,
-          ),
+          child: snapshot.data['Bio'] != null
+              ? new Text(
+                  snapshot.data['Bio'],
+                  textAlign: TextAlign.center,
+                  style: bioTextStyle,
+                )
+              : new Text('Welcome to TutorMe'),
         );
       },
     );

@@ -4,6 +4,7 @@ import 'package:tutor_me_demo/Login_Authentification/LoginPage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:tutor_me_demo/constants.dart';
+import 'package:tutor_me_demo/studentPages/tutorList.dart';
 
 class Consultation extends StatefulWidget {
   static String tag = 'consultation';
@@ -71,6 +72,8 @@ String comment;
 class _getConsultationsState extends State<getConsultations> {
   final ratingcomment = TextEditingController();
   var rating = 0.0;
+  final studbioController = TextEditingController();
+
   Widget build(BuildContext context) {
     return ListView.builder(
         itemCount: widget.documents.length,
@@ -82,6 +85,7 @@ class _getConsultationsState extends State<getConsultations> {
           String time = widget.documents[index].data['Time'].toString();
           String ven = widget.documents[index].data['Venue'].toString();
           String tut = widget.documents[index].data['Tutor'].toString();
+          String userid = widget.documents[index].data['uid'].toString();
           String title =
               ('${toStudent[0].toUpperCase()} ${toStudent.split(" ").last[0].toUpperCase()}${toStudent.split(" ").last.toString().substring(1).toLowerCase()}');
           String daytitle =
@@ -143,6 +147,14 @@ class _getConsultationsState extends State<getConsultations> {
                                     'Please Rate your experience',
                                     style: TextStyle(color: Colors.blueAccent),
                                   ),
+                                  TextFormField(
+                                    controller: studbioController,
+                                    decoration: const InputDecoration(
+                                      icon: const Icon(Icons.add_comment),
+                                      hintText: 'optional comment',
+                                      labelText: 'leave a comment?',
+                                    ),
+                                  ),
                                   /*SafeArea(
                                     top: false,
                                     bottom: false,
@@ -175,14 +187,73 @@ class _getConsultationsState extends State<getConsultations> {
                                 "SUBMIT RATING",
                                 style: TextStyle(color: Colors.white),
                               ),
-                              onPressed: () {},
+                              onPressed: () {
+                                Firestore.instance
+                                    .collection('Tutor')
+                                    .document(widget
+                                        .documents[index].data['uid']
+                                        .toString())
+                                    .collection('Ratings')
+                                    .document()
+                                    .setData({
+                                  'Rating': rates.rate,
+                                  'By': usern.username,
+                                  'Comment': studbioController.text,
+                                  'Avatar': currmensid.id,
+                                });
+                                Firestore.instance
+                                    .collection('CompletedSessions')
+                                    .document()
+                                    .setData({
+                                  'Student': widget
+                                      .documents[index].data['Student']
+                                      .toString(),
+                                  'Day': widget.documents[index].data['Day']
+                                      .toString(),
+                                  'Module': widget
+                                      .documents[index].data['Module']
+                                      .toString(),
+                                  'Time': widget.documents[index].data['Time']
+                                      .toString(),
+                                  'Venue': widget.documents[index].data['Venue']
+                                      .toString(),
+                                  'Tutor': widget.documents[index].data['Tutor']
+                                      .toString(),
+                                  'uid': widget.documents[index].data['uid']
+                                      .toString(),
+                                });
+                                widget.documents[index].reference.delete();
+                                Navigator.of(context).pop();
+                              },
                             ),
                             FlatButton(
                               child: Text(
-                                "CANCEL",
+                                "NO THANKS",
                                 style: TextStyle(color: Colors.red),
                               ),
                               onPressed: () {
+                                Firestore.instance
+                                    .collection('CompletedSessions')
+                                    .document()
+                                    .setData({
+                                  'Student': widget
+                                      .documents[index].data['Student']
+                                      .toString(),
+                                  'Day': widget.documents[index].data['Day']
+                                      .toString(),
+                                  'Module': widget
+                                      .documents[index].data['Module']
+                                      .toString(),
+                                  'Time': widget.documents[index].data['Time']
+                                      .toString(),
+                                  'Venue': widget.documents[index].data['Venue']
+                                      .toString(),
+                                  'Tutor': widget.documents[index].data['Tutor']
+                                      .toString(),
+                                  'uid': widget.documents[index].data['uid']
+                                      .toString(),
+                                });
+                                widget.documents[index].reference.delete();
                                 Navigator.of(context).pop();
                               },
                             ),

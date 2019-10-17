@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tutor_me_demo/Login_Authentification/LoginPage.dart' as prefix0;
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:tutor_me_demo/constants.dart';
 import 'package:tutor_me_demo/studentPages/modules_page.dart';
-import 'package:card_settings/card_settings.dart';
 import 'package:tutor_me_demo/studentPages/pick_tut_time.dart';
 
 class TutorList extends StatefulWidget {
@@ -81,10 +79,12 @@ class Allthedata {
   String mod;
   String from;
   String photo;
-  Allthedata({this.to, this.mod, this.from, this.photo});
+  String uid;
+  Allthedata({this.to, this.mod, this.from, this.photo, this.uid});
 }
 
-final alldata = Allthedata(to: null, mod: null, from: null, photo: null);
+final alldata =
+    Allthedata(to: null, mod: null, from: null, photo: null, uid: null);
 
 class FirestoreListView extends StatelessWidget {
   final List<DocumentSnapshot> documents;
@@ -133,6 +133,7 @@ class FirestoreListView extends StatelessWidget {
                 tutref.ref = documents[index].data['documentReference'];
                 tutname.name = documents[index].data['displayName'].toString();
                 alldata.to = documents[index].data['displayName'];
+                alldata.uid = documents[index].data['uid'];
                 alldata.mod = btnIn.btnIndex;
                 alldata.from = prefix0.usern.username;
                 alldata.photo = documents[index].data['photoURL'];
