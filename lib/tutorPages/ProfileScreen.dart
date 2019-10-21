@@ -48,7 +48,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   static String tag = 'tutor profile page';
   final String _status = "IFS312";
-  final String _bio = "The Dynamic bio is being built\n";
+  final String _bio = "";
   final double star = rating;
 
   Widget _buildCoverImage(Size screenSize) {
@@ -161,8 +161,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
       children: List.generate(5, (index) {
         return Icon(
           index < rating ? Icons.star : Icons.star_border,
+          color: Colors.blueAccent,
         );
       }),
+    );
+  }
+
+  Widget _buildemail() {
+    return FutureBuilder<DocumentSnapshot>(
+      future: widget.detailsUserTutor
+          .get(), // a previously-obtained Future<String> or null
+      builder: (BuildContext context, snapshot) {
+        TextStyle _nameTextStyle = TextStyle(
+          fontFamily: 'Roboto',
+          fontStyle: FontStyle.italic,
+          color: Colors.black,
+          fontSize: 15.0,
+          fontWeight: FontWeight.w400,
+        );
+
+        return Text(
+          snapshot.data == null ? "" : snapshot.data.data["email"],
+          style: _nameTextStyle,
+        );
+      },
     );
   }
 
@@ -178,20 +200,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
           color: Color(0xFF799497),
           fontSize: 16.0,
         );
-        String doc = snapshot.data['Bio'];
         return Container(
           color: Theme.of(context).scaffoldBackgroundColor,
           padding: EdgeInsets.all(8.0),
-          child: Text(
-            //snapshot.data['Bio'],
-            (doc == null ? 'loading...' : snapshot.data['Bio']),
-            textAlign: TextAlign.center,
-            style: bioTextStyle,
-          ),
+          child: snapshot.data['Bio'] != null
+              ? new Text(
+                  snapshot.data['Bio'],
+                  textAlign: TextAlign.center,
+                  style: bioTextStyle,
+                )
+              : new Text('Welcome to TutorMe'),
         );
       },
     );
   }
+
+  /*
+  snapshot.data['Bio'] != null
+              ? new Text(
+                  snapshot.data['Bio'],
+                  textAlign: TextAlign.center,
+                  style: bioTextStyle,
+                )
+              : new Text('Welcome to TutorMe')
+
+
+  */
 
   Widget _buildvarsity(BuildContext context) {
     return StreamBuilder(
@@ -208,11 +242,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
         return Container(
           color: Theme.of(context).scaffoldBackgroundColor,
           padding: EdgeInsets.all(8.0),
-          child: Text(
-            snapshot.data['uni'],
-            textAlign: TextAlign.center,
-            style: bioTextStyle,
-          ),
+          child: snapshot.data['uni'] != null
+              ? new Text(
+                  snapshot.data['uni'],
+                  textAlign: TextAlign.center,
+                  style: bioTextStyle,
+                )
+              : new Text('University of the Western Cape'),
         );
       },
     );
@@ -279,8 +315,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       SizedBox(height: screenSize.height / 6.4),
                       _buildProfileImage(),
                       _buildFullName(),
-                      _buildStarRating(),
+                      _buildemail(),
                       _buildCirt(),
+                      _buildStarRating(),
+
                       _buildvarsity(context),
                       //_buildrating(),
                       //_buildvarsity(context),
@@ -290,12 +328,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ),
               ),
-              FloatingActionButton(
-                onPressed: () {
-                  _loadData();
-                  print(rating);
-                },
-              )
             ],
           ),
         );

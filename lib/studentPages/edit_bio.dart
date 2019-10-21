@@ -23,7 +23,14 @@ class _BioeditState extends State<Bioedit> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Edit your details"),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient:
+                LinearGradient(colors: [Color(0xFF285AE6), Color(0xFF41B7FC)]),
+          ),
+        ),
+        //backgroundColor: Color(0xFF6BCDFD),
+        title: Text('Edit Your Details'),
       ),
       body: SafeArea(
         top: false,
@@ -52,15 +59,11 @@ class _BioeditState extends State<Bioedit> {
             ],
           ),
         ),
+        
       ),
-
-      /*Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: TextField(
-          controller: myController,
-        ),
-      ),*/
+      
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.blueAccent,
         // When the user presses the button, show an alert dialog containing
         // the text that the user has entered into the text field.
         onPressed: () {
@@ -69,15 +72,19 @@ class _BioeditState extends State<Bioedit> {
               .document(currmens.mens.documentID)
               .updateData({'Bio': studbioController.text});
           Firestore.instance
-              .collection('Tutor')
+              .collection('Student')
               .document(currmens.mens.documentID)
               .updateData({'uni': studuniController.text});
           print(currmens.mens.documentID);
+          Navigator.of(context, rootNavigator: false).pop();
         },
 
         tooltip: 'Show me the value!',
-        child: Icon(Icons.text_fields),
+        child: Icon(
+          Icons.arrow_forward,
+        ),
       ),
+      
     );
   }
 }

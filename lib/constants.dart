@@ -1,19 +1,18 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-
-import 'package:tutor_me_demo/landing_page.dart';
+import 'package:tutor_me_demo/Login_Authentification/LoginPage.dart';
 import 'package:tutor_me_demo/studentPages/consultation.dart';
-import 'package:tutor_me_demo/studentPages/edit_bio.dart';
 import 'package:tutor_me_demo/studentPages/modules_page.dart';
-import 'package:tutor_me_demo/tutorPages/ProfileScreen.dart';
-
+import 'package:tutor_me_demo/studentPages/pick_tut_time.dart';
+import 'package:tutor_me_demo/studentPages/tutorList.dart';
 import 'package:tutor_me_demo/tutorPages/Tutor_student_reviews.dart';
 import 'package:tutor_me_demo/tutorPages/tutor_completed.dart';
 import 'package:tutor_me_demo/tutorPages/tutor_modules.dart';
 import 'package:tutor_me_demo/tutorPages/tutor_requests.dart';
 import 'package:tutor_me_demo/tutorPages/tutor_schedule.dart';
 import 'package:flutter_rating/flutter_rating.dart';
-import 'package:card_settings/card_settings.dart';
+
 
 class RoundedButton extends StatelessWidget {
   RoundedButton(

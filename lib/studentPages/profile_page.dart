@@ -24,7 +24,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   static String tag = 'STUDENT PROFILE PAGE';
   final String _fullName = 'FAROUK';
-  final String _status = "INFOMATION SYSTEM STUDENT";
+  final String _status = " ";
   final String _bio = '';
   //"\"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\"";
 
@@ -89,22 +89,54 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Widget _buildvarsity(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 6.0),
-      decoration: BoxDecoration(
-        color: Theme.of(context).scaffoldBackgroundColor,
-        borderRadius: BorderRadius.circular(4.0),
-      ),
-      child: Text(
-        _status,
-        style: TextStyle(
-          fontFamily: 'Spectral',
+  Widget _buildemail() {
+    return FutureBuilder<DocumentSnapshot>(
+      future: widget.detailsUser
+          .get(), // a previously-obtained Future<String> or null
+      builder: (BuildContext context, snapshot) {
+        TextStyle _nameTextStyle = TextStyle(
+          fontFamily: 'Roboto',
+          fontStyle: FontStyle.italic,
           color: Colors.black,
-          fontSize: 20.0,
-          fontWeight: FontWeight.w300,
-        ),
-      ),
+          fontSize: 15.0,
+          fontWeight: FontWeight.w400,
+        );
+
+        return Text(
+          snapshot.data == null ? "" : snapshot.data.data["email"],
+          style: _nameTextStyle,
+        );
+      },
+    );
+  }
+
+  Widget _buildvarsity(BuildContext context) {
+    return StreamBuilder(
+      stream: othermens.mens
+          .snapshots(), // a previously-obtained Future<String> or null
+      builder: (BuildContext context, snapshot) {
+        TextStyle bioTextStyle = TextStyle(
+          fontFamily: 'Spectral',
+          fontWeight: FontWeight.w400,
+          fontStyle: FontStyle.italic,
+          color: Color(0xFF799497),
+          fontSize: 16.0,
+        );
+        return Container(
+          color: Theme.of(context).scaffoldBackgroundColor,
+          padding: EdgeInsets.all(8.0),
+          child: snapshot.data['uni'] != null
+              ? new Text(
+                  snapshot.data['uni'],
+                  textAlign: TextAlign.center,
+                  style: bioTextStyle,
+                )
+              : new Text(
+                  'University of Western Cape',
+                  style: bioTextStyle,
+                ),
+        );
+      },
     );
   }
 
@@ -141,32 +173,10 @@ class _ProfilePageState extends State<ProfilePage> {
                   textAlign: TextAlign.center,
                   style: bioTextStyle,
                 )
-              : new Text('Welcome to TutorMe'),
-        );
-      },
-    );
-  }
-
-  Widget _buildVarsity(BuildContext context) {
-    return StreamBuilder(
-      stream: othermens.mens
-          .snapshots(), // a previously-obtained Future<String> or null
-      builder: (BuildContext context, snapshot) {
-        TextStyle bioTextStyle = TextStyle(
-          fontFamily: 'Spectral',
-          fontWeight: FontWeight.w400,
-          fontStyle: FontStyle.italic,
-          color: Color(0xFF799497),
-          fontSize: 16.0,
-        );
-        return Container(
-          color: Theme.of(context).scaffoldBackgroundColor,
-          padding: EdgeInsets.all(8.0),
-          child: Text(
-            snapshot.data['University'],
-            textAlign: TextAlign.center,
-            style: bioTextStyle,
-          ),
+              : new Text(
+                  'Welcome to TutorMe',
+                  style: bioTextStyle,
+                ),
         );
       },
     );
@@ -282,7 +292,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         SizedBox(height: screenSize.height / 6.4),
                         _buildProfileImage(),
                         _buildFullName(),
-                        _buildrating(),
+                        _buildemail(),
                         _buildvarsity(context),
                         _buildSeparator(screenSize),
                         _buildBio(context),

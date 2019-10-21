@@ -136,7 +136,7 @@ class FirestoreListView extends StatelessWidget {
                 alldata.uid = documents[index].data['uid'];
                 alldata.mod = btnIn.btnIndex;
                 alldata.from = prefix0.usern.username;
-                alldata.photo = documents[index].data['photoURL'];
+                alldata.photo = prefix0.phot.photo;
                 Navigator.push(
                   context,
                   new MaterialPageRoute(

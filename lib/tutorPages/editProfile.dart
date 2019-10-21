@@ -65,6 +65,7 @@ class _TutorBioEditState extends State<TutorBioEdit> {
         ),
       ),*/
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.blueAccent,
         // When the user presses the button, show an alert dialog containing
         // the text that the user has entered into the text field.
         onPressed: () {
@@ -76,10 +77,11 @@ class _TutorBioEditState extends State<TutorBioEdit> {
               .collection('Tutor')
               .document(currmens.mens.documentID)
               .updateData({'uni': tutoruniController.text});
+          Navigator.of(context, rootNavigator: false).pop();
         },
 
         tooltip: 'Show me the value!',
-        child: Icon(Icons.text_fields),
+        child: Icon(Icons.arrow_forward),
       ),
     );
   }

@@ -168,6 +168,7 @@ class getRequests extends StatelessWidget {
                                                   'comment': '$com',
                                                   'uid': '$userid',
                                                 });
+                                                Navigator.of(context).pop();
                                               },
                                             ),
                                             FlatButton(
@@ -177,6 +178,19 @@ class getRequests extends StatelessWidget {
                                                     color: Colors.red),
                                               ),
                                               onPressed: () {
+                                                Firestore.instance
+                                                    .collection('Declined')
+                                                    .document()
+                                                    .setData({
+                                                  'Tutor': '${usern.username}',
+                                                  'Module': '$modu',
+                                                  'Day': '$day',
+                                                  'Time': '$time',
+                                                  'Venue': '$ven',
+                                                  'Student': '$from',
+                                                  'comment': '$com',
+                                                  'uid': '$userid',
+                                                });
                                                 documents[index]
                                                     .reference
                                                     .delete();

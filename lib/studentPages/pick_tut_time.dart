@@ -1,12 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tutor_me_demo/Login_Authentification/LoginPage.dart';
-//import 'package:tutor_me_demo/Login_Authentification/TutorLogin.dart';
-import 'package:tutor_me_demo/constants.dart';
-import 'package:intl/intl.dart';
-import 'package:dropdownfield/dropdownfield.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:tutor_me_demo/studentPages/consultation.dart';
 import 'package:tutor_me_demo/studentPages/tutorList.dart';
 
 class pick_time_of_tut extends StatelessWidget {
@@ -40,7 +34,7 @@ void inputData() async {
 }
 
 List<DropdownMenuItem<String>> _dropDownItem() {
-  List<String> ddl = ["9:00 - 10:00", "10:00 - 11:00", "11:00-12:00"];
+  List<String> ddl = ["8:30 - 9:40", "9:40 - 10:50", "10:50 - 11:00", "11:00"];
   return ddl
       .map((value) => DropdownMenuItem(
             value: value,
@@ -116,32 +110,44 @@ class _MyHomePageState extends State<MyHomePage>
         headerSliverBuilder: (BuildContext context, bool boxIsScrolled) {
           return <Widget>[
             SliverAppBar(
+              flexibleSpace: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                      colors: [Color(0xFF285AE6), Color(0xFF41B7FC)]),
+                ),
+              ),
               leading: IconButton(
-                icon: Icon(Icons.arrow_back),
+                icon: Icon(
+                  Icons.arrow_back,
+                  color: Colors.white,
+                ),
                 onPressed: () {
                   Navigator.of(context, rootNavigator: true).pop();
                 },
               ),
-              title: Text('Pick A Time Slot'),
+              title: Text('Pick A Time Slot',
+                  style: TextStyle(color: Colors.white)),
               pinned: true,
               floating: true,
               forceElevated: boxIsScrolled,
               bottom: TabBar(
                 isScrollable: true,
                 tabs: <Widget>[
-                  Tab(text: "Monday", icon: new Icon(Icons.calendar_today)),
                   Tab(
-                    text: "Tuesday",
-                  ),
+                      child: Text("Monday",
+                          style: TextStyle(color: Colors.white))),
                   Tab(
-                    text: "Wednesday",
-                  ),
+                      child: Text("Tuesday",
+                          style: TextStyle(color: Colors.white))),
                   Tab(
-                    text: "Thursday",
-                  ),
+                      child: Text("Wednesday",
+                          style: TextStyle(color: Colors.white))),
                   Tab(
-                    text: "Friday",
-                  ),
+                      child: Text("Thursday",
+                          style: TextStyle(color: Colors.white))),
+                  Tab(
+                      child: Text("Friday",
+                          style: TextStyle(color: Colors.white))),
                 ],
                 controller: _tabController,
               ),
@@ -162,13 +168,6 @@ class _MyHomePageState extends State<MyHomePage>
     );
   }
 }
-//retrieveVenues () async {
-
-//final documents = await db.collection('Venues').getDocuments();
-//final userObject = documents.documents.first.data;
-//}
-
-Future<void> check(String) {}
 
 class PageOne extends StatelessWidget {
   String timeValue;
@@ -184,7 +183,14 @@ class PageOne extends StatelessWidget {
           .where("Day", isEqualTo: "Monday")
           .snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (!snapshot.hasData) return CircularProgressIndicator();
+        if (!snapshot.hasData)
+          return Center(
+            
+            child: Container(
+              
+              child: CircularProgressIndicator(),
+            ),
+          );
         return Card(
           child: new ListView(
             children: snapshot.data.documents.map((document) {
@@ -234,6 +240,7 @@ class PageOne extends StatelessWidget {
                                 onPressed: () {
                                   submit(venValue, document["Time"], "Monday",
                                       comment);
+                                  Navigator.of(context).pop();
                                 },
                               )
                             ],
@@ -255,7 +262,12 @@ class PageOne extends StatelessWidget {
   }
 }
 
-class PageTwo extends StatelessWidget {
+class PageTwo extends StatefulWidget {
+  @override
+  _PageTwoState createState() => _PageTwoState();
+}
+
+class _PageTwoState extends State<PageTwo> {
   String timeValue;
   String dayValue;
   String comment;
@@ -263,6 +275,16 @@ class PageTwo extends StatelessWidget {
   TextEditingController com = new TextEditingController();
   String _selection;
   String currentVal;
+  List<String> _items = <String>[
+    '',
+    'N22',
+    'SC2',
+    'SC3',
+    'B1',
+    'O2'
+  ]; //.map((value);
+  String _item = '';
+
   Widget build(BuildContext context) {
     return new StreamBuilder(
       stream: tutref.ref
@@ -275,42 +297,57 @@ class PageTwo extends StatelessWidget {
           child: new ListView(
             children: snapshot.data.documents.map((document) {
               return new Container(
-                height: 70.0,
+                height: 60.0,
                 child: new RaisedButton.icon(
                   onPressed: () {
                     showDialog(
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
-                            title: new Text('Select Time Slot'),
+                            title: Text(
+                              'Select Time Slot',
+                              style: TextStyle(color: Colors.blueAccent),
+                            ),
                             content: Column(
                               children: <Widget>[
-                                new Expanded(
-                                    child: new DropdownButton<String>(
-                                  hint: Text("Select a venue."),
-                                  items: <String>[
-                                    'N22',
-                                    'SC2',
-                                    'SC3',
-                                    'B1',
-                                    'O2'
-                                  ].map((value) {
-                                    return new DropdownMenuItem<String>(
-                                      value: currentVal,
-                                      child: new Text(value),
+                                FormField<String>(
+                                  autovalidate: true,
+                                  builder: (FormFieldState<String> state) {
+                                    return InputDecorator(
+                                      decoration: InputDecoration(
+                                        icon: const Icon(Icons.place),
+                                        labelText: 'Suggest a Venue',
+                                      ),
+                                      isEmpty: _item == '',
+                                      child: new DropdownButtonHideUnderline(
+                                        child: new DropdownButton<String>(
+                                          value: _item,
+                                          isDense: true,
+                                          onChanged: (String newValue) {
+                                            setState(() {
+                                              //newContact.favoriteColor = newValue;
+                                              _item = newValue;
+                                              state.didChange(newValue);
+                                            });
+                                          },
+                                          items: _items.map((String value) {
+                                            return new DropdownMenuItem<String>(
+                                              value: value,
+                                              child: new Text(value),
+                                            );
+                                          }).toList(),
+                                        ),
+                                      ),
                                     );
-                                  }).toList(),
-                                  onChanged: (value) {
-                                    currentVal = value;
                                   },
-                                )),
-                                TextField(
-                                  controller: com,
-                                  decoration: InputDecoration(
-                                      hintText: "Type your problem area(s)"),
-                                  onChanged: (value) {
-                                    comment = com.text;
-                                  },
+                                ),
+                                TextFormField(
+                                  //controller: studuniController,
+                                  decoration: const InputDecoration(
+                                    icon: const Icon(Icons.account_balance),
+                                    hintText: 'short and sweet',
+                                    labelText: 'How can I help',
+                                  ),
                                 ),
                               ],
                             ),
@@ -320,17 +357,18 @@ class PageTwo extends StatelessWidget {
                                 onPressed: () {
                                   submit(venValue, document["Time"], "Tuesday",
                                       comment);
+                                  Navigator.of(context).pop();
                                 },
                               )
                             ],
                           );
                         });
                   },
-                  icon: new Icon(Icons.timer),
+                  icon: Icon(Icons.calendar_today),
                   color: Colors.white70,
                   label: Text(document["Time"],
                       style: new TextStyle(
-                          fontWeight: FontWeight.w500, fontSize: 20.0)),
+                          fontWeight: FontWeight.w400, fontSize: 20.0)),
                 ),
               );
             }).toList(),
@@ -588,14 +626,6 @@ class PageFive extends StatelessWidget {
                           fontWeight: FontWeight.w500, fontSize: 20.0)),
                 ),
               );
-
-              //child: Text(document["Time"],style: new TextStyle(fontWeight: FontWeight.w500, fontSize: 20.0)),
-              //leading: new Icon(
-              // Icons.timer,
-              // color: Colors.blue[500],
-              //),
-              //onPressed: (){},
-              //);
             }).toList(),
           ),
         );
@@ -603,3 +633,73 @@ class PageFive extends StatelessWidget {
     );
   }
 }
+
+/*
+return Card(
+          child: new ListView(
+            children: snapshot.data.documents.map((document) {
+              return new Container(
+                height: 70.0,
+                child: new RaisedButton.icon(
+                  onPressed: () {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: new Text('Select Time Slot'),
+                            content: Column(
+                              children: <Widget>[
+                                new Expanded(
+                                    child: new DropdownButton<String>(
+                                  hint: Text("Select a venue."),
+                                  items: <String>[
+                                    'N22',
+                                    'SC2',
+                                    'SC3',
+                                    'B1',
+                                    'O2'
+                                  ].map((value) {
+                                    return new DropdownMenuItem<String>(
+                                      value: value,
+                                      child: new Text(value),
+                                    );
+                                  }).toList(),
+                                  onChanged: (value) {
+                                    venValue = value;
+                                  },
+                                )),
+                                TextField(
+                                  controller: com,
+                                  decoration: InputDecoration(
+                                      hintText: "Type your problem area(s)"),
+                                  onChanged: (value) {
+                                    comment = com.text;
+                                  },
+                                ),
+                              ],
+                            ),
+                            actions: <Widget>[
+                              new FlatButton(
+                                child: new Text('SUBMIT REQUEST'),
+                                onPressed: () {
+                                  submit(venValue, document["Time"], "Friday",
+                                      comment);
+                                },
+                              )
+                            ],
+                          );
+                        });
+                  },
+                  icon: new Icon(Icons.timer),
+                  color: Colors.white70,
+                  label: Text(document["Time"],
+                      style: new TextStyle(
+                          fontWeight: FontWeight.w500, fontSize: 20.0)),
+                ),
+              );
+
+            }).toList(),
+          ),
+        );
+
+*/
