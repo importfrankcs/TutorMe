@@ -465,32 +465,28 @@ class _MyHomePageState extends State<MyHomePage>
 
 class PageOne extends StatelessWidget {
   Widget build(BuildContext context) {
-    return new StreamBuilder(
-      stream: Firestore.instance
-          .collection("Requests")
-          .where("From", isEqualTo: usern.username)
-          .snapshots(),
-      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (!snapshot.hasData)
-          return Center(child: CircularProgressIndicator());
-        return Card(
-          child: new ListView(
-            children: snapshot.data.documents.map((document) {
-              return new ListTile(
-                title: Text("Working",
-                    style: new TextStyle(
-                        fontWeight: FontWeight.w400, fontSize: 18.0)),
-                leading: new Icon(
-                  Icons.hourglass_empty,
-                  color: Colors.blue[600],
-                ),
-              );
-            }).toList(),
-          ),
-        );
-      },
+    //Size screenSize = MediaQuery.of(context).size;
+    return Scaffold(
+      body: StreamBuilder(
+        stream: Firestore.instance
+            .collection('Requests')
+            .where("From",
+            isEqualTo:
+            "${usern.username}") //button name, enable dynamic var
+            .snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (!snapshot.hasData)
+            return Center(
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation(Colors.blueAccent),
+                ));
+          return getCompleted(documents: snapshot.data.documents);
+        },
+      ),
     );
+
   }
+
 }
 
 class PageTwo extends StatelessWidget {
@@ -656,30 +652,26 @@ class PageThree extends StatelessWidget {
 
 class PageFour extends StatelessWidget {
   Widget build(BuildContext context) {
-    return new StreamBuilder(
-      stream: Firestore.instance
-          .collection("Declined")
-          .where("Student", isEqualTo: usern.username)
-          .snapshots(),
-      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (!snapshot.hasData)
-          return Center(child: CircularProgressIndicator());
-        return Card(
-          child: new ListView(
-            children: snapshot.data.documents.map((document) {
-              return new ListTile(
-                title: Text(document["Time"],
-                    style: new TextStyle(
-                        fontWeight: FontWeight.w400, fontSize: 18.0)),
-                leading: new Icon(
-                  Icons.access_time,
-                  color: Colors.blue[600],
-                ),
-              );
-            }).toList(),
-          ),
-        );
-      },
+    //Size screenSize = MediaQuery.of(context).size;
+    return Scaffold(
+      body: StreamBuilder(
+        stream: Firestore.instance
+            .collection('Declined')
+            .where("Student",
+            isEqualTo:
+            "${usern.username}") //button name, enable dynamic var
+            .snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (!snapshot.hasData)
+            return Center(
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation(Colors.blueAccent),
+                ));
+          return getCompleted(documents: snapshot.data.documents);
+        },
+      ),
     );
+
   }
+
 }
