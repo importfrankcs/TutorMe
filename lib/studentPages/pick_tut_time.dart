@@ -45,10 +45,10 @@ List<DropdownMenuItem<String>> _dropDownItem() {
 
 void submit(String ven, String time, String day, String comments) {
   Firestore.instance.collection('Requests').document().setData({
-    'To': alldata.to,
+    'Tutor': alldata.to,
     'Module': alldata.mod,
     'uid': alldata.uid,
-    'From': alldata.from,
+    'Student': alldata.from,
     'PhotoURL': alldata.photo,
     'Day': day,
     'Time': time,
