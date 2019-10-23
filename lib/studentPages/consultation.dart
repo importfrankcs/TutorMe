@@ -115,18 +115,8 @@ class _getConsultationsState extends State<getConsultations> {
             ]),
 
             isThreeLine: true,
-            trailing:
-                //FlatButton(
-                //child: Container(
-                //  child: Text("RATE",
-                //       style: TextStyle(color: Colors.blueAccent)),
-                //  ),
-                //   onPressed: () {
-                //    print("fuck");
-                //    },
-                //   ),
-                IconButton(
-              icon: Icon(Icons.info),
+            trailing: IconButton(
+              icon: Icon(Icons.rate_review),
               onPressed: () {
                 showDialog(
                     context: context,
@@ -155,7 +145,7 @@ class _getConsultationsState extends State<getConsultations> {
                                       labelText: 'leave a comment?',
                                     ),
                                   ),
-                                  SafeArea(
+                                  /*SafeArea(
                                     top: false,
                                     bottom: false,
                                     child: Form(
@@ -177,7 +167,7 @@ class _getConsultationsState extends State<getConsultations> {
                                         ],
                                       ),
                                     ),
-                                  )
+                                  )*/
                                 ],
                               ),
                             ),
@@ -269,13 +259,10 @@ class _getConsultationsState extends State<getConsultations> {
   }
 }
 
-
-
 class MyHomePage extends StatefulWidget {
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
-
 
 class _MyHomePageState extends State<MyHomePage>
     with SingleTickerProviderStateMixin {
@@ -409,7 +396,30 @@ class PageOne extends StatelessWidget {
 }
 
 class PageTwo extends StatelessWidget {
+  Widget build(BuildContext context) {
+    //Size screenSize = MediaQuery.of(context).size;
+    return Scaffold(
+      body: StreamBuilder(
+        stream: Firestore.instance
+            .collection('Consultations')
+            .where("Student",
+                isEqualTo:
+                    "${usern.username}") //button name, enable dynamic var
+            .snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (!snapshot.hasData)
+            return Center(
+                child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation(Colors.blueAccent),
+            ));
+          return getConsultations(documents: snapshot.data.documents);
+        },
+      ),
+    );
+  }
+}
 
+class PageThree extends StatelessWidget {
   Widget build(BuildContext context) {
     return new StreamBuilder(
       stream: Firestore.instance
@@ -422,58 +432,20 @@ class PageTwo extends StatelessWidget {
         return Card(
           child: new ListView(
             children: snapshot.data.documents.map((document) {
-              
               return new ListTile(
-                
-                title: Text(document["Student"],
-                    style: new TextStyle(
-                        fontWeight: FontWeight.w400, fontSize: 18.0)),
-                leading: new Icon(
-                  Icons.check_circle,
-                  color: Colors.blue[600],
-                ),
-                //------------------------------------------------------->
-                onTap: (){
-                
-                });
+                  title: Text(document["Student"],
+                      style: new TextStyle(
+                          fontWeight: FontWeight.w400, fontSize: 18.0)),
+                  leading: new Icon(
+                    Icons.check_circle,
+                    color: Colors.blue[600],
+                  ),
+                  //------------------------------------------------------->
+                  onTap: () {});
             }).toList(),
           ),
         );
       },
-    );
-  }
-}
-
-class PageThree extends StatelessWidget {
-  Widget build(BuildContext context) {
-    //Size screenSize = MediaQuery.of(context).size;
-    return Scaffold(
-      appBar: AppBar(
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient:
-            LinearGradient(colors: [Color(0xFF285AE6), Color(0xFF41B7FC)]),
-          ),
-        ),
-        backgroundColor: Color(0xFF6BCDFD),
-        title: Text('My Consultations'),
-      ),
-      body: StreamBuilder(
-        stream: Firestore.instance
-            .collection('Consultations')
-            .where("Student",
-            isEqualTo:
-            "${usern.username}") //button name, enable dynamic var
-            .snapshots(),
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (!snapshot.hasData)
-            return Center(
-                child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation(Colors.blueAccent),
-                ));
-          return getConsultations(documents: snapshot.data.documents);
-        },
-      ),
     );
   }
 
