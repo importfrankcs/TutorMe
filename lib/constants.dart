@@ -124,7 +124,7 @@ class _ActualDrawerState extends State<ActualDrawer> {
               },
             ),
             DrawerButtonWidget(
-              title: 'Completed Sessions',
+              title: 'Consultation Sessions',
               iconVar: Icon(Icons.check_circle),
               onPressed: () {
                 //Navigator.pushNamed(context, CompletedSessions.tag);
