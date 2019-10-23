@@ -6,7 +6,7 @@ import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:tutor_me_demo/constants.dart';
 import 'package:tutor_me_demo/studentPages/tutorList.dart';
 
-/*class Consultation extends StatefulWidget {
+class Consultation extends StatefulWidget {
   static String tag = 'consultation';
   final DocumentReference detailsUser;
   final DocumentSnapshot consul;
@@ -155,7 +155,7 @@ class _getConsultationsState extends State<getConsultations> {
                                       labelText: 'leave a comment?',
                                     ),
                                   ),
-                                  /*SafeArea(
+                                  SafeArea(
                                     top: false,
                                     bottom: false,
                                     child: Form(
@@ -177,7 +177,7 @@ class _getConsultationsState extends State<getConsultations> {
                                         ],
                                       ),
                                     ),
-                                  )*/
+                                  )
                                 ],
                               ),
                             ),
@@ -267,67 +267,15 @@ class _getConsultationsState extends State<getConsultations> {
           );
         });
   }
-}*/
-import 'package:flutter/material.dart';
-import 'package:tutor_me_demo/Login_Authentification/LoginPage.dart';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-
-class Consultation extends StatelessWidget {
-  static String tag = "consultation";
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: MyHomePage(),
-      theme: ThemeData(
-        primaryColor: Color(0xFF6BCDFD),
-        accentColor: Color(0xFF6BCDFD),
-        textTheme: TextTheme(
-            //
-            ),
-      ),
-    );
-  }
 }
+
+
 
 class MyHomePage extends StatefulWidget {
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-void inputData() async {
-  final DocumentReference user = currmens.mens;
-  user.collection("Schedule").snapshots();
-
-  // here you write the codes to input the data into firestore
-}
-
-List<DropdownMenuItem<String>> _dropDownItem() {
-  List<String> ddl = [
-    "8:30 - 9:40",
-    "9:40 - 10:50",
-    "10:50 - 11:00",
-    "11:00 - 12:10",
-    "12:10 - 13:00"
-  ];
-  return ddl
-      .map((value) => DropdownMenuItem(
-            value: value,
-            child: Text(value),
-          ))
-      .toList();
-}
-
-List<DropdownMenuItem<String>> _dropDownDay() {
-  List<String> dd = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
-  return dd
-      .map((value) => DropdownMenuItem(
-            value: value,
-            child: Text(value),
-          ))
-      .toList();
-}
 
 class _MyHomePageState extends State<MyHomePage>
     with SingleTickerProviderStateMixin {
@@ -497,6 +445,39 @@ class PageTwo extends StatelessWidget {
 }
 
 class PageThree extends StatelessWidget {
+  Widget build(BuildContext context) {
+    //Size screenSize = MediaQuery.of(context).size;
+    return Scaffold(
+      appBar: AppBar(
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient:
+            LinearGradient(colors: [Color(0xFF285AE6), Color(0xFF41B7FC)]),
+          ),
+        ),
+        backgroundColor: Color(0xFF6BCDFD),
+        title: Text('My Consultations'),
+      ),
+      body: StreamBuilder(
+        stream: Firestore.instance
+            .collection('Consultations')
+            .where("Student",
+            isEqualTo:
+            "${usern.username}") //button name, enable dynamic var
+            .snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (!snapshot.hasData)
+            return Center(
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation(Colors.blueAccent),
+                ));
+          return getConsultations(documents: snapshot.data.documents);
+        },
+      ),
+    );
+  }
+
+  /*
      final ratingcomment = TextEditingController();
    
   var rating = 0.0;
@@ -583,7 +564,7 @@ class PageThree extends StatelessWidget {
                                 style: TextStyle(color: Colors.white),
                               ),
                               onPressed: () {
-                                
+
                               },
                             ),
                             FlatButton(
@@ -592,7 +573,7 @@ class PageThree extends StatelessWidget {
                                 style: TextStyle(color: Colors.red),
                               ),
                               onPressed: () {
-                                
+
                               },
                             ),
                           ],
@@ -606,7 +587,7 @@ class PageThree extends StatelessWidget {
         );
       },
     );
-  }
+  }*/
 }
 
 class PageFour extends StatelessWidget {
