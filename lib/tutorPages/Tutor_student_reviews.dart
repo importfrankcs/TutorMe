@@ -37,9 +37,7 @@ class _StudentReviewsState extends State<StudentReviews> {
       body: StreamBuilder(
         stream: currmens.mens
             .collection('Ratings')
-            .where("To",
-                isEqualTo:
-                    "${usern.username}") //button name, enable dynamic var
+            //button name, enable dynamic var
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData)

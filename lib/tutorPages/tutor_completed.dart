@@ -34,7 +34,7 @@ class _CompletedSessionsState extends State<CompletedSessions> {
           ),
         ),
         backgroundColor: Color(0xFF6BCDFD),
-        title: Text('My CompletedSessionss'),
+        title: Text('Your Completed Sessions'),
       ),
       body: StreamBuilder(
         stream: Firestore.instance
@@ -130,45 +130,24 @@ class _getCompletedSessionssState extends State<getCompletedSessionss> {
                           children: <Widget>[
                             AlertDialog(
                               title: Text(
-                                'Thank you For\nusing TUTOR ME',
+                                'Session Details:',
                                 style: TextStyle(color: Colors.blueAccent),
                               ),
                               content: Column(
                                 children: <Widget>[
-                                  /*SafeArea(
-                                    top: false,
-                                    bottom: false,
-                                    child: Form(
-                                      autovalidate: true,
-                                      child: new ListView(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 16.0),
-                                        children: <Widget>[
-                                          new TextFormField(
-                                            controller: ratingcomment,
-                                            decoration: const InputDecoration(
-                                              icon: const Icon(
-                                                  Icons.account_balance),
-                                              hintText:
-                                                  'Insert what university you attend',
-                                              labelText: 'University',
-                                            ),
-                                          ),
-                                        ],
-                                      ),
+                                  Text(
+                                      "Tutor: $tut\nStudent: $toStudent\nDay: $day\nVenue:$ven\nTime:$time"),
+                                  FlatButton(
+                                    child: Text(
+                                      "CLOSE",
+                                      style: TextStyle(color: Colors.red),
                                     ),
-                                  )*/
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  )
                                 ],
                               ),
-                            ),
-                            FlatButton(
-                              child: Text(
-                                "NO THANKS",
-                                style: TextStyle(color: Colors.red),
-                              ),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
                             ),
                           ],
                         ),

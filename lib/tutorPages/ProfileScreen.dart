@@ -33,17 +33,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future _loadData() async {
     QuerySnapshot snapshot =
-        await currmens.mens.collection('Ratings').getDocuments();
-    double total = snapshot.documents
-        .map<double>((m) => m['Rating'])
-        .reduce((a, b) => a + b);
-    setState(() {
-      rating = total / snapshot.documents.length;
-
-      print("this one ${snapshot.documents.length}");
-      _isLoading = false;
-    });
-    print(rating);
+        await currmens.mens.collection('CompletedSessions').getDocuments();
+    double total =
+        snapshot.documents.map<double>((m) => m['uid']).reduce((a, b) => a + b);
+    return total;
   }
 
   static String tag = 'tutor profile page';
@@ -254,6 +247,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
+  Future totalLikes() async {
+    var respectsQuery = currmens.mens
+        .collection('CompletedSessions')
+        .document()
+        .snapshots()
+        .length
+        .toString();
+    return respectsQuery;
+  }
+
   Widget _buildSeparator(Size screenSize) {
     return Container(
       width: screenSize.width / 1.6,
@@ -316,14 +319,50 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       _buildProfileImage(),
                       _buildFullName(),
                       _buildemail(),
-                      _buildCirt(),
                       _buildStarRating(),
-
+                      _buildCirt(),
                       _buildvarsity(context),
                       //_buildrating(),
                       //_buildvarsity(context),
                       _buildSeparator(screenSize),
                       _buildBio(context),
+                      FloatingActionButton(
+                        onPressed: () {
+                          var values = 10;
+                          var ty = Future.value(currmens.mens
+                              .collection('CompletedSessions')
+                              .where("Tutor", isEqualTo: usern.username)
+                              .snapshots()
+                              .length);
+                          var numbers = [
+                            1,
+                            2,
+                            3,
+                            4,
+                            5,
+                            6,
+                            7,
+                            8,
+                            9,
+                            10,
+                            11,
+                            12,
+                            13,
+                            14,
+                            15,
+                            16,
+                            17
+                          ];
+
+                          for (var i = 0; i <= numbers.length; i++) {
+                            if (ty == Future.value(i)) {
+                              print(i);
+                              values = i;
+                            }
+                          }
+                          print(values);
+                        },
+                      )
                     ],
                   ),
                 ),

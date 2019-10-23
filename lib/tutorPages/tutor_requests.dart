@@ -87,139 +87,131 @@ class getRequests extends StatelessWidget {
 
         String comment =
             ('${com[0].toUpperCase()} ${com.split(" ").last[0].toUpperCase()}${com.split(" ").last.toString().substring(1).toLowerCase()}');
-        return Padding(
-          padding: const EdgeInsets.only(
-              left: 0.0, top: 4.0, right: 0.0, bottom: 4.0),
-          child: Card(
-            color: Colors.grey[200],
-            child: ListTile(
-              title: Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        Container(
-                          width: 50.0,
-                          height: 50.0,
-                          child: CircleAvatar(
-                              backgroundColor: Colors.grey,
-                              backgroundImage: NetworkImage(
-                                  '${documents[index].data['PhotoURL'].toString()}')),
-                        ),
-                        SizedBox(
-                          width: 8.0,
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(title,
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 11.0,
-                                    fontWeight: FontWeight.normal)),
-                            SizedBox(
-                              height: 5.0,
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                    Container(
-                      alignment: Alignment.center,
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 6.0, vertical: 6.0),
-                      child: IconButton(
-                        icon: Icon(Icons.remove_red_eye),
-                        onPressed: () {
-                          showDialog(
-                              context: context,
-                              // {Please work
-                              builder: (BuildContext context) {
-                                return Center(
-                                  child: Column(
-                                    children: <Widget>[
-                                      Center(
-                                        child: AlertDialog(
-                                          title:
-                                              new Text('Request From:\n$from'),
-                                          content: Text(
-                                              'Module: $modu\nDay: $day\nTime: $time\nVen: $ven\nDetails: \n$com'),
-                                          actions: <Widget>[
-                                            FlatButton(
-                                              child: new Text(
-                                                'ACCEPT',
-                                                style: TextStyle(
-                                                    color: Colors.green),
-                                              ),
-                                              onPressed: () {
-                                                Firestore.instance
-                                                    .collection('Consultations')
-                                                    .document()
-                                                    .setData({
-                                                  'Tutor': '${usern.username}',
-                                                  'Module': '$modu',
-                                                  'Day': '$day',
-                                                  'Time': '$time',
-                                                  'Venue': '$ven',
-                                                  'Student': '$from',
-                                                  'comment': '$com',
-                                                  'uid': '$userid',
-                                                });
-                                                Navigator.of(context).pop();
-                                              },
-                                            ),
-                                            FlatButton(
-                                              child: new Text(
-                                                'DECLINE',
-                                                style: TextStyle(
-                                                    color: Colors.red),
-                                              ),
-                                              onPressed: () {
-                                                Firestore.instance
-                                                    .collection('Declined')
-                                                    .document()
-                                                    .setData({
-                                                  'Tutor': '${usern.username}',
-                                                  'Module': '$modu',
-                                                  'Day': '$day',
-                                                  'Time': '$time',
-                                                  'Venue': '$ven',
-                                                  'Student': '$from',
-                                                  'comment': '$com',
-                                                  'uid': '$userid',
-                                                });
-                                                documents[index]
-                                                    .reference
-                                                    .delete();
-                                                Navigator.of(context).pop();
-                                              },
-                                            ),
-                                            FlatButton(
-                                              child: new Text(
-                                                'CLOSE',
-                                                style: TextStyle(
-                                                    color: Colors.blue),
-                                              ),
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              });
-                        },
-                        color: Colors.blueAccent,
+        return Card(
+          child: ListTile(
+            title: Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      Container(
+                        width: 50.0,
+                        height: 50.0,
+                        child: CircleAvatar(
+                            backgroundColor: Colors.grey,
+                            backgroundImage: NetworkImage(
+                                '${documents[index].data['PhotoURL'].toString()}')),
                       ),
+                      SizedBox(
+                        width: 8.0,
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(from,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 11.0,
+                                  fontWeight: FontWeight.normal)),
+                          SizedBox(
+                            height: 10.0,
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                  Container(
+                    alignment: Alignment.center,
+                    child: IconButton(
+                      icon: Icon(Icons.info),
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            // {Please work
+                            builder: (BuildContext context) {
+                              return Center(
+                                child: Column(
+                                  children: <Widget>[
+                                    Center(
+                                      child: AlertDialog(
+                                        title: new Text('Request From:\n$from'),
+                                        content: Text(
+                                            'Module: $modu\nDay: $day\nTime: $time\nVen: $ven\nDetails: \n$com'),
+                                        actions: <Widget>[
+                                          FlatButton(
+                                            child: new Text(
+                                              'ACCEPT',
+                                              style: TextStyle(
+                                                  color: Colors.green),
+                                            ),
+                                            onPressed: () {
+                                              Firestore.instance
+                                                  .collection('Consultations')
+                                                  .document()
+                                                  .setData({
+                                                'Tutor': '${usern.username}',
+                                                'Module': '$modu',
+                                                'Day': '$day',
+                                                'Time': '$time',
+                                                'Venue': '$ven',
+                                                'Student': '$from',
+                                                'comment': '$com',
+                                                'uid': '$userid',
+                                              });
+                                              Navigator.of(context).pop();
+                                            },
+                                          ),
+                                          FlatButton(
+                                            child: new Text(
+                                              'DECLINE',
+                                              style:
+                                                  TextStyle(color: Colors.red),
+                                            ),
+                                            onPressed: () {
+                                              Firestore.instance
+                                                  .collection('Declined')
+                                                  .document()
+                                                  .setData({
+                                                'Tutor': '${usern.username}',
+                                                'Module': '$modu',
+                                                'Day': '$day',
+                                                'Time': '$time',
+                                                'Venue': '$ven',
+                                                'Student': '$from',
+                                                'comment': '$com',
+                                                'uid': '$userid',
+                                              });
+                                              documents[index]
+                                                  .reference
+                                                  .delete();
+                                              Navigator.of(context).pop();
+                                            },
+                                          ),
+                                          FlatButton(
+                                            child: new Text(
+                                              'CLOSE',
+                                              style:
+                                                  TextStyle(color: Colors.blue),
+                                            ),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            });
+                      },
+                      color: Colors.blueAccent,
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),

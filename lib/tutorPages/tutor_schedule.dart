@@ -34,7 +34,13 @@ void inputData() async {
 }
 
 List<DropdownMenuItem<String>> _dropDownItem() {
-  List<String> ddl = ["9:00 - 10:00", "10:00 - 11:00", "11:00-12:00"];
+  List<String> ddl = [
+    "8:30 - 9:40",
+    "9:40 - 10:50",
+    "10:50 - 11:00",
+    "11:00 - 12:10",
+    "12:10 - 13:00"
+  ];
   return ddl
       .map((value) => DropdownMenuItem(
             value: value,
@@ -89,38 +95,50 @@ class _MyHomePageState extends State<MyHomePage>
   @override
   Widget build(BuildContext context) {
     String _selection;
+
     return Scaffold(
       body: NestedScrollView(
         controller: _scrollViewController,
         headerSliverBuilder: (BuildContext context, bool boxIsScrolled) {
           return <Widget>[
             SliverAppBar(
+              flexibleSpace: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                      colors: [Color(0xFF285AE6), Color(0xFF41B7FC)]),
+                ),
+              ),
               leading: IconButton(
-                icon: Icon(Icons.arrow_back),
+                icon: Icon(
+                  Icons.arrow_back,
+                  color: Colors.white,
+                ),
                 onPressed: () {
                   Navigator.of(context, rootNavigator: true).pop();
                 },
               ),
-              title: Text('Schedule'),
+              title: Text('Schedule', style: TextStyle(color: Colors.white)),
               pinned: true,
               floating: true,
               forceElevated: boxIsScrolled,
               bottom: TabBar(
                 isScrollable: true,
                 tabs: <Widget>[
-                  Tab(text: "Monday", icon: new Icon(Icons.calendar_today)),
                   Tab(
-                    text: "Tuesday",
-                  ),
+                      child: Text("Monday",
+                          style: TextStyle(color: Colors.white))),
                   Tab(
-                    text: "Wednesday",
-                  ),
+                      child: Text("Tuesday",
+                          style: TextStyle(color: Colors.white))),
                   Tab(
-                    text: "Thursday",
-                  ),
+                      child: Text("Wednesday",
+                          style: TextStyle(color: Colors.white))),
                   Tab(
-                    text: "Friday",
-                  ),
+                      child: Text("Thursday",
+                          style: TextStyle(color: Colors.white))),
+                  Tab(
+                      child: Text("Friday",
+                          style: TextStyle(color: Colors.white))),
                 ],
                 controller: _tabController,
               ),
@@ -140,13 +158,15 @@ class _MyHomePageState extends State<MyHomePage>
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
+        backgroundColor: Colors.blueAccent,
         onPressed: () {
           showDialog(
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(
-                  title: new Text('Select Time Slot'),
-                  content: new Row(
+                  title: new Text('Select Time Slot',
+                      style: TextStyle(color: Colors.blueAccent)),
+                  content: Row(
                     children: <Widget>[
                       new Expanded(
                         child: DropdownButton(
@@ -156,6 +176,7 @@ class _MyHomePageState extends State<MyHomePage>
                             _selection = value;
                             setState(() {
                               String s0 = _selection;
+                              //test = s0;
                               sel0 = s0;
                             });
                           },
@@ -170,6 +191,7 @@ class _MyHomePageState extends State<MyHomePage>
                             _selection = value;
                             setState(() {
                               String s1 = _selection;
+
                               sel1 = s1;
                             });
                           },
@@ -180,7 +202,7 @@ class _MyHomePageState extends State<MyHomePage>
                   ),
                   actions: <Widget>[
                     new FlatButton(
-                      child: new Text('Continue'),
+                      child: new Text('Add to Schedule'),
                       onPressed: () {
                         currmens.mens
                             .collection('Schedule')
@@ -201,8 +223,6 @@ class _MyHomePageState extends State<MyHomePage>
   }
 }
 
-
-
 class PageOne extends StatelessWidget {
   Widget build(BuildContext context) {
     return new StreamBuilder(
@@ -211,17 +231,18 @@ class PageOne extends StatelessWidget {
           .where("Day", isEqualTo: "Monday")
           .snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (!snapshot.hasData) return new Text('Loading...');
+        if (!snapshot.hasData)
+          return Center(child: CircularProgressIndicator());
         return Card(
           child: new ListView(
             children: snapshot.data.documents.map((document) {
               return new ListTile(
                 title: Text(document["Time"],
                     style: new TextStyle(
-                        fontWeight: FontWeight.w500, fontSize: 20.0)),
+                        fontWeight: FontWeight.w400, fontSize: 18.0)),
                 leading: new Icon(
-                  Icons.timer,
-                  color: Colors.blue[500],
+                  Icons.access_time,
+                  color: Colors.blue[600],
                 ),
               );
             }).toList(),
@@ -240,17 +261,18 @@ class PageTwo extends StatelessWidget {
           .where("Day", isEqualTo: "Tuesday")
           .snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (!snapshot.hasData) return new Text('Loading...');
+        if (!snapshot.hasData)
+          return Center(child: CircularProgressIndicator());
         return Card(
           child: new ListView(
             children: snapshot.data.documents.map((document) {
               return new ListTile(
                 title: Text(document["Time"],
                     style: new TextStyle(
-                        fontWeight: FontWeight.w500, fontSize: 20.0)),
+                        fontWeight: FontWeight.w400, fontSize: 18.0)),
                 leading: new Icon(
-                  Icons.timer,
-                  color: Colors.blue[500],
+                  Icons.access_time,
+                  color: Colors.blue[600],
                 ),
               );
             }).toList(),
@@ -269,17 +291,18 @@ class PageThree extends StatelessWidget {
           .where("Day", isEqualTo: "Wednesday")
           .snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (!snapshot.hasData) return new Text('Loading...');
+        if (!snapshot.hasData)
+          return Center(child: CircularProgressIndicator());
         return Card(
           child: new ListView(
             children: snapshot.data.documents.map((document) {
               return new ListTile(
                 title: Text(document["Time"],
                     style: new TextStyle(
-                        fontWeight: FontWeight.w500, fontSize: 20.0)),
+                        fontWeight: FontWeight.w400, fontSize: 18.0)),
                 leading: new Icon(
-                  Icons.timer,
-                  color: Colors.blue[500],
+                  Icons.access_time,
+                  color: Colors.blue[600],
                 ),
               );
             }).toList(),
@@ -298,17 +321,18 @@ class PageFour extends StatelessWidget {
           .where("Day", isEqualTo: "Thursday")
           .snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (!snapshot.hasData) return new Text('Loading...');
+        if (!snapshot.hasData)
+          return Center(child: CircularProgressIndicator());
         return Card(
           child: new ListView(
             children: snapshot.data.documents.map((document) {
               return new ListTile(
                 title: Text(document["Time"],
                     style: new TextStyle(
-                        fontWeight: FontWeight.w500, fontSize: 20.0)),
+                        fontWeight: FontWeight.w400, fontSize: 18.0)),
                 leading: new Icon(
-                  Icons.timer,
-                  color: Colors.blue[500],
+                  Icons.access_time,
+                  color: Colors.blue[600],
                 ),
               );
             }).toList(),
@@ -327,17 +351,18 @@ class PageFive extends StatelessWidget {
           .where("Day", isEqualTo: "Friday")
           .snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (!snapshot.hasData) return new Text('Loading...');
+        if (!snapshot.hasData)
+          return Center(child: CircularProgressIndicator());
         return Card(
-          child: new ListView(
+          child: ListView(
             children: snapshot.data.documents.map((document) {
-              return new ListTile(
+              return ListTile(
                 title: Text(document["Time"],
-                    style: new TextStyle(
-                        fontWeight: FontWeight.w500, fontSize: 20.0)),
+                    style:
+                        TextStyle(fontWeight: FontWeight.w400, fontSize: 18.0)),
                 leading: new Icon(
-                  Icons.timer,
-                  color: Colors.blue[500],
+                  Icons.access_time,
+                  color: Colors.blue[600],
                 ),
               );
             }).toList(),

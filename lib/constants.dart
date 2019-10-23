@@ -13,7 +13,6 @@ import 'package:tutor_me_demo/tutorPages/tutor_requests.dart';
 import 'package:tutor_me_demo/tutorPages/tutor_schedule.dart';
 import 'package:flutter_rating/flutter_rating.dart';
 
-
 class RoundedButton extends StatelessWidget {
   RoundedButton(
       {this.type,
@@ -42,15 +41,27 @@ class RoundedButton extends StatelessWidget {
   }
 }
 
-class ActualDrawer extends StatelessWidget {
-  final GoogleSignIn _gSignIn = GoogleSignIn();
+class ActualDrawer extends StatefulWidget {
   ActualDrawer({this.accName, this.accEmail, this.accImage});
 
   final NetworkImage accImage;
   final Widget accEmail;
   final Widget accName;
+
+  @override
+  _ActualDrawerState createState() => _ActualDrawerState();
+}
+
+class _ActualDrawerState extends State<ActualDrawer> {
+  final GoogleSignIn _gSignIn = GoogleSignIn();
+
   @override
   Widget build(BuildContext context) {
+    CollectionReference reference = Firestore.instance.collection('Requests');
+    reference.snapshots().listen((querySnapshot) {
+      querySnapshot.documentChanges.forEach((change) {});
+    });
+
     return Drawer(
       child: Container(
         color: Colors.grey[200],
@@ -58,7 +69,7 @@ class ActualDrawer extends StatelessWidget {
           children: <Widget>[
             UserAccountsDrawerHeader(
               currentAccountPicture: CircleAvatar(
-                backgroundImage: accImage,
+                backgroundImage: widget.accImage,
               ),
               decoration: BoxDecoration(
                   //color: Color(0xFF285AE6), //Color(0xFF6BCDFD),
@@ -67,8 +78,8 @@ class ActualDrawer extends StatelessWidget {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               )),
-              accountEmail: accEmail,
-              accountName: accName,
+              accountEmail: widget.accEmail,
+              accountName: widget.accName,
             ),
             DrawerButtonWidget(
               title: 'Requests',

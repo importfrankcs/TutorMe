@@ -188,7 +188,7 @@ class PageOne extends StatelessWidget {
             
             child: Container(
               
-              child: CircularProgressIndicator(),
+              child: Center(child: CircularProgressIndicator()),
             ),
           );
         return Card(
@@ -282,7 +282,7 @@ class _PageTwoState extends State<PageTwo> {
     'SC3',
     'B1',
     'O2'
-  ]; //.map((value);
+  ];//.map((value);
   String _item = '';
 
   Widget build(BuildContext context) {
@@ -292,7 +292,7 @@ class _PageTwoState extends State<PageTwo> {
           .where("Day", isEqualTo: "Tuesday")
           .snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (!snapshot.hasData) return CircularProgressIndicator();
+        if (!snapshot.hasData) return Center(child: CircularProgressIndicator());
         return Card(
           child: new ListView(
             children: snapshot.data.documents.map((document) {
@@ -323,6 +323,7 @@ class _PageTwoState extends State<PageTwo> {
                                         child: new DropdownButton<String>(
                                           value: _item,
                                           isDense: true,
+                                        
                                           onChanged: (String newValue) {
                                             setState(() {
                                               //newContact.favoriteColor = newValue;
@@ -393,7 +394,7 @@ class PageThree extends StatelessWidget {
           .where("Day", isEqualTo: "Wednesday")
           .snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (!snapshot.hasData) return CircularProgressIndicator();
+        if (!snapshot.hasData) return Center(child: CircularProgressIndicator());
         return Card(
           child: new ListView(
             children: snapshot.data.documents.map((document) {
@@ -478,7 +479,7 @@ class PageFour extends StatelessWidget {
           .where("Day", isEqualTo: "Thursday")
           .snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (!snapshot.hasData) return CircularProgressIndicator();
+        if (!snapshot.hasData) return Center(child: CircularProgressIndicator());
         return Card(
           child: new ListView(
             children: snapshot.data.documents.map((document) {
@@ -563,7 +564,7 @@ class PageFive extends StatelessWidget {
           .where("Day", isEqualTo: "Friday")
           .snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (!snapshot.hasData) return CircularProgressIndicator();
+        if (!snapshot.hasData) return Center(child: CircularProgressIndicator());
         return Card(
           child: new ListView(
             children: snapshot.data.documents.map((document) {
