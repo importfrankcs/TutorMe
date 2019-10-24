@@ -27,7 +27,13 @@ class _TutorBioEditState extends State<TutorBioEdit> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Edit your details"),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient:
+                LinearGradient(colors: [Color(0xFF285AE6), Color(0xFF41B7FC)]),
+          ),
+        ),
+        title: Text('Edit Your Details'),
       ),
       body: SafeArea(
         top: false,
@@ -81,7 +87,7 @@ class _TutorBioEditState extends State<TutorBioEdit> {
         },
 
         tooltip: 'Show me the value!',
-        child: Icon(Icons.arrow_forward),
+        child: Icon(Icons.add),
       ),
     );
   }

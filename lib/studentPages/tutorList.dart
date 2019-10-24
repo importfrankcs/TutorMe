@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tutor_me_demo/Login_Authentification/LoginPage.dart' as prefix0;
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:tutor_me_demo/Login_Authentification/LoginPage.dart';
 import 'package:tutor_me_demo/studentPages/modules_page.dart';
 import 'package:tutor_me_demo/studentPages/pick_tut_time.dart';
 
@@ -80,7 +81,8 @@ class Allthedata {
   String from;
   String photo;
   String uid;
-  Allthedata({this.to, this.mod, this.from, this.photo, this.uid});
+  String bio;
+  Allthedata({this.to, this.mod, this.from, this.photo, this.uid, this.bio});
 }
 
 final alldata =
@@ -95,6 +97,35 @@ class FirestoreListView extends StatelessWidget {
   TextEditingController com = new TextEditingController();
 
   FirestoreListView({this.documents});
+
+  Widget bio() {
+    return StreamBuilder(
+        stream: tutref.ref.collection("Tutor").snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (!snapshot.hasData)
+            return Center(
+              child: Container(
+                child: Center(child: CircularProgressIndicator()),
+              ),
+            );
+          return Container(
+            child: new ListView(
+              children: snapshot.data.documents.map((document) {
+                return new Container(
+                  height: 70.0,
+                  child: new RaisedButton.icon(
+                    icon: new Icon(Icons.timer),
+                    color: Colors.white70,
+                    label: Text(document["Time"],
+                        style: new TextStyle(
+                            fontWeight: FontWeight.w500, fontSize: 20.0)),
+                  ),
+                );
+              }).toList(),
+            ),
+          );
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -134,6 +165,7 @@ class FirestoreListView extends StatelessWidget {
                 tutname.name = documents[index].data['displayName'].toString();
                 alldata.to = documents[index].data['displayName'];
                 alldata.uid = documents[index].data['uid'];
+                alldata.bio = documents[index].data['Bio'];
                 alldata.mod = btnIn.btnIndex;
                 alldata.from = prefix0.usern.username;
                 alldata.photo = prefix0.phot.photo;
@@ -150,40 +182,14 @@ class FirestoreListView extends StatelessWidget {
               ),
             ),
             onLongPress: () {
+              var ty = Firestore.instance.collection("Tutor").snapshots().first;
               showDialog(
                   context: context,
-                  // {Please work
                   builder: (BuildContext context) {
-                    return Center(
-                      child: Column(
-                        children: <Widget>[
-                          Center(
-                            child: Center(
-                              child: AlertDialog(
-                                title: Text(''),
-                                content: Text(''),
-                                actions: <Widget>[
-                                  FlatButton(
-                                    child: new Text(
-                                      'RATE',
-                                      style: TextStyle(color: Colors.green),
-                                    ),
-                                    onPressed: () {},
-                                  ),
-                                  FlatButton(
-                                    child: new Text(
-                                      'CLOSE',
-                                      style: TextStyle(color: Colors.blue),
-                                    ),
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
+                    return AlertDialog(
+                      title: Text(
+                        "why" + ty.toString(),
+                        style: TextStyle(color: Colors.blueAccent),
                       ),
                     );
                   });

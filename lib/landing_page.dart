@@ -37,6 +37,7 @@ class _LandingPageState extends State<LandingPage> {
             logo,
             SizedBox(height: 100.0),
             RoundedButton(
+              shapa: 24,
               textColor: Colors.blueAccent,
               type: false,
               title: 'SIGN IN AS A TUTOR',
@@ -54,6 +55,7 @@ class _LandingPageState extends State<LandingPage> {
               },
             ),
             RoundedButton(
+              shapa: 24,
               textColor: Colors.blueAccent,
               type: true,
               title: 'SIGN IN AS A STUDENT',

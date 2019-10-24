@@ -186,6 +186,7 @@ class _GoogleSignAppState extends State<GoogleSignApp> {
                         ),
                       ),
                       RoundedButton(
+                        shapa: 24,
                         onPressed: () async => _signIn(context)
                             .then((FirebaseUser user) => print(user))
                             .catchError((e) => print(e)),

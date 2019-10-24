@@ -5,6 +5,7 @@ import 'package:tutor_me_demo/Login_Authentification/LoginPage.dart';
 import 'package:tutor_me_demo/constants.dart';
 import 'package:tutor_me_demo/tutorPages/editProfile.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
+import 'package:tutor_me_demo/tutorPages/tutor_requests.dart';
 
 class ProfileScreen extends StatefulWidget {
   final DocumentReference detailsUserTutor;
@@ -208,18 +209,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  /*
-  snapshot.data['Bio'] != null
-              ? new Text(
-                  snapshot.data['Bio'],
-                  textAlign: TextAlign.center,
-                  style: bioTextStyle,
-                )
-              : new Text('Welcome to TutorMe')
-
-
-  */
-
   Widget _buildvarsity(BuildContext context) {
     return StreamBuilder(
       stream: currmens.mens
@@ -255,6 +244,34 @@ class _ProfileScreenState extends State<ProfileScreen> {
         .length
         .toString();
     return respectsQuery;
+  }
+
+  Widget _About() {
+    TextStyle _nameTextStyle = TextStyle(
+      fontFamily: 'Roboto',
+      color: Colors.black,
+      fontSize: 14.0,
+      fontWeight: FontWeight.w500,
+    );
+
+    return Text(
+      "About me",
+      style: _nameTextStyle,
+    );
+  }
+
+  Widget Email() {
+    TextStyle _nameTextStyle = TextStyle(
+      fontFamily: 'Spectral',
+      color: Colors.black,
+      fontSize: 14.0,
+      fontWeight: FontWeight.w500,
+    );
+
+    return Text(
+      "Email",
+      style: _nameTextStyle,
+    );
   }
 
   Widget _buildSeparator(Size screenSize) {
@@ -318,15 +335,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       SizedBox(height: screenSize.height / 6.4),
                       _buildProfileImage(),
                       _buildFullName(),
-                      _buildemail(),
-                      _buildStarRating(),
                       _buildCirt(),
+                      _buildStarRating(),
                       _buildvarsity(context),
-                      //_buildrating(),
-                      //_buildvarsity(context),
                       _buildSeparator(screenSize),
+                      _About(),
                       _buildBio(context),
-                      FloatingActionButton(
+                      _buildSeparator(screenSize),
+                      Email(),
+                      _buildemail(),
+                      /*FloatingActionButton(
                         onPressed: () {
                           var values = 10;
                           var ty = Future.value(currmens.mens
@@ -334,41 +352,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               .where("Tutor", isEqualTo: usern.username)
                               .snapshots()
                               .length);
-                          var numbers = [
-                            1,
-                            2,
-                            3,
-                            4,
-                            5,
-                            6,
-                            7,
-                            8,
-                            9,
-                            10,
-                            11,
-                            12,
-                            13,
-                            14,
-                            15,
-                            16,
-                            17
-                          ];
-
-                          for (var i = 0; i <= numbers.length; i++) {
-                            if (ty == Future.value(i)) {
-                              print(i);
-                              values = i;
-                            }
-                          }
-                          print(values);
                         },
-                      )
+                      )*/
                     ],
                   ),
                 ),
               ),
             ],
           ),
+          persistentFooterButtons: <Widget>[
+            SizedBox(
+              height: 55,
+              width: 395,
+              child: RoundedButton(
+                shapa: 0,
+                textColor: Colors.white,
+                colour: Colors.blueAccent,
+                title: "REQUESTS",
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      new MaterialPageRoute(
+                          builder: (context) => RequestsPage()));
+                },
+              ),
+            )
+          ],
         );
       },
     );

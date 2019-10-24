@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:tutor_me_demo/Login_Authentification/LoginPage.dart';
 import 'package:tutor_me_demo/studentPages/consultation.dart';
+import 'package:tutor_me_demo/studentPages/consultation.dart' as prefix0;
 import 'package:tutor_me_demo/studentPages/modules_page.dart';
 import 'package:tutor_me_demo/studentPages/pick_tut_time.dart';
 import 'package:tutor_me_demo/studentPages/tutorList.dart';
@@ -19,6 +20,7 @@ class RoundedButton extends StatelessWidget {
       this.textColor,
       this.title,
       this.colour,
+      this.shapa,
       @required this.onPressed});
 
   final Color colour;
@@ -26,12 +28,13 @@ class RoundedButton extends StatelessWidget {
   final Function onPressed;
   final Color textColor;
   final bool type;
+  final double shapa;
 
   @override
   Widget build(BuildContext context) {
     return RaisedButton(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(shapa),
       ),
       onPressed: onPressed,
       padding: EdgeInsets.all(12),
@@ -200,7 +203,8 @@ class StudentDrawer extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  new MaterialPageRoute(builder: (context) => Consultation()),
+                  new MaterialPageRoute(
+                      builder: (context) => prefix0.MyHomePage()),
                 );
               },
               child: ListTile(

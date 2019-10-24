@@ -7,6 +7,7 @@ import 'package:http/http.dart';
 import 'package:tutor_me_demo/Login_Authentification/LoginPage.dart';
 import 'package:tutor_me_demo/constants.dart';
 import 'package:tutor_me_demo/studentPages/edit_bio.dart';
+import 'package:tutor_me_demo/studentPages/modules_page.dart';
 import 'package:tutor_me_demo/tutorPages/tutor_schedule.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -78,12 +79,62 @@ class _ProfilePageState extends State<ProfilePage> {
           fontFamily: 'Roboto',
           color: Colors.black,
           fontSize: 20.0,
-          fontWeight: FontWeight.w700,
+          fontWeight: FontWeight.w600,
         );
 
         return Text(
           snapshot.data == null ? "" : snapshot.data.data["displayName"],
           style: _nameTextStyle,
+        );
+      },
+    );
+  }
+
+  Widget _About() {
+    TextStyle _nameTextStyle = TextStyle(
+      fontFamily: 'Roboto',
+      color: Colors.black,
+      fontSize: 14.0,
+      fontWeight: FontWeight.w500,
+    );
+
+    return Text(
+      "About me",
+      style: _nameTextStyle,
+    );
+  }
+
+  Widget Email() {
+    TextStyle _nameTextStyle = TextStyle(
+      fontFamily: 'Spectral',
+      color: Colors.black,
+      fontSize: 14.0,
+      fontWeight: FontWeight.w500,
+    );
+
+    return Text(
+      "Email",
+      style: _nameTextStyle,
+    );
+  }
+
+  Widget _BuildEmail() {
+    return FutureBuilder<DocumentSnapshot>(
+      future: widget.detailsUser
+          .get(), // a previously-obtained Future<String> or null
+      builder: (BuildContext context, snapshot) {
+        TextStyle _nameTextStyle = TextStyle(
+          fontFamily: 'Spectral',
+          color: Color(0xFF799497),
+          fontSize: 16.0,
+          fontStyle: FontStyle.italic,
+          fontWeight: FontWeight.w400,
+        );
+
+        return Text(
+          snapshot.data == null ? "" : snapshot.data.data["email"],
+          style: _nameTextStyle,
+          textAlign: TextAlign.end,
         );
       },
     );
@@ -119,7 +170,7 @@ class _ProfilePageState extends State<ProfilePage> {
           fontFamily: 'Spectral',
           fontWeight: FontWeight.w400,
           fontStyle: FontStyle.italic,
-          color: Color(0xFF799497),
+          color: Colors.black45,
           fontSize: 16.0,
         );
         return Container(
@@ -184,7 +235,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Widget _buildSeparator(Size screenSize) {
     return Container(
-      width: screenSize.width / 1.6,
+      width: screenSize.width / 1.2,
       height: 2.0,
       color: Colors.black54,
       margin: EdgeInsets.only(top: 4.0),
@@ -288,6 +339,8 @@ class _ProfilePageState extends State<ProfilePage> {
                 SafeArea(
                   child: SingleChildScrollView(
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         SizedBox(height: screenSize.height / 6.4),
                         _buildProfileImage(),
@@ -295,13 +348,56 @@ class _ProfilePageState extends State<ProfilePage> {
                         _buildemail(),
                         _buildvarsity(context),
                         _buildSeparator(screenSize),
+                        _About(),
                         _buildBio(context),
+                        _buildSeparator(screenSize),
+                        Email(),
+                        _BuildEmail(),
+
+                        //FlatButton(
+                        //  child:
+                        // if(nNew == true){
+                        //  return color: Colors.green,
+                        // }
+                        // else{color: Colors.blue,}
+                        //textColor: Colors.white,
+                        // disabledColor: Colors.grey,
+                        // disabledTextColor: Colors.black,
+                        // padding: EdgeInsets.all(10.0),
+                        // splashColor: Colors.blueAccent,
+                        // onPressed: () {
+                        ///  setState(() {
+                        //  nNew = false;
+                        // });
+                        //},
+                        // child: Text(
+                        //   "Sessions",
+                        //   style: TextStyle(fontSize: 20.0),
+                        // ),
                       ],
                     ),
                   ),
                 )
               ],
             ),
+            persistentFooterButtons: <Widget>[
+              SizedBox(
+                height: 55,
+                width: 395,
+                child: RoundedButton(
+                  shapa: 0,
+                  textColor: Colors.white,
+                  colour: Colors.blueAccent,
+                  title: "BROWSE MODULES",
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        new MaterialPageRoute(
+                            builder: (context) => ModulesPage()));
+                  },
+                ),
+              )
+            ],
           );
         });
   }
