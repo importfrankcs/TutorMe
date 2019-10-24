@@ -470,7 +470,7 @@ class PageOne extends StatelessWidget {
       body: StreamBuilder(
         stream: Firestore.instance
             .collection('Requests')
-            .where("From",
+            .where("Student",
             isEqualTo:
             "${usern.username}") //button name, enable dynamic var
             .snapshots(),
