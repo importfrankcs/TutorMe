@@ -99,7 +99,7 @@ class _getConsultationsState extends State<getConsultations> {
 
             isThreeLine: true,
             trailing: IconButton(
-              icon: Icon(Icons.rate_review),
+              icon: Icon(Icons.check_circle_outline),
               onPressed: () {
                 showDialog(
                     context: context,
@@ -260,7 +260,7 @@ class _getRequestsState extends State<getRequests> {
 
             isThreeLine: true,
             trailing: IconButton(
-              icon: Icon(Icons.rate_review),
+              icon: Icon(Icons.schedule),
               onPressed: () {
                 showDialog(
                     context: context,
@@ -344,7 +344,7 @@ class _getCompletedState extends State<getCompleted> {
 
             isThreeLine: true,
             trailing: IconButton(
-              icon: Icon(Icons.rate_review),
+              icon: Icon(Icons.assignment_turned_in),
               onPressed: () {
                 showDialog(
                     context: context,
@@ -428,7 +428,7 @@ class _getDeclinedState extends State<getDeclined> {
 
             isThreeLine: true,
             trailing: IconButton(
-              icon: Icon(Icons.rate_review),
+              icon: Icon(Icons.clear),
               onPressed: () {
                 showDialog(
                     context: context,
@@ -495,7 +495,7 @@ class _MyHomePageState extends State<MyHomePage>
     // }
 
     super.initState();
-    _tabController = TabController(vsync: this, length: 4);
+    _tabController = TabController(vsync: this, length: 3);
     _scrollViewController = ScrollController(initialScrollOffset: 0.0);
   }
 

@@ -176,7 +176,7 @@ class _getConsultationsState extends State<getConsultations> {
 
             isThreeLine: true,
             trailing: IconButton(
-              icon: Icon(Icons.rate_review),
+              icon: Icon(Icons.check_circle_outline),
               onPressed: () {
                 showDialog(
                     context: context,
@@ -257,7 +257,7 @@ class _getDeclinedState extends State<getDeclined> {
 
             isThreeLine: true,
             trailing: IconButton(
-              icon: Icon(Icons.rate_review),
+              icon: Icon(Icons.clear),
               onPressed: () {
                 showDialog(
                     context: context,
