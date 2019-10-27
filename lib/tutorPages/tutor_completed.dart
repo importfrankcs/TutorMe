@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 import 'package:tutor_me_demo/Login_Authentification/LoginPage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:smooth_star_rating/smooth_star_rating.dart';
-import 'package:tutor_me_demo/constants.dart';
-import 'package:tutor_me_demo/studentPages/tutorList.dart';
 
 class CompletedSessions extends StatefulWidget {
   static String tag = 'consultation';
@@ -18,7 +14,7 @@ class CompletedSessions extends StatefulWidget {
 
 void inputData() async {
   DocumentReference user = currmens.mens;
-  user.collection("CompletedSessionss").snapshots();
+  user.collection("CompletedSessions").snapshots();
 }
 
 class _CompletedSessionsState extends State<CompletedSessions> {
@@ -49,7 +45,7 @@ class _CompletedSessionsState extends State<CompletedSessions> {
                 child: CircularProgressIndicator(
               valueColor: AlwaysStoppedAnimation(Colors.blueAccent),
             ));
-          return getCompletedSessionss(documents: snapshot.data.documents);
+          return getCompletedSessions(documents: snapshot.data.documents);
         },
       ),
     );
@@ -58,15 +54,15 @@ class _CompletedSessionsState extends State<CompletedSessions> {
 
 String username = usern.username;
 
-class getCompletedSessionss extends StatefulWidget {
+class getCompletedSessions extends StatefulWidget {
   final List<DocumentSnapshot> documents;
-  getCompletedSessionss({this.documents});
+  getCompletedSessions({this.documents});
 
   @override
-  _getCompletedSessionssState createState() => _getCompletedSessionssState();
+  _getCompletedSessionsState createState() => _getCompletedSessionsState();
 }
 
-class _getCompletedSessionssState extends State<getCompletedSessionss> {
+class _getCompletedSessionsState extends State<getCompletedSessions> {
   final ratingcomment = TextEditingController();
   var rating = 0.0;
   final studbioController = TextEditingController();
@@ -76,25 +72,14 @@ class _getCompletedSessionssState extends State<getCompletedSessionss> {
         itemCount: widget.documents.length,
         itemExtent: 110.0,
         itemBuilder: (BuildContext context, int index) {
-          String toStudent = widget.documents[index].data['Student'].toString();
+          String stud = widget.documents[index].data['Student'].toString();
           String day = widget.documents[index].data['Day'].toString();
           String time = widget.documents[index].data['Time'].toString();
           String ven = widget.documents[index].data['Venue'].toString();
           String tut = widget.documents[index].data['Tutor'].toString();
           String userid = widget.documents[index].data['uid'].toString();
-          String title =
-              ('${toStudent[0].toUpperCase()} ${toStudent.split(" ").last[0].toUpperCase()}${toStudent.split(" ").last.toString().substring(1).toLowerCase()}');
-          String daytitle =
-              ('${day[0].toUpperCase()} ${day.split(" ").last[0].toUpperCase()}${day.split(" ").last.toString().substring(1).toLowerCase()}');
-          String times =
-              ('${time[0].toUpperCase()} ${time.split(" ").last[0].toUpperCase()}${time.split(" ").last.toString().substring(1).toLowerCase()}');
+          String com = widget.documents[index].data['Comment'].toString();
 
-          String venue =
-              ('${ven[0].toUpperCase()} ${ven.split(" ").last[0].toUpperCase()}${ven.split(" ").last.toString().substring(1).toLowerCase()}');
-
-          String tutor =
-              ('${tut[0].toUpperCase()} ${tut.split(" ").last[0].toUpperCase()}${tut.split(" ").last.toString().substring(1).toLowerCase()}');
-//documents[index].data['displayName'].toString()
           return ListTile(
             //leading: Text(documents[index].data['displayName'].toString()),
             //leading: ,
@@ -102,21 +87,12 @@ class _getCompletedSessionssState extends State<getCompletedSessionss> {
               Text("Module: ", style: TextStyle(fontWeight: FontWeight.w500)),
             ]),
             subtitle: Row(children: <Widget>[
-              Text("Tutor: ", style: TextStyle(fontWeight: FontWeight.w800)),
-              Text(tut),
+              Text("Student: ", style: TextStyle(fontWeight: FontWeight.w800)),
+              Text(stud),
             ]),
 
             isThreeLine: true,
             trailing:
-                //FlatButton(
-                //child: Container(
-                //  child: Text("RATE",
-                //       style: TextStyle(color: Colors.blueAccent)),
-                //  ),
-                //   onPressed: () {
-                //    print("fuck");
-                //    },
-                //   ),
                 IconButton(
               icon: Icon(Icons.info),
               onPressed: () {
@@ -136,7 +112,7 @@ class _getCompletedSessionssState extends State<getCompletedSessionss> {
                               content: Column(
                                 children: <Widget>[
                                   Text(
-                                      "Tutor: $tut\nStudent: $toStudent\nDay: $day\nVenue:$ven\nTime:$time"),
+                                      "Tutor: $tut\nStudent: $stud\nDay: $day\nVenue:$ven\nTime:$time\nComment: $com"),
                                   FlatButton(
                                     child: Text(
                                       "CLOSE",
@@ -158,147 +134,364 @@ class _getCompletedSessionssState extends State<getCompletedSessionss> {
             //trailing: , Place Rating here
           );
         });
+  }
+}
 
-    /*ListView.builder(
-      itemCount: documents.length,
-      itemExtent: 110.0,
-      itemBuilder: (BuildContext context, int index) {
-        String toStudent = documents[index].data['Student'].toString();
-        String day = documents[index].data['Day'].toString();
-        String modu = documents[index].data['Module'].toString();
-        String time = documents[index].data['Time'].toString();
-        String ven = documents[index].data['Venue'].toString();
-        String tut = documents[index].data['Tutor'].toString();
-        String title =
-            ('${toStudent[0].toUpperCase()} ${toStudent.split(" ").last[0].toUpperCase()}${toStudent.split(" ").last.toString().substring(1).toLowerCase()}');
-        String daytitle =
-            ('${day[0].toUpperCase()} ${day.split(" ").last[0].toUpperCase()}${day.split(" ").last.toString().substring(1).toLowerCase()}');
-        String module =
-            ('${modu[0].toUpperCase()} ${modu.split(" ").last[0].toUpperCase()}${modu.split(" ").last.toString().substring(1).toLowerCase()}');
+class getConsultations extends StatefulWidget {
+  final List<DocumentSnapshot> documents;
+  getConsultations({this.documents});
 
-        String times =
-            ('${time[0].toUpperCase()} ${time.split(" ").last[0].toUpperCase()}${time.split(" ").last.toString().substring(1).toLowerCase()}');
+  @override
+  _getConsultationsState createState() => _getConsultationsState();
+}
 
-        String venue =
-            ('${ven[0].toUpperCase()} ${ven.split(" ").last[0].toUpperCase()}${ven.split(" ").last.toString().substring(1).toLowerCase()}');
+class _getConsultationsState extends State<getConsultations> {
+  final ratingcomment = TextEditingController();
+  var rating = 0.0;
+  final studbioController = TextEditingController();
 
-        String tutor =
-            ('${tut[0].toUpperCase()} ${tut.split(" ").last[0].toUpperCase()}${tut.split(" ").last.toString().substring(1).toLowerCase()}');
-        return Padding(
-          padding: const EdgeInsets.only(
-              left: 0.0, top: 4.0, right: 0.0, bottom: 4.0),
-          child: Card(
-            color: Colors.grey[200],
-            child: ListTile(
-              title: Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        Container(
-                          width: 50.0,
-                          height: 50.0,
-                          child: CircleAvatar(
-                              backgroundColor: Colors.grey,
-                              backgroundImage: NetworkImage(
-                                  '${documents[index].data['PhotoURL'].toString()}')),
-                        ),
-                        SizedBox(
-                          width: 8.0,
-                        ),
-                        Column(
+  Widget build(BuildContext context) {
+    return ListView.builder(
+        itemCount: widget.documents.length,
+        itemExtent: 110.0,
+        itemBuilder: (BuildContext context, int index) {
+          String stud = widget.documents[index].data['Student'].toString();
+          String day = widget.documents[index].data['Day'].toString();
+          String modu = widget.documents[index].data['Module'].toString();
+          String time = widget.documents[index].data['Time'].toString();
+          String ven = widget.documents[index].data['Venue'].toString();
+          String tut = widget.documents[index].data['Tutor'].toString();
+          String userid = widget.documents[index].data['uid'].toString();
+          String com = widget.documents[index].data['Comment'].toString();
+
+          return ListTile(
+            //leading: Text(documents[index].data['displayName'].toString()),
+            //leading: ,
+            title: Row(children: <Widget>[
+              Text("Module: ", style: TextStyle(fontWeight: FontWeight.w500)),
+              Text(modu),
+            ]),
+            subtitle: Row(children: <Widget>[
+              Text("Student: ", style: TextStyle(fontWeight: FontWeight.w800)),
+              Text(stud),
+            ]),
+
+            isThreeLine: true,
+            trailing: IconButton(
+              icon: Icon(Icons.rate_review),
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    // {Please work
+                    builder: (BuildContext context) {
+                      return Center(
+                        child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text(title,
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 11.0,
-                                    fontWeight: FontWeight.normal)),
-                            SizedBox(
-                              height: 5.0,
-                            ),
+                            AlertDialog(
+                              title: new Text('Request From:\n$stud'),
+                              content: Text(
+                                  "Tutor: $tut\nStudent: $stud\nDay: $day\nVenue:$ven\nTime:$time\nComment: $com"),
+                              actions: <Widget>[
+                                FlatButton(
+                                  child:
+
+                                  FlatButton(
+                                    child: new Text(
+                                      'CLOSE',
+                                      style:
+                                      TextStyle(color: Colors.blue),
+                                    ),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                )],
+                            )
 
                           ],
-                        )
-                      ],
-                    ),
-                  ],
+                        ),
+                      );
+                    });
+              },
+            ),
+            //trailing: , Place Rating here
+          );
+        });
+  }
+}
+
+class getDeclined extends StatefulWidget {
+  final List<DocumentSnapshot> documents;
+  getDeclined({this.documents});
+
+  @override
+  _getDeclinedState createState() => _getDeclinedState();
+}
+
+class _getDeclinedState extends State<getDeclined> {
+  final ratingcomment = TextEditingController();
+  var rating = 0.0;
+  final studbioController = TextEditingController();
+
+  Widget build(BuildContext context) {
+    return ListView.builder(
+        itemCount: widget.documents.length,
+        itemExtent: 110.0,
+        itemBuilder: (BuildContext context, int index) {
+          String stud = widget.documents[index].data['Student'].toString();
+          String day = widget.documents[index].data['Day'].toString();
+          String modu = widget.documents[index].data['Module'].toString();
+          String time = widget.documents[index].data['Time'].toString();
+          String ven = widget.documents[index].data['Venue'].toString();
+          String tut = widget.documents[index].data['Tutor'].toString();
+          String userid = widget.documents[index].data['uid'].toString();
+          String com = widget.documents[index].data['Comment'].toString();
+
+
+          return ListTile(
+            //leading: Text(documents[index].data['displayName'].toString()),
+            //leading: ,
+            title: Row(children: <Widget>[
+              Text("Module: ", style: TextStyle(fontWeight: FontWeight.w500)),
+              Text(modu),
+            ]),
+            subtitle: Row(children: <Widget>[
+              Text("Student: ", style: TextStyle(fontWeight: FontWeight.w800)),
+              Text(stud),
+            ]),
+
+            isThreeLine: true,
+            trailing: IconButton(
+              icon: Icon(Icons.rate_review),
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    // {Please work
+                    builder: (BuildContext context) {
+                      return Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            AlertDialog(
+                              title: new Text('Request From:\n$stud'),
+                              content: Text(
+                                  "Tutor: $tut\nStudent: $stud\nDay: $day\nVenue:$ven\nTime:$time\nComment: $com"),
+                              actions: <Widget>[
+                                FlatButton(
+                                  child:
+
+                                  FlatButton(
+                                    child: new Text(
+                                      'CLOSE',
+                                      style:
+                                      TextStyle(color: Colors.blue),
+                                    ),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                )],
+                            )
+
+                          ],
+                        ),
+                      );
+                    });
+              },
+            ),
+            //trailing: , Place Rating here
+          );
+        });
+  }
+}
+
+class MyHomePage extends StatefulWidget {
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage>
+    with SingleTickerProviderStateMixin {
+  TabController _tabController;
+  ScrollController _scrollViewController;
+
+  @override
+  void initState() {
+
+    super.initState();
+    _tabController = TabController(vsync: this, length: 4);
+    _scrollViewController = ScrollController(initialScrollOffset: 0.0);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    _scrollViewController.dispose();
+    super.dispose();
+  }
+
+  String sel0 = '';
+  String sel1 = '';
+
+  @override
+  Widget build(BuildContext context) {
+    String _selection;
+
+    return Scaffold(
+      body: NestedScrollView(
+        controller: _scrollViewController,
+        headerSliverBuilder: (BuildContext context, bool boxIsScrolled) {
+          return <Widget>[
+            SliverAppBar(
+              flexibleSpace: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                      colors: [Color(0xFF285AE6), Color(0xFF41B7FC)]),
                 ),
               ),
-            ),
-          ),
-        );
-      },
+              leading: IconButton(
+                icon: Icon(
+                  Icons.arrow_back,
+                  color: Colors.white,
+                ),
+                onPressed: () {
+                  Navigator.of(context, rootNavigator: true).pop();
+                },
+              ),
+              title: Text('Sessions', style: TextStyle(color: Colors.white)),
+              pinned: true,
+              floating: true,
+              forceElevated: boxIsScrolled,
+              bottom: TabBar(
+                isScrollable: true,
+                tabs: <Widget>[
+                  Tab(
+                    child:
+                    Text("Accepted", style: TextStyle(color: Colors.white)),
+                  ),
+                  Tab(
+                    child:
+                    Text("Completed", style: TextStyle(color: Colors.white)),
+                  ),
+                  Tab(
+                    child: Text("Declined",
+                        style: TextStyle(color: Colors.white)),
+                  ),
+                ],
+                controller: _tabController,
+              ),
+            )
+          ];
+        },
+        body: TabBarView(
+          children: <Widget>[
+            PageOne(),
+            PageTwo(),
+            PageThree(),
+          ],
+          controller: _tabController,
+        ),
+      ),
     );
   }
 }
 
-/*
-
-
-Container(
-                      alignment: Alignment.center,
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 6.0, vertical: 6.0),
-                      child: IconButton(
-                        icon: Icon(Icons.remove_red_eye),
-                        onPressed: () {
-                          showDialog(
-                              context: context,
-                              // {Please work
-                              builder: (BuildContext context) {
-                                return Center(
-                                  child: Column(
-                                    children: <Widget>[
-                                      Center(
-                                        child: AlertDialog(
-                                          title: new Text('Request From:\n$from'),
-                                          content: Text('Module: $modu\nDay: $day\nTime: $time\nVenue: $ven\nDetails: \n$com'),
-                                          actions: <Widget>[
-                                            FlatButton(
-                                              child: new Text('ACCEPT', style: TextStyle(color: Colors.green),),
-                                              onPressed: () {
-                                                Firestore.instance.collection('CompletedSessionss').document().setData({
-                                                  'Tutor': '${usern.username}',
-                                                  'Module': '$modu',
-                                                  'Day': '$day',
-                                                  'Time': '$time',
-                                                  'Venue': '$ven',
-                                                  'Student': '$from'
-
-
-                                                });
-                                              },
-                                            ),
-                                            FlatButton(
-
-                                              child: new Text('DECLINE', style: TextStyle(color: Colors.red),),
-                                              onPressed: () {
-                                                documents[index].reference.delete();
-                                              },
-                                            ),
-                                             FlatButton(
-                                              child: new Text('CLOSE', style: TextStyle(color: Colors.blue),),
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                            ),
-
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              });
-                        },
-                        color: Colors.blueAccent,
-                      ),
-                    ),
-*/
-*/
+class PageOne extends StatelessWidget {
+  Widget build(BuildContext context) {
+    //Size screenSize = MediaQuery.of(context).size;
+    return Scaffold(
+      body: StreamBuilder(
+        stream: Firestore.instance
+            .collection('Consultations')
+            .where("Tutor",
+            isEqualTo:
+            "${usern.username}") //button name, enable dynamic var
+            .snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (!snapshot.hasData)
+            return Center(
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation(Colors.blueAccent),
+                ));
+          return getConsultations(documents: snapshot.data.documents);
+        },
+      ),
+    );
   }
+}
+
+class PageTwo extends StatelessWidget {
+  Widget build(BuildContext context) {
+    //Size screenSize = MediaQuery.of(context).size;
+    return Scaffold(
+      body: StreamBuilder(
+        stream: Firestore.instance
+            .collection('CompletedSessions')
+            .where("Tutor",
+            isEqualTo:
+            "${usern.username}") //button name, enable dynamic var
+            .snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (!snapshot.hasData)
+            return Center(
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation(Colors.blueAccent),
+                ));
+          return getCompletedSessions(documents: snapshot.data.documents);
+        },
+      ),
+    );
+  }
+}
+
+class PageThree extends StatelessWidget {
+  Widget build(BuildContext context) {
+    //Size screenSize = MediaQuery.of(context).size;
+    return Scaffold(
+      body: StreamBuilder(
+        stream: Firestore.instance
+            .collection('Declined')
+            .where("Tutor",
+            isEqualTo:
+            "${usern.username}") //button name, enable dynamic var
+            .snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (!snapshot.hasData)
+            return Center(
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation(Colors.blueAccent),
+                ));
+          return getDeclined(documents: snapshot.data.documents);
+        },
+      ),
+    );
+
+  }
+}
+
+class PageFour extends StatelessWidget {
+  Widget build(BuildContext context) {
+    //Size screenSize = MediaQuery.of(context).size;
+    return Scaffold(
+      body: StreamBuilder(
+        stream: Firestore.instance
+            .collection('Declined')
+            .where("Student",
+            isEqualTo:
+            "${usern.username}") //button name, enable dynamic var
+            .snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (!snapshot.hasData)
+            return Center(
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation(Colors.blueAccent),
+                ));
+          return getDeclined(documents: snapshot.data.documents);
+        },
+      ),
+    );
+
+  }
+
 }

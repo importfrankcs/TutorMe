@@ -72,21 +72,7 @@ class getRequests extends StatelessWidget {
         String ven = documents[index].data['Venue'].toString();
         String com = documents[index].data['Comment'].toString();
         String userid = documents[index].data['uid'].toString();
-        String title =
-            ('${from[0].toUpperCase()} ${from.split(" ").last[0].toUpperCase()}${from.split(" ").last.toString().substring(1).toLowerCase()}');
-        String daytitle =
-            ('${day[0].toUpperCase()} ${day.split(" ").last[0].toUpperCase()}${day.split(" ").last.toString().substring(1).toLowerCase()}');
-        String module =
-            ('${modu[0].toUpperCase()} ${modu.split(" ").last[0].toUpperCase()}${modu.split(" ").last.toString().substring(1).toLowerCase()}');
-
-        String times =
-            ('${time[0].toUpperCase()} ${time.split(" ").last[0].toUpperCase()}${time.split(" ").last.toString().substring(1).toLowerCase()}');
-
-        String venue =
-            ('${ven[0].toUpperCase()} ${ven.split(" ").last[0].toUpperCase()}${ven.split(" ").last.toString().substring(1).toLowerCase()}');
-
-        String comment =
-            ('${com[0].toUpperCase()} ${com.split(" ").last[0].toUpperCase()}${com.split(" ").last.toString().substring(1).toLowerCase()}');
+        
         return Card(
           child: ListTile(
             title: Container(
@@ -158,9 +144,12 @@ class getRequests extends StatelessWidget {
                                                 'Time': '$time',
                                                 'Venue': '$ven',
                                                 'Student': '$from',
-                                                'comment': '$com',
+                                                'Comment': '$com',
                                                 'uid': '$userid',
                                               });
+                                              documents[index]
+                                                  .reference
+                                                  .delete();
                                               Navigator.of(context).pop();
                                             },
                                           ),
@@ -181,7 +170,7 @@ class getRequests extends StatelessWidget {
                                                 'Time': '$time',
                                                 'Venue': '$ven',
                                                 'Student': '$from',
-                                                'comment': '$com',
+                                                'Comment': '$com',
                                                 'uid': '$userid',
                                               });
                                               documents[index]
