@@ -134,7 +134,7 @@ class _ActualDrawerState extends State<ActualDrawer> {
                 Navigator.push(
                     context,
                     new MaterialPageRoute(
-                        builder: (context) => CompletedSessions()));
+                        builder: (context) => TutorConsultation()));
               },
             ),
             Divider(),

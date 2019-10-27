@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
     TutorRegister.tag: (context) => TutorRegister(),
     Schedule.tag: (context) => Schedule(),
     StudentReviews.tag: (context) => StudentReviews(),
-    CompletedSessions.tag: (context) => CompletedSessions(),
+    TutorConsultation.tag: (context) => TutorConsultation(),
     TutorModules.tag: (context) => TutorModules(),
     RequestsPage.tag: (context) => RequestsPage(),
     Consultation.tag: (context) => Consultation(),

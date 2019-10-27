@@ -109,18 +109,9 @@ class FirestoreListView extends StatelessWidget {
               ),
             );
           return Container(
-            child: new ListView(
+            child: ListView(
               children: snapshot.data.documents.map((document) {
-                return new Container(
-                  height: 70.0,
-                  child: new RaisedButton.icon(
-                    icon: new Icon(Icons.timer),
-                    color: Colors.white70,
-                    label: Text(document["Time"],
-                        style: new TextStyle(
-                            fontWeight: FontWeight.w500, fontSize: 20.0)),
-                  ),
-                );
+                return Text(document["Bio"]);
               }).toList(),
             ),
           );
@@ -187,12 +178,13 @@ class FirestoreListView extends StatelessWidget {
                   context: context,
                   builder: (BuildContext context) {
                     return AlertDialog(
-                      title: Text(
-                        "why" + ty.toString(),
-                        style: TextStyle(color: Colors.blueAccent),
-                      ),
-                    );
+                        //title: Text(
+                        //"why" + ty.toString(),
+                        //style: TextStyle(color: Colors.blueAccent),
+                        //),
+                        );
                   });
+              print(bio().toString());
             },
             //trailing: , Place Rating here
           );

@@ -3,7 +3,6 @@ import 'package:tutor_me_demo/Login_Authentification/LoginPage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CompletedSessions extends StatefulWidget {
-  static String tag = 'consultation';
   final DocumentReference detailsUser;
   final DocumentSnapshot consul;
 
@@ -92,8 +91,7 @@ class _getCompletedSessionsState extends State<getCompletedSessions> {
             ]),
 
             isThreeLine: true,
-            trailing:
-                IconButton(
+            trailing: IconButton(
               icon: Icon(Icons.info),
               onPressed: () {
                 showDialog(
@@ -194,21 +192,18 @@ class _getConsultationsState extends State<getConsultations> {
                                   "Tutor: $tut\nStudent: $stud\nDay: $day\nVenue:$ven\nTime:$time\nComment: $com"),
                               actions: <Widget>[
                                 FlatButton(
-                                  child:
-
-                                  FlatButton(
+                                  child: FlatButton(
                                     child: new Text(
                                       'CLOSE',
-                                      style:
-                                      TextStyle(color: Colors.blue),
+                                      style: TextStyle(color: Colors.blue),
                                     ),
                                     onPressed: () {
                                       Navigator.of(context).pop();
                                     },
                                   ),
-                                )],
+                                )
+                              ],
                             )
-
                           ],
                         ),
                       );
@@ -248,7 +243,6 @@ class _getDeclinedState extends State<getDeclined> {
           String userid = widget.documents[index].data['uid'].toString();
           String com = widget.documents[index].data['Comment'].toString();
 
-
           return ListTile(
             //leading: Text(documents[index].data['displayName'].toString()),
             //leading: ,
@@ -279,21 +273,18 @@ class _getDeclinedState extends State<getDeclined> {
                                   "Tutor: $tut\nStudent: $stud\nDay: $day\nVenue:$ven\nTime:$time\nComment: $com"),
                               actions: <Widget>[
                                 FlatButton(
-                                  child:
-
-                                  FlatButton(
+                                  child: FlatButton(
                                     child: new Text(
                                       'CLOSE',
-                                      style:
-                                      TextStyle(color: Colors.blue),
+                                      style: TextStyle(color: Colors.blue),
                                     ),
                                     onPressed: () {
                                       Navigator.of(context).pop();
                                     },
                                   ),
-                                )],
+                                )
+                              ],
                             )
-
                           ],
                         ),
                       );
@@ -306,21 +297,21 @@ class _getDeclinedState extends State<getDeclined> {
   }
 }
 
-class MyHomePage extends StatefulWidget {
+class TutorConsultation extends StatefulWidget {
+  static String tag = 'consultation';
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _TutorConsultationState createState() => _TutorConsultationState();
 }
 
-class _MyHomePageState extends State<MyHomePage>
+class _TutorConsultationState extends State<TutorConsultation>
     with SingleTickerProviderStateMixin {
   TabController _tabController;
   ScrollController _scrollViewController;
 
   @override
   void initState() {
-
     super.initState();
-    _tabController = TabController(vsync: this, length: 4);
+    _tabController = TabController(vsync: this, length: 3);
     _scrollViewController = ScrollController(initialScrollOffset: 0.0);
   }
 
@@ -368,15 +359,15 @@ class _MyHomePageState extends State<MyHomePage>
                 tabs: <Widget>[
                   Tab(
                     child:
-                    Text("Accepted", style: TextStyle(color: Colors.white)),
+                        Text("Accepted", style: TextStyle(color: Colors.white)),
+                  ),
+                  Tab(
+                    child: Text("Completed",
+                        style: TextStyle(color: Colors.white)),
                   ),
                   Tab(
                     child:
-                    Text("Completed", style: TextStyle(color: Colors.white)),
-                  ),
-                  Tab(
-                    child: Text("Declined",
-                        style: TextStyle(color: Colors.white)),
+                        Text("Declined", style: TextStyle(color: Colors.white)),
                   ),
                 ],
                 controller: _tabController,
@@ -405,15 +396,15 @@ class PageOne extends StatelessWidget {
         stream: Firestore.instance
             .collection('Consultations')
             .where("Tutor",
-            isEqualTo:
-            "${usern.username}") //button name, enable dynamic var
+                isEqualTo:
+                    "${usern.username}") //button name, enable dynamic var
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData)
             return Center(
                 child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation(Colors.blueAccent),
-                ));
+              valueColor: AlwaysStoppedAnimation(Colors.blueAccent),
+            ));
           return getConsultations(documents: snapshot.data.documents);
         },
       ),
@@ -429,15 +420,15 @@ class PageTwo extends StatelessWidget {
         stream: Firestore.instance
             .collection('CompletedSessions')
             .where("Tutor",
-            isEqualTo:
-            "${usern.username}") //button name, enable dynamic var
+                isEqualTo:
+                    "${usern.username}") //button name, enable dynamic var
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData)
             return Center(
                 child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation(Colors.blueAccent),
-                ));
+              valueColor: AlwaysStoppedAnimation(Colors.blueAccent),
+            ));
           return getCompletedSessions(documents: snapshot.data.documents);
         },
       ),
@@ -453,19 +444,18 @@ class PageThree extends StatelessWidget {
         stream: Firestore.instance
             .collection('Declined')
             .where("Tutor",
-            isEqualTo:
-            "${usern.username}") //button name, enable dynamic var
+                isEqualTo:
+                    "${usern.username}") //button name, enable dynamic var
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData)
             return Center(
                 child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation(Colors.blueAccent),
-                ));
+              valueColor: AlwaysStoppedAnimation(Colors.blueAccent),
+            ));
           return getDeclined(documents: snapshot.data.documents);
         },
       ),
     );
-
   }
 }
