@@ -72,7 +72,7 @@ class getRequests extends StatelessWidget {
         String ven = documents[index].data['Venue'].toString();
         String com = documents[index].data['Comment'].toString();
         String userid = documents[index].data['uid'].toString();
-        
+
         return Card(
           child: ListTile(
             title: Container(

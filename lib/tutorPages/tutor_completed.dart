@@ -469,29 +469,3 @@ class PageThree extends StatelessWidget {
 
   }
 }
-
-class PageFour extends StatelessWidget {
-  Widget build(BuildContext context) {
-    //Size screenSize = MediaQuery.of(context).size;
-    return Scaffold(
-      body: StreamBuilder(
-        stream: Firestore.instance
-            .collection('Declined')
-            .where("Student",
-            isEqualTo:
-            "${usern.username}") //button name, enable dynamic var
-            .snapshots(),
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (!snapshot.hasData)
-            return Center(
-                child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation(Colors.blueAccent),
-                ));
-          return getDeclined(documents: snapshot.data.documents);
-        },
-      ),
-    );
-
-  }
-
-}
