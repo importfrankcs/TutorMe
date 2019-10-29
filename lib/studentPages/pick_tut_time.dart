@@ -34,7 +34,21 @@ void inputData() async {
 }
 
 List<DropdownMenuItem<String>> _dropDownItem() {
-  List<String> ddl = ["8:30 - 9:40", "9:40 - 10:50", "10:50 - 11:00", "11:00"];
+  List<String> ddl = [
+    "8:30 - 9:40",
+    "9:40 - 10:50",
+    "10:50 - 11:00",
+    "11:00 - 12:00",
+    "12:00 - 13:00",
+    "13:00 - 14:10",
+    "14:10 - 15:20",
+    "15:20 - 16:30",
+    "16:30 - 17:40",
+    "17:40 - 18:50",
+    "18:50 - 20:00",
+    "20:00 - 21:00",
+
+  ];
   return ddl
       .map((value) => DropdownMenuItem(
             value: value,
@@ -54,6 +68,7 @@ void submit(String ven, String time, String day, String comments) {
     'Time': time,
     'Venue': ven,
     'Comment': comments,
+    //'To': to,
   });
 }
 
@@ -75,16 +90,6 @@ class _MyHomePageState extends State<MyHomePage>
   //List<String> _values = new List<String>();
   @override
   void initState() {
-    //times
-    // _values.addAll(["9:00 - 10:00", "10:00 - 11:00"]);
-    // String _value = _values.elementAt(0);
-
-    // void_onChanged(String value){
-    //   setState(() {
-    //     _value = value;
-    //   });
-    // }
-
     super.initState();
     _tabController = TabController(vsync: this, length: 5);
     _scrollViewController = ScrollController(initialScrollOffset: 0.0);
@@ -169,13 +174,34 @@ class _MyHomePageState extends State<MyHomePage>
   }
 }
 
-class PageOne extends StatelessWidget {
+class PageOne extends StatefulWidget {
+  @override
+  _PageOneState createState() => _PageOneState();
+}
+
+class _PageOneState extends State<PageOne> {
   String timeValue;
+
   String dayValue;
+
   String comment;
+
   String venValue;
+
   TextEditingController com = new TextEditingController();
+
   String _selection;
+
+  List<String> _items = <String>[
+    '',
+    'N22',
+    'SC2',
+    'SC3',
+    'B1',
+    'O2'
+  ]; //.map((value);
+  String _item = '';
+
   Widget build(BuildContext context) {
     return new StreamBuilder(
       stream: tutref.ref
@@ -200,32 +226,50 @@ class PageOne extends StatelessWidget {
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
-                            title: new Text('Select Time Slot'),
+                            title: Text(
+                              'Select Time Slot',
+                              style: TextStyle(color: Colors.blueAccent),
+                            ),
                             content: Column(
                               children: <Widget>[
-                                new Expanded(
-                                    child: new DropdownButton<String>(
-                                  hint: Text("Select a venue."),
-                                  items: <String>[
-                                    'N22',
-                                    'SC2',
-                                    'SC3',
-                                    'B1',
-                                    'O2'
-                                  ].map((value) {
-                                    return new DropdownMenuItem<String>(
-                                      value: value,
-                                      child: new Text(value),
+                                FormField<String>(
+                                  autovalidate: true,
+                                  builder: (FormFieldState<String> state) {
+                                    return InputDecorator(
+                                      decoration: InputDecoration(
+                                        icon: const Icon(Icons.place),
+                                        labelText: 'Suggest a Venue',
+                                      ),
+                                      isEmpty: _item == '',
+                                      child: new DropdownButtonHideUnderline(
+                                        child: new DropdownButton<String>(
+                                          value: _item,
+                                          isDense: true,
+                                          onChanged: (String newValue) {
+                                            setState(() {
+                                              //newContact.favoriteColor = newValue;
+                                              _item = newValue;
+                                              state.didChange(newValue);
+                                            });
+                                          },
+                                          items: _items.map((String value) {
+                                            return new DropdownMenuItem<String>(
+                                              value: value,
+                                              child: new Text(value),
+                                            );
+                                          }).toList(),
+                                        ),
+                                      ),
                                     );
-                                  }).toList(),
-                                  onChanged: (value) {
-                                    venValue = value;
                                   },
-                                )),
-                                TextField(
+                                ),
+                                TextFormField(
                                   controller: com,
-                                  decoration: InputDecoration(
-                                      hintText: "Type your problem area(s)"),
+                                  decoration: const InputDecoration(
+                                    icon: const Icon(Icons.account_balance),
+                                    hintText: 'short and sweet',
+                                    labelText: 'How can I help',
+                                  ),
                                   onChanged: (value) {
                                     comment = com.text;
                                   },
@@ -236,7 +280,7 @@ class PageOne extends StatelessWidget {
                               new FlatButton(
                                 child: new Text('SUBMIT REQUEST'),
                                 onPressed: () {
-                                  submit(venValue, document["Time"], "Monday",
+                                  submit(_item, document["Time"], "Monday",
                                       comment);
                                   Navigator.of(context).pop();
                                 },
@@ -245,11 +289,11 @@ class PageOne extends StatelessWidget {
                           );
                         });
                   },
-                  icon: new Icon(Icons.timer),
-                  color: Colors.white70,
+                  icon: Icon(Icons.calendar_today),
+                  color: Colors.white,
                   label: Text(document["Time"],
                       style: new TextStyle(
-                          fontWeight: FontWeight.w500, fontSize: 20.0)),
+                          fontWeight: FontWeight.w400, fontSize: 20.0)),
                 ),
               );
             }).toList(),
@@ -341,12 +385,15 @@ class _PageTwoState extends State<PageTwo> {
                                   },
                                 ),
                                 TextFormField(
-                                  //controller: studuniController,
+                                  controller: com,
                                   decoration: const InputDecoration(
                                     icon: const Icon(Icons.account_balance),
                                     hintText: 'short and sweet',
                                     labelText: 'How can I help',
                                   ),
+                                  onChanged: (value) {
+                                    comment = com.text;
+                                  },
                                 ),
                               ],
                             ),
@@ -354,8 +401,7 @@ class _PageTwoState extends State<PageTwo> {
                               new FlatButton(
                                 child: new Text('SUBMIT REQUEST'),
                                 onPressed: () {
-                                  print(document["Bio"]);
-                                  submit(venValue, document["Time"], "Tuesday",
+                                  submit(_item, document["Time"], "Tuesday",
                                       comment);
                                   Navigator.of(context).pop();
                                 },
@@ -365,7 +411,7 @@ class _PageTwoState extends State<PageTwo> {
                         });
                   },
                   icon: Icon(Icons.calendar_today),
-                  color: Colors.white70,
+                  color: Colors.white,
                   label: Text(document["Time"],
                       style: new TextStyle(
                           fontWeight: FontWeight.w400, fontSize: 20.0)),
@@ -379,13 +425,33 @@ class _PageTwoState extends State<PageTwo> {
   }
 }
 
-class PageThree extends StatelessWidget {
+class PageThree extends StatefulWidget {
+  @override
+  _PageThreeState createState() => _PageThreeState();
+}
+
+class _PageThreeState extends State<PageThree> {
   String timeValue;
+
   String dayValue;
+
   String comment;
+
   String venValue;
+
   TextEditingController com = new TextEditingController();
+
   String _selection;
+  List<String> _items = <String>[
+    '',
+    'N22',
+    'SC2',
+    'SC3',
+    'B1',
+    'O2'
+  ]; //.map((value);
+  String _item = '';
+
   Widget build(BuildContext context) {
     return new StreamBuilder(
       stream: tutref.ref
@@ -406,32 +472,50 @@ class PageThree extends StatelessWidget {
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
-                            title: new Text('Select Time Slot'),
+                            title: Text(
+                              'Select Time Slot',
+                              style: TextStyle(color: Colors.blueAccent),
+                            ),
                             content: Column(
                               children: <Widget>[
-                                new Expanded(
-                                    child: new DropdownButton<String>(
-                                  hint: Text("Select a venue."),
-                                  items: <String>[
-                                    'N22',
-                                    'SC2',
-                                    'SC3',
-                                    'B1',
-                                    'O2'
-                                  ].map((value) {
-                                    return new DropdownMenuItem<String>(
-                                      value: value,
-                                      child: new Text(value),
+                                FormField<String>(
+                                  autovalidate: true,
+                                  builder: (FormFieldState<String> state) {
+                                    return InputDecorator(
+                                      decoration: InputDecoration(
+                                        icon: const Icon(Icons.place),
+                                        labelText: 'Suggest a Venue',
+                                      ),
+                                      isEmpty: _item == '',
+                                      child: new DropdownButtonHideUnderline(
+                                        child: new DropdownButton<String>(
+                                          value: _item,
+                                          isDense: true,
+                                          onChanged: (String newValue) {
+                                            setState(() {
+                                              //newContact.favoriteColor = newValue;
+                                              _item = newValue;
+                                              state.didChange(newValue);
+                                            });
+                                          },
+                                          items: _items.map((String value) {
+                                            return new DropdownMenuItem<String>(
+                                              value: value,
+                                              child: new Text(value),
+                                            );
+                                          }).toList(),
+                                        ),
+                                      ),
                                     );
-                                  }).toList(),
-                                  onChanged: (value) {
-                                    venValue = value;
                                   },
-                                )),
-                                TextField(
+                                ),
+                                TextFormField(
                                   controller: com,
-                                  decoration: InputDecoration(
-                                      hintText: "Type your problem area(s)"),
+                                  decoration: const InputDecoration(
+                                    icon: const Icon(Icons.account_balance),
+                                    hintText: 'short and sweet',
+                                    labelText: 'How can I help',
+                                  ),
                                   onChanged: (value) {
                                     comment = com.text;
                                   },
@@ -442,19 +526,20 @@ class PageThree extends StatelessWidget {
                               new FlatButton(
                                 child: new Text('SUBMIT REQUEST'),
                                 onPressed: () {
-                                  submit(venValue, document["Time"],
-                                      "Wednesday", comment);
+                                  submit(_item, document["Time"], "Wednesday",
+                                      comment);
+                                  Navigator.of(context).pop();
                                 },
                               )
                             ],
                           );
                         });
                   },
-                  icon: new Icon(Icons.timer),
-                  color: Colors.white70,
+                  icon: Icon(Icons.calendar_today),
+                  color: Colors.white,
                   label: Text(document["Time"],
                       style: new TextStyle(
-                          fontWeight: FontWeight.w500, fontSize: 20.0)),
+                          fontWeight: FontWeight.w400, fontSize: 20.0)),
                 ),
               );
             }).toList(),
@@ -465,13 +550,33 @@ class PageThree extends StatelessWidget {
   }
 }
 
-class PageFour extends StatelessWidget {
+class PageFour extends StatefulWidget {
+  @override
+  _PageFourState createState() => _PageFourState();
+}
+
+class _PageFourState extends State<PageFour> {
   String timeValue;
+
   String dayValue;
+
   String comment;
+
   String venValue;
+
   TextEditingController com = new TextEditingController();
+
   String _selection;
+  List<String> _items = <String>[
+    '',
+    'N22',
+    'SC2',
+    'SC3',
+    'B1',
+    'O2'
+  ]; //.map((value);
+  String _item = '';
+
   Widget build(BuildContext context) {
     return new StreamBuilder(
       stream: tutref.ref
@@ -492,32 +597,50 @@ class PageFour extends StatelessWidget {
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
-                            title: new Text('Select Time Slot'),
+                            title: Text(
+                              'Select Time Slot',
+                              style: TextStyle(color: Colors.blueAccent),
+                            ),
                             content: Column(
                               children: <Widget>[
-                                new Expanded(
-                                    child: new DropdownButton<String>(
-                                  hint: Text("Select a venue."),
-                                  items: <String>[
-                                    'N22',
-                                    'SC2',
-                                    'SC3',
-                                    'B1',
-                                    'O2'
-                                  ].map((value) {
-                                    return new DropdownMenuItem<String>(
-                                      value: value,
-                                      child: new Text(value),
+                                FormField<String>(
+                                  autovalidate: true,
+                                  builder: (FormFieldState<String> state) {
+                                    return InputDecorator(
+                                      decoration: InputDecoration(
+                                        icon: const Icon(Icons.place),
+                                        labelText: 'Suggest a Venue',
+                                      ),
+                                      isEmpty: _item == '',
+                                      child: new DropdownButtonHideUnderline(
+                                        child: new DropdownButton<String>(
+                                          value: _item,
+                                          isDense: true,
+                                          onChanged: (String newValue) {
+                                            setState(() {
+                                              //newContact.favoriteColor = newValue;
+                                              _item = newValue;
+                                              state.didChange(newValue);
+                                            });
+                                          },
+                                          items: _items.map((String value) {
+                                            return new DropdownMenuItem<String>(
+                                              value: value,
+                                              child: new Text(value),
+                                            );
+                                          }).toList(),
+                                        ),
+                                      ),
                                     );
-                                  }).toList(),
-                                  onChanged: (value) {
-                                    venValue = value;
                                   },
-                                )),
-                                TextField(
+                                ),
+                                TextFormField(
                                   controller: com,
-                                  decoration: InputDecoration(
-                                      hintText: "Type your problem area(s)"),
+                                  decoration: const InputDecoration(
+                                    icon: const Icon(Icons.account_balance),
+                                    hintText: 'short and sweet',
+                                    labelText: 'How can I help',
+                                  ),
                                   onChanged: (value) {
                                     comment = com.text;
                                   },
@@ -528,19 +651,20 @@ class PageFour extends StatelessWidget {
                               new FlatButton(
                                 child: new Text('SUBMIT REQUEST'),
                                 onPressed: () {
-                                  submit(venValue, document["Time"], "Thursday",
+                                  submit(_item, document["Time"], "Thursday",
                                       comment);
+                                  Navigator.of(context).pop();
                                 },
                               )
                             ],
                           );
                         });
                   },
-                  icon: new Icon(Icons.timer),
-                  color: Colors.white70,
+                  icon: Icon(Icons.calendar_today),
+                  color: Colors.white,
                   label: Text(document["Time"],
                       style: new TextStyle(
-                          fontWeight: FontWeight.w500, fontSize: 20.0)),
+                          fontWeight: FontWeight.w400, fontSize: 20.0)),
                 ),
               );
             }).toList(),
@@ -551,13 +675,32 @@ class PageFour extends StatelessWidget {
   }
 }
 
-class PageFive extends StatelessWidget {
+class PageFive extends StatefulWidget {
+  @override
+  _PageFiveState createState() => _PageFiveState();
+}
+
+class _PageFiveState extends State<PageFive> {
   String timeValue;
+
   String dayValue;
+
   String comment;
+
   String venValue;
+
   TextEditingController com = new TextEditingController();
-  String _selection;
+
+
+List<String> _items = <String>[
+    '',
+    'N22',
+    'SC2',
+    'SC3',
+    'B1',
+    'O2'
+  ]; //.map((value);
+  String _item = '';
   Widget build(BuildContext context) {
     return new StreamBuilder(
       stream: tutref.ref
@@ -578,32 +721,50 @@ class PageFive extends StatelessWidget {
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
-                            title: new Text('Select Time Slot'),
+                            title: Text(
+                              'Select Time Slot',
+                              style: TextStyle(color: Colors.blueAccent),
+                            ),
                             content: Column(
                               children: <Widget>[
-                                new Expanded(
-                                    child: new DropdownButton<String>(
-                                  hint: Text("Select a venue."),
-                                  items: <String>[
-                                    'N22',
-                                    'SC2',
-                                    'SC3',
-                                    'B1',
-                                    'O2'
-                                  ].map((value) {
-                                    return new DropdownMenuItem<String>(
-                                      value: value,
-                                      child: new Text(value),
+                                FormField<String>(
+                                  autovalidate: true,
+                                  builder: (FormFieldState<String> state) {
+                                    return InputDecorator(
+                                      decoration: InputDecoration(
+                                        icon: const Icon(Icons.place),
+                                        labelText: 'Suggest a Venue',
+                                      ),
+                                      isEmpty: _item == '',
+                                      child: new DropdownButtonHideUnderline(
+                                        child: new DropdownButton<String>(
+                                          value: _item,
+                                          isDense: true,
+                                          onChanged: (String newValue) {
+                                            setState(() {
+                                              //newContact.favoriteColor = newValue;
+                                              _item = newValue;
+                                              state.didChange(newValue);
+                                            });
+                                          },
+                                          items: _items.map((String value) {
+                                            return new DropdownMenuItem<String>(
+                                              value: value,
+                                              child: new Text(value),
+                                            );
+                                          }).toList(),
+                                        ),
+                                      ),
                                     );
-                                  }).toList(),
-                                  onChanged: (value) {
-                                    venValue = value;
                                   },
-                                )),
-                                TextField(
+                                ),
+                                TextFormField(
                                   controller: com,
-                                  decoration: InputDecoration(
-                                      hintText: "Type your problem area(s)"),
+                                  decoration: const InputDecoration(
+                                    icon: const Icon(Icons.account_balance),
+                                    hintText: 'short and sweet',
+                                    labelText: 'How can I help',
+                                  ),
                                   onChanged: (value) {
                                     comment = com.text;
                                   },
@@ -614,19 +775,20 @@ class PageFive extends StatelessWidget {
                               new FlatButton(
                                 child: new Text('SUBMIT REQUEST'),
                                 onPressed: () {
-                                  submit(venValue, document["Time"], "Friday",
+                                  submit(_item, document["Time"], "Friday",
                                       comment);
+                                  Navigator.of(context).pop();
                                 },
                               )
                             ],
                           );
                         });
                   },
-                  icon: new Icon(Icons.timer),
-                  color: Colors.white70,
+                  icon: Icon(Icons.calendar_today),
+                  color: Colors.white,
                   label: Text(document["Time"],
                       style: new TextStyle(
-                          fontWeight: FontWeight.w500, fontSize: 20.0)),
+                          fontWeight: FontWeight.w400, fontSize: 20.0)),
                 ),
               );
             }).toList(),
@@ -636,73 +798,3 @@ class PageFive extends StatelessWidget {
     );
   }
 }
-
-/*
-return Card(
-          child: new ListView(
-            children: snapshot.data.documents.map((document) {
-              return new Container(
-                height: 70.0,
-                child: new RaisedButton.icon(
-                  onPressed: () {
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: new Text('Select Time Slot'),
-                            content: Column(
-                              children: <Widget>[
-                                new Expanded(
-                                    child: new DropdownButton<String>(
-                                  hint: Text("Select a venue."),
-                                  items: <String>[
-                                    'N22',
-                                    'SC2',
-                                    'SC3',
-                                    'B1',
-                                    'O2'
-                                  ].map((value) {
-                                    return new DropdownMenuItem<String>(
-                                      value: value,
-                                      child: new Text(value),
-                                    );
-                                  }).toList(),
-                                  onChanged: (value) {
-                                    venValue = value;
-                                  },
-                                )),
-                                TextField(
-                                  controller: com,
-                                  decoration: InputDecoration(
-                                      hintText: "Type your problem area(s)"),
-                                  onChanged: (value) {
-                                    comment = com.text;
-                                  },
-                                ),
-                              ],
-                            ),
-                            actions: <Widget>[
-                              new FlatButton(
-                                child: new Text('SUBMIT REQUEST'),
-                                onPressed: () {
-                                  submit(venValue, document["Time"], "Friday",
-                                      comment);
-                                },
-                              )
-                            ],
-                          );
-                        });
-                  },
-                  icon: new Icon(Icons.timer),
-                  color: Colors.white70,
-                  label: Text(document["Time"],
-                      style: new TextStyle(
-                          fontWeight: FontWeight.w500, fontSize: 20.0)),
-                ),
-              );
-
-            }).toList(),
-          ),
-        );
-
-*/

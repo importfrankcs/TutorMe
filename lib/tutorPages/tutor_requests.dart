@@ -37,7 +37,7 @@ class _RequestsPageState extends State<RequestsPage> {
       body: StreamBuilder(
         stream: Firestore.instance
             .collection('Requests')
-            .where("To",
+            .where("Tutor",
                 isEqualTo:
                     "${usern.username}") //button name, enable dynamic var
             .snapshots(),
@@ -65,7 +65,25 @@ class getRequests extends StatelessWidget {
       itemCount: documents.length,
       itemExtent: 110.0,
       itemBuilder: (BuildContext context, int index) {
-        String from = documents[index].data['From'].toString();
+        String from = documents[index]
+                .data['Student']
+                .toString()
+                .substring(0, 1)
+                .toUpperCase() +
+            ' ' +
+            documents[index]
+                .data['Student']
+                .toString()
+                .split(' ')
+                .toList()[documents[index]
+                        .data['Student']
+                        .toString()
+                        .split(' ')
+                        .toList()
+                        .length -
+                    1]
+                .toLowerCase()
+                .toString();
         String day = documents[index].data['Day'].toString();
         String modu = documents[index].data['Module'].toString();
         String time = documents[index].data['Time'].toString();

@@ -99,7 +99,7 @@ class _getConsultationsState extends State<getConsultations> {
 
             isThreeLine: true,
             trailing: IconButton(
-              icon: Icon(Icons.rate_review),
+              icon: Icon(Icons.info),color: Colors.blueAccent,
               onPressed: () {
                 showDialog(
                     context: context,
@@ -260,7 +260,7 @@ class _getRequestsState extends State<getRequests> {
 
             isThreeLine: true,
             trailing: IconButton(
-              icon: Icon(Icons.rate_review),
+              icon: Icon(Icons.info),color: Colors.blueAccent,
               onPressed: () {
                 showDialog(
                     context: context,
@@ -271,7 +271,9 @@ class _getRequestsState extends State<getRequests> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             AlertDialog(
-                              title: new Text('Request From:\n$toStudent'),
+                              title: new Text('Request From:\n$toStudent', style: TextStyle(
+                                color: Colors.blueAccent
+                              ),),
                               content: Text(
                                   'Module: $modu\nDay: $day\nTime: $time\nVen: $ven\nDetails: \n$com'),
                               actions: <Widget>[
@@ -344,7 +346,7 @@ class _getCompletedState extends State<getCompleted> {
 
             isThreeLine: true,
             trailing: IconButton(
-              icon: Icon(Icons.rate_review),
+              icon: Icon(Icons.info), color: Colors.blueAccent,
               onPressed: () {
                 showDialog(
                     context: context,
@@ -355,7 +357,9 @@ class _getCompletedState extends State<getCompleted> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             AlertDialog(
-                              title: new Text('Request From:\n$toStudent'),
+                              title: new Text('Request From:\n$toStudent',style: TextStyle(
+                                color: Colors.blueAccent
+                              )),
                               content: Text(
                                   'Module: $modu\nDay: $day\nTime: $time\nVen: $ven\nDetails: \n$com'),
                               actions: <Widget>[
@@ -428,7 +432,7 @@ class _getDeclinedState extends State<getDeclined> {
 
             isThreeLine: true,
             trailing: IconButton(
-              icon: Icon(Icons.rate_review),
+              icon: Icon(Icons.info),color: Colors.blueAccent,
               onPressed: () {
                 showDialog(
                     context: context,
@@ -439,7 +443,9 @@ class _getDeclinedState extends State<getDeclined> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             AlertDialog(
-                              title: new Text('Request From:\n$toStudent'),
+                              title: new Text('Request From:\n$toStudent', style: TextStyle(
+                                color: Colors.blueAccent
+                              )),
                               content: Text(
                                   'Module: $modu\nDay: $day\nTime: $time\nVen: $ven\nDetails: \n$com'),
                               actions: <Widget>[

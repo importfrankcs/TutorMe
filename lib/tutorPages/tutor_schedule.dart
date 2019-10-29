@@ -38,8 +38,15 @@ List<DropdownMenuItem<String>> _dropDownItem() {
     "8:30 - 9:40",
     "9:40 - 10:50",
     "10:50 - 11:00",
-    "11:00 - 12:10",
-    "12:10 - 13:00"
+    "11:00 - 12:00",
+    "12:00 - 13:00",
+    "13:00 - 14:10",
+    "14:10 - 15:20",
+    "15:20 - 16:30",
+    "16:30 - 17:40",
+    "17:40 - 18:50",
+    "18:50 - 20:00",
+    "20:00 - 21:00",
   ];
   return ddl
       .map((value) => DropdownMenuItem(
@@ -176,6 +183,7 @@ class _MyHomePageState extends State<MyHomePage>
                             _selection = value;
                             setState(() {
                               String s0 = _selection;
+                              state.didChange(newValue);
                               //test = s0;
                               sel0 = s0;
                             });

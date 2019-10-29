@@ -72,7 +72,7 @@ class getRequests extends StatelessWidget {
           padding: const EdgeInsets.only(
               left: 0.0, top: 4.0, right: 0.0, bottom: 4.0),
           child: Card(
-            color: Colors.grey[200],
+            color: Colors.white,
             child: ListTile(
               title: Container(
                 child: Row(

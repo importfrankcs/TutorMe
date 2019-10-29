@@ -18,7 +18,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 var starcount = 0;
-double rating = 0;
+double rating = 0.0;
 
 class _ProfileScreenState extends State<ProfileScreen> {
   bool _isLoading;
@@ -33,11 +33,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
   //ar test = initState();
 
   Future _loadData() async {
-    QuerySnapshot snapshot =
-        await currmens.mens.collection('CompletedSessions').getDocuments();
-    double total =
-        snapshot.documents.map<double>((m) => m['uid']).reduce((a, b) => a + b);
-    return total;
+    QuerySnapshot snapshot = await Firestore.instance
+        .collection('Tutor')
+        .document(currmens.mens.documentID)
+        .collection('Ratings')
+        .getDocuments();
+    double total = snapshot.documents
+        .map<double>((m) => m['Rating'])
+        .reduce((a, b) => a + b);
+    setState(() {
+      rating = total / snapshot.documents.length;
+      _isLoading = false;
+    });
+
+    return rating;
   }
 
   static String tag = 'tutor profile page';
@@ -147,9 +156,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  void averageStar() {}
-
   Widget _buildStarRating() {
+    Firestore.instance
+        .collection('Tutor')
+        .document(currmens.mens.documentID)
+        .updateData({'AverageRating': rating});
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: List.generate(5, (index) {
@@ -194,17 +205,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
           color: Color(0xFF799497),
           fontSize: 16.0,
         );
-        return Container(
-          color: Theme.of(context).scaffoldBackgroundColor,
-          padding: EdgeInsets.all(8.0),
-          child: snapshot.data['Bio'] != null
-              ? new Text(
-                  snapshot.data['Bio'],
-                  textAlign: TextAlign.center,
-                  style: bioTextStyle,
-                )
-              : new Text('Welcome to TutorMe'),
-        );
+        try {
+          return Container(
+            color: Theme.of(context).scaffoldBackgroundColor,
+            padding: EdgeInsets.all(8.0),
+            child: snapshot.data['Bio'] != null
+                ? new Text(
+                    snapshot.data['Bio'],
+                    textAlign: TextAlign.center,
+                    style: bioTextStyle,
+                  )
+                : new Text('Welcome to TutorMe'),
+          );
+        } catch (e) {
+          return Container(
+            color: Theme.of(context).scaffoldBackgroundColor,
+            padding: EdgeInsets.all(8.0),
+            child: Text("No data Found"),
+          );
+        }
       },
     );
   }
@@ -221,17 +240,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
           color: Color(0xFF799497),
           fontSize: 16.0,
         );
-        return Container(
-          color: Theme.of(context).scaffoldBackgroundColor,
-          padding: EdgeInsets.all(8.0),
-          child: snapshot.data['uni'] != null
-              ? new Text(
-                  snapshot.data['uni'],
-                  textAlign: TextAlign.center,
-                  style: bioTextStyle,
-                )
-              : new Text('University of the Western Cape'),
-        );
+        try {
+          return Container(
+            color: Theme.of(context).scaffoldBackgroundColor,
+            padding: EdgeInsets.all(8.0),
+            child: snapshot.data['uni'] != null
+                ? new Text(
+                    snapshot.data['uni'],
+                    textAlign: TextAlign.center,
+                    style: bioTextStyle,
+                  )
+                : new Text('University of the Western Cape'),
+          );
+        } catch (e) {
+          return Container(
+              color: Theme.of(context).scaffoldBackgroundColor,
+              padding: EdgeInsets.all(8.0),
+              child: Text("No data Found"));
+        }
       },
     );
   }
@@ -344,6 +370,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       _buildSeparator(screenSize),
                       Email(),
                       _buildemail(),
+
                       /*FloatingActionButton(
                         onPressed: () {
                           var values = 10;

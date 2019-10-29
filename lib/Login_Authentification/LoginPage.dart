@@ -180,7 +180,7 @@ class _GoogleSignAppState extends State<GoogleSignApp> {
                         margin:
                             EdgeInsets.symmetric(vertical: 110, horizontal: 0),
                         child: Icon(
-                          FontAwesomeIcons.google,
+                          FontAwesomeIcons.graduationCap,
                           color: Colors.white,
                           size: 70,
                         ),

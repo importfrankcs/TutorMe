@@ -92,7 +92,7 @@ class _getCompletedSessionsState extends State<getCompletedSessions> {
 
             isThreeLine: true,
             trailing: IconButton(
-              icon: Icon(Icons.info),
+              icon: Icon(Icons.info),color: Colors.blueAccent,
               onPressed: () {
                 showDialog(
                     context: context,
@@ -114,7 +114,7 @@ class _getCompletedSessionsState extends State<getCompletedSessions> {
                                   FlatButton(
                                     child: Text(
                                       "CLOSE",
-                                      style: TextStyle(color: Colors.red),
+                                      style: TextStyle(color: Colors.blueAccent),
                                     ),
                                     onPressed: () {
                                       Navigator.of(context).pop();
@@ -176,7 +176,7 @@ class _getConsultationsState extends State<getConsultations> {
 
             isThreeLine: true,
             trailing: IconButton(
-              icon: Icon(Icons.rate_review),
+              icon: Icon(Icons.info),color: Colors.blueAccent,
               onPressed: () {
                 showDialog(
                     context: context,
@@ -187,7 +187,7 @@ class _getConsultationsState extends State<getConsultations> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             AlertDialog(
-                              title: new Text('Request From:\n$stud'),
+                              title: new Text('Request From:\n$stud', style: TextStyle(color: Colors.blueAccent)),
                               content: Text(
                                   "Tutor: $tut\nStudent: $stud\nDay: $day\nVenue:$ven\nTime:$time\nComment: $com"),
                               actions: <Widget>[
@@ -257,7 +257,7 @@ class _getDeclinedState extends State<getDeclined> {
 
             isThreeLine: true,
             trailing: IconButton(
-              icon: Icon(Icons.rate_review),
+              icon: Icon(Icons.info), color: Colors.blueAccent,
               onPressed: () {
                 showDialog(
                     context: context,
@@ -268,12 +268,11 @@ class _getDeclinedState extends State<getDeclined> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             AlertDialog(
-                              title: new Text('Request From:\n$stud'),
+                              title: new Text('Request From:\n$stud',style: TextStyle(color: Colors.blueAccent)),
                               content: Text(
                                   "Tutor: $tut\nStudent: $stud\nDay: $day\nVenue:$ven\nTime:$time\nComment: $com"),
                               actions: <Widget>[
                                 FlatButton(
-                                  child: FlatButton(
                                     child: new Text(
                                       'CLOSE',
                                       style: TextStyle(color: Colors.blue),
@@ -282,7 +281,7 @@ class _getDeclinedState extends State<getDeclined> {
                                       Navigator.of(context).pop();
                                     },
                                   ),
-                                )
+                                
                               ],
                             )
                           ],

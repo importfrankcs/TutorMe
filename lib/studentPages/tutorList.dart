@@ -120,6 +120,8 @@ class FirestoreListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double rate = 0.0;
+
     return ListView.builder(
         itemCount: documents.length,
         itemExtent: 80.0,
@@ -141,9 +143,17 @@ class FirestoreListView extends StatelessWidget {
               child: SizedBox(
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
-                  children: List.generate(5, (index) {
+                  children: List.generate(5, (index2) {
+                    rate = (documents[index].data['AverageRating'] != null
+                        ? documents[index].data['AverageRating']
+                        : rate);
                     return Icon(
-                      index < 2 ? Icons.star : Icons.star_border,
+                      index2 <
+                              (documents[index].data['AverageRating'] != null
+                                  ? documents[index].data['AverageRating']
+                                  : 0.0)
+                          ? Icons.star
+                          : Icons.star_border,
                       size: 15,
                     );
                   }),
