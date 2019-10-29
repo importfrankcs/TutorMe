@@ -150,6 +150,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void averageStar() {}
 
   Widget _buildStarRating() {
+    currmens.mens.collection('Tutor').document().setData({'Rating': rating});
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: List.generate(5, (index) {
