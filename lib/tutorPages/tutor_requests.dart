@@ -81,7 +81,21 @@ class getRequests extends StatelessWidget {
                         .split(' ')
                         .toList()
                         .length -
+                    1][0]
+                .toUpperCase()
+                .toString() +
+            documents[index]
+                .data['Student']
+                .toString()
+                .split(' ')
+                .toList()[documents[index]
+                        .data['Student']
+                        .toString()
+                        .split(' ')
+                        .toList()
+                        .length -
                     1]
+                .substring(1)
                 .toLowerCase()
                 .toString();
         String day = documents[index].data['Day'].toString();
@@ -161,7 +175,8 @@ class getRequests extends StatelessWidget {
                                                 'Day': '$day',
                                                 'Time': '$time',
                                                 'Venue': '$ven',
-                                                'Student': '$from',
+                                                'Student': documents[index]
+                                                    .data['Student'],
                                                 'Comment': '$com',
                                                 'uid': '$userid',
                                               });
@@ -187,7 +202,8 @@ class getRequests extends StatelessWidget {
                                                 'Day': '$day',
                                                 'Time': '$time',
                                                 'Venue': '$ven',
-                                                'Student': '$from',
+                                                'Student': documents[index]
+                                                    .data['Student'],
                                                 'Comment': '$com',
                                                 'uid': '$userid',
                                               });

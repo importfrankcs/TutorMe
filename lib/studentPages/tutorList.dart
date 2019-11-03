@@ -43,8 +43,7 @@ class _TutorList extends State<TutorList> {
       body: StreamBuilder(
         stream: Firestore.instance
             .collection('Tutor')
-            .where("Module",
-                isEqualTo: btnIn.btnIndex) //button name, enable dynamic var
+            .where("Module", isEqualTo: btnIn.btnIndex)
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData)
@@ -135,7 +134,35 @@ class FirestoreListView extends StatelessWidget {
               backgroundImage: NetworkImage(documents[index].data['photoURL']),
             ),
             title: Text(
-              documents[index].data['displayName'].toString(),
+              (documents[index]
+                      .data['displayName']
+                      .toString()
+                      .split(' ')
+                      .first
+                      .toUpperCase()
+                      .toString()[0] +
+                  documents[index]
+                      .data['displayName']
+                      .toString()
+                      .split(' ')
+                      .first
+                      .toLowerCase()
+                      .substring(1) +
+                  ' ' +
+                  documents[index]
+                      .data['displayName']
+                      .toString()
+                      .split(' ')
+                      .last
+                      .toUpperCase()
+                      .toString()[0] +
+                  documents[index]
+                      .data['displayName']
+                      .toString()
+                      .split(' ')
+                      .last
+                      .toLowerCase()
+                      .substring(1)),
               textAlign: TextAlign.start,
               style: TextStyle(fontSize: 15),
             ),

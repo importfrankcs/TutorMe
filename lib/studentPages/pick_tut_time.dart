@@ -47,7 +47,6 @@ List<DropdownMenuItem<String>> _dropDownItem() {
     "17:40 - 18:50",
     "18:50 - 20:00",
     "20:00 - 21:00",
-
   ];
   return ddl
       .map((value) => DropdownMenuItem(
@@ -231,6 +230,7 @@ class _PageOneState extends State<PageOne> {
                               style: TextStyle(color: Colors.blueAccent),
                             ),
                             content: Column(
+                              mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
                                 FormField<String>(
                                   autovalidate: true,
@@ -691,8 +691,7 @@ class _PageFiveState extends State<PageFive> {
 
   TextEditingController com = new TextEditingController();
 
-
-List<String> _items = <String>[
+  List<String> _items = <String>[
     '',
     'N22',
     'SC2',

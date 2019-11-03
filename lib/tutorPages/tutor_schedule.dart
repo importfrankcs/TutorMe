@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tutor_me_demo/Login_Authentification/LoginPage.dart';
 
@@ -35,6 +36,7 @@ void inputData() async {
 
 List<DropdownMenuItem<String>> _dropDownItem() {
   List<String> ddl = [
+    '',
     "8:30 - 9:40",
     "9:40 - 10:50",
     "10:50 - 11:00",
@@ -49,16 +51,6 @@ List<DropdownMenuItem<String>> _dropDownItem() {
     "20:00 - 21:00",
   ];
   return ddl
-      .map((value) => DropdownMenuItem(
-            value: value,
-            child: Text(value),
-          ))
-      .toList();
-}
-
-List<DropdownMenuItem<String>> _dropDownDay() {
-  List<String> dd = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
-  return dd
       .map((value) => DropdownMenuItem(
             value: value,
             child: Text(value),
@@ -102,6 +94,33 @@ class _MyHomePageState extends State<MyHomePage>
   @override
   Widget build(BuildContext context) {
     String _selection;
+
+    List<String> _items = <String>[
+      '',
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday"
+    ];
+    String _dd = '';
+
+    List<String> times = <String>[
+      '',
+      "8:30 - 9:40",
+      "9:40 - 10:50",
+      "10:50 - 11:00",
+      "11:00 - 12:00",
+      "12:00 - 13:00",
+      "13:00 - 14:10",
+      "14:10 - 15:20",
+      "15:20 - 16:30",
+      "16:30 - 17:40",
+      "17:40 - 18:50",
+      "18:50 - 20:00",
+      "20:00 - 21:00",
+    ];
+    String _times = '';
 
     return Scaffold(
       body: NestedScrollView(
@@ -169,43 +188,77 @@ class _MyHomePageState extends State<MyHomePage>
         onPressed: () {
           showDialog(
               context: context,
-              builder: (BuildContext context) {
+              builder: (BuildContext state) {
                 return AlertDialog(
-                  title: new Text('Select Time Slot',
-                      style: TextStyle(color: Colors.blueAccent)),
-                  content: Row(
+                  title: Text(
+                    'Select Time Slot',
+                    style: TextStyle(color: Colors.blueAccent),
+                  ),
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      new Expanded(
-                        child: DropdownButton(
-                          value: _selection,
-                          items: _dropDownDay(),
-                          onChanged: (String value) {
-                            _selection = value;
-                            setState(() {
-                              String s0 = _selection;
-                              state.didChange(newValue);
-                              //test = s0;
-                              sel0 = s0;
-                            });
-                          },
-                          hint: Text('Day'),
-                        ),
+                      FormField<String>(
+                        autovalidate: true,
+                        builder: (FormFieldState<String> state) {
+                          return InputDecorator(
+                            decoration: InputDecoration(
+                              icon: const Icon(Icons.place),
+                              labelText: 'Select a day',
+                            ),
+                            isEmpty: _dd == '',
+                            child: new DropdownButtonHideUnderline(
+                              child: new DropdownButton<String>(
+                                value: _dd,
+                                isDense: true,
+                                onChanged: (String newValue) {
+                                  setState(() {
+                                    //newContact.favoriteColor = newValue;
+                                    _dd = newValue;
+                                    state.didChange(newValue);
+                                  });
+                                },
+                                items: _items.map((String value) {
+                                  return new DropdownMenuItem<String>(
+                                    value: value,
+                                    child: new Text(value),
+                                  );
+                                }).toList(),
+                              ),
+                            ),
+                          );
+                        },
                       ),
-                      new Expanded(
-                        child: DropdownButton(
-                          value: _selection,
-                          items: _dropDownItem(),
-                          onChanged: (String value) {
-                            _selection = value;
-                            setState(() {
-                              String s1 = _selection;
-
-                              sel1 = s1;
-                            });
-                          },
-                          hint: Text('Time slot'),
-                        ),
-                      ),
+                      FormField<String>(
+                        autovalidate: true,
+                        builder: (FormFieldState<String> state) {
+                          return InputDecorator(
+                            decoration: InputDecoration(
+                              icon: const Icon(Icons.place),
+                              labelText: 'Select a Time',
+                            ),
+                            isEmpty: _times == '',
+                            child: new DropdownButtonHideUnderline(
+                              child: new DropdownButton<String>(
+                                value: _times,
+                                isDense: true,
+                                onChanged: (String newValue) {
+                                  setState(() {
+                                    //newContact.favoriteColor = newValue;
+                                    _times = newValue;
+                                    state.didChange(newValue);
+                                  });
+                                },
+                                items: times.map((String value) {
+                                  return new DropdownMenuItem<String>(
+                                    value: value,
+                                    child: new Text(value),
+                                  );
+                                }).toList(),
+                              ),
+                            ),
+                          );
+                        },
+                      ), //here
                     ],
                   ),
                   actions: <Widget>[
@@ -216,10 +269,16 @@ class _MyHomePageState extends State<MyHomePage>
                             .collection('Schedule')
                             .document()
                             .setData({
-                          'Day': sel0,
-                          'Time': sel1,
+                          'Day': _dd,
+                          'Time': _times,
                         });
-                        Navigator.of(context).pop();
+                        Navigator.of(context, rootNavigator: true)
+                            .pop('dialog');
+                        //Navigator.push(
+                        //context,
+                        //new MaterialPageRoute(
+                        //  builder: (context) => new Schedule()),
+                        //);
                       },
                     )
                   ],
@@ -380,3 +439,61 @@ class PageFive extends StatelessWidget {
     );
   }
 }
+
+/*
+
+AlertDialog(
+                  title: new Text('Select Time Slot',
+                      style: TextStyle(color: Colors.blueAccent)),
+                  content: Row(
+                    children: <Widget>[
+                      new Expanded(
+                        child: DropdownButton(
+                          value: _selection,
+                          items: _dropDownDay(),
+                          onChanged: (String value) {
+                            _selection = value;
+                            setState(() {
+                              String s0 = _selection;
+                              //state.didChange(value);
+                              //test = s0;
+                              sel0 = s0;
+                            });
+                          },
+                          hint: Text('Day'),
+                        ),
+                      ),
+                      new Expanded(
+                        child: DropdownButton(
+                          value: _selection,
+                          items: _dropDownItem(),
+                          onChanged: (String value) {
+                            _selection = value;
+                            setState(() {
+                              String s1 = _selection;
+
+                              sel1 = s1;
+                            });
+                          },
+                          hint: Text('Time slot'),
+                        ),
+                      ),
+                    ],
+                  ),
+                  actions: <Widget>[
+                    new FlatButton(
+                      child: new Text('Add to Schedule'),
+                      onPressed: () {
+                        currmens.mens
+                            .collection('Schedule')
+                            .document()
+                            .setData({
+                          'Day': sel0,
+                          'Time': sel1,
+                        });
+                        Navigator.of(context).pop();
+                      },
+                    )
+                  ],
+                );
+*/

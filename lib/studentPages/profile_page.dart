@@ -23,12 +23,6 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   final GoogleSignIn _gSignIn = GoogleSignIn();
 
-  static String tag = 'STUDENT PROFILE PAGE';
-  final String _fullName = 'FAROUK';
-  final String _status = " ";
-  final String _bio = '';
-  //"\"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\"";
-
   Widget _buildCoverImage(Size screenSize) {
     //print('google name = ' + googlename);
     return Container(
@@ -140,28 +134,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Widget _buildemail() {
-    return FutureBuilder<DocumentSnapshot>(
-      future: widget.detailsUser
-          .get(), // a previously-obtained Future<String> or null
-      builder: (BuildContext context, snapshot) {
-        TextStyle _nameTextStyle = TextStyle(
-          fontFamily: 'Roboto',
-          fontStyle: FontStyle.italic,
-          color: Colors.black,
-          fontSize: 15.0,
-          fontWeight: FontWeight.w400,
-        );
-
-        return Text(
-          snapshot.data == null ? "" : snapshot.data.data["email"],
-          style: _nameTextStyle,
-        );
-      },
-    );
-  }
-
-  Widget _buildvarsity(BuildContext context) {
+  Widget _buildBio(BuildContext context) {
     return StreamBuilder(
       stream: othermens.mens
           .snapshots(), // a previously-obtained Future<String> or null
@@ -173,39 +146,40 @@ class _ProfilePageState extends State<ProfilePage> {
           color: Colors.black45,
           fontSize: 16.0,
         );
-        return Container(
-          color: Theme.of(context).scaffoldBackgroundColor,
-          padding: EdgeInsets.all(8.0),
-          child: snapshot.data['uni'] != null
-              ? new Text(
-                  snapshot.data['uni'],
-                  textAlign: TextAlign.center,
-                  style: bioTextStyle,
-                )
-              : new Text(
-                  'University of Western Cape',
-                  style: bioTextStyle,
-                ),
-        );
+        try {
+          return Container(
+            color: Theme.of(context).scaffoldBackgroundColor,
+            padding: EdgeInsets.all(8.0),
+            child: snapshot.data['Bio'] != null
+                ? new Text(
+                    snapshot.data['Bio'],
+                    textAlign: TextAlign.center,
+                    style: bioTextStyle,
+                  )
+                : new Text(
+                    'Welcome to TutorMe',
+                    textAlign: TextAlign.center,
+                    style: bioTextStyle,
+                  ),
+          );
+        } catch (e) {
+          return Container(
+            color: Theme.of(context).scaffoldBackgroundColor,
+            padding: EdgeInsets.all(8.0),
+            child: Text(
+              'Welcome to TutorMe',
+              textAlign: TextAlign.center,
+              style: bioTextStyle,
+            ),
+          );
+        }
       },
     );
   }
 
-  Widget _buildrating() {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: List.generate(5, (index) {
-        return Icon(
-          index < 2 ? Icons.star : Icons.star_border,
-          size: 15,
-        );
-      }),
-    );
-  }
-
-  Widget _buildBio(BuildContext context) {
+  Widget _buildvarsity(BuildContext context) {
     return StreamBuilder(
-      stream: othermens.mens
+      stream: currmens.mens
           .snapshots(), // a previously-obtained Future<String> or null
       builder: (BuildContext context, snapshot) {
         TextStyle bioTextStyle = TextStyle(
@@ -215,20 +189,24 @@ class _ProfilePageState extends State<ProfilePage> {
           color: Color(0xFF799497),
           fontSize: 16.0,
         );
-        return Container(
-          color: Theme.of(context).scaffoldBackgroundColor,
-          padding: EdgeInsets.all(8.0),
-          child: snapshot.data['Bio'] != null
-              ? new Text(
-                  snapshot.data['Bio'],
-                  textAlign: TextAlign.center,
-                  style: bioTextStyle,
-                )
-              : new Text(
-                  'Welcome to TutorMe',
-                  style: bioTextStyle,
-                ),
-        );
+        try {
+          return Container(
+            color: Theme.of(context).scaffoldBackgroundColor,
+            padding: EdgeInsets.all(8.0),
+            child: snapshot.data['uni'] != null
+                ? new Text(
+                    snapshot.data['uni'],
+                    textAlign: TextAlign.center,
+                    style: bioTextStyle,
+                  )
+                : new Text('University of the Western Cape'),
+          );
+        } catch (e) {
+          return Container(
+              color: Theme.of(context).scaffoldBackgroundColor,
+              padding: EdgeInsets.all(8.0),
+              child: Text("Welcome to TutorMe"));
+        }
       },
     );
   }
@@ -293,6 +271,18 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    bool nNew;
+    var userQuery = Firestore.instance
+        .collection('Consultation')
+        .where('To', isEqualTo: usern.username)
+        .limit(1);
+
+    userQuery.snapshots().listen((data) {
+      data.documentChanges.forEach((change) {
+        nNew = true;
+      });
+    });
+
     return FutureBuilder<DocumentSnapshot>(
         future: widget.detailsUser
             .get(), // a previously-obtained Future<String> or null
@@ -345,17 +335,15 @@ class _ProfilePageState extends State<ProfilePage> {
                         SizedBox(height: screenSize.height / 6.4),
                         _buildProfileImage(),
                         _buildFullName(),
-                        _buildemail(),
                         _buildvarsity(context),
                         _buildSeparator(screenSize),
                         _About(),
                         _buildBio(context),
-                        _buildSeparator(screenSize),
                         Email(),
                         _BuildEmail(),
 
                         //FlatButton(
-                        //  child:
+                        //  child:\\
                         // if(nNew == true){
                         //  return color: Colors.green,
                         // }
@@ -383,7 +371,7 @@ class _ProfilePageState extends State<ProfilePage> {
             persistentFooterButtons: <Widget>[
               SizedBox(
                 height: 55,
-                width: 395,
+                width: MediaQuery.of(context).size.width - 16,
                 child: RoundedButton(
                   shapa: 0,
                   textColor: Colors.white,

@@ -1,3 +1,5 @@
+import 'dart:ui' as prefix0;
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -367,7 +369,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       _buildSeparator(screenSize),
                       _About(),
                       _buildBio(context),
-                      _buildSeparator(screenSize),
                       Email(),
                       _buildemail(),
 
@@ -390,7 +391,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           persistentFooterButtons: <Widget>[
             SizedBox(
               height: 55,
-              width: 395,
+              width: MediaQuery.of(context).size.width - 16,
               child: RoundedButton(
                 shapa: 0,
                 textColor: Colors.white,
