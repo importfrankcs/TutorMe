@@ -20,7 +20,9 @@ class ProfileScreen extends StatefulWidget {
 }
 
 var starcount = 0;
-double rating = 0.0;
+double rating = 0;
+int counter;
+int countRatings;
 
 class _ProfileScreenState extends State<ProfileScreen> {
   bool _isLoading;
@@ -28,6 +30,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void initState() {
     _isLoading = true;
     _loadData();
+      _loadNotifications();
     super.initState();
     print(_loadData());
   }
@@ -50,6 +53,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     return rating;
   }
+  Future _loadNotifications() async {
+    QuerySnapshot snapshot =
+    await Firestore.instance.collection('Requests').where("Tutor" ,isEqualTo: usern.username).getDocuments();
+    setState(() {
+      countRatings = snapshot.documents.length;
+      _isLoading = false;
+    });
+  }
+  var userQuery2 = Firestore.instance
+      .collection('Requests')
+      .where('Tutor', isEqualTo: usern.username)
+      .limit(1);
 
   static String tag = 'tutor profile page';
   final String _status = "IFS312";
@@ -388,95 +403,91 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ],
           ),
-          persistentFooterButtons: <Widget>[
-            SizedBox(
-              height: 55,
-              width: MediaQuery.of(context).size.width - 16,
-              child: RoundedButton(
-                shapa: 0,
-                textColor: Colors.white,
-                colour: Colors.blueAccent,
-                title: "REQUESTS",
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      new MaterialPageRoute(
-                          builder: (context) => RequestsPage()));
-                },
+       
+            persistentFooterButtons: <Widget>[
+
+              new Stack(
+
+                children: <Widget>[
+                  SizedBox(
+                    height: 55,
+                    width: 395,
+
+                    child: RoundedButton(
+                      shapa: 0,
+                      textColor: Colors.white,
+                      colour: Colors.blueAccent,
+                      title: "REQUESTS",
+
+                      onPressed: () {
+                        setState(() {
+                          _loadNotifications();
+                        });
+                        Navigator.push(
+                            context,
+                            new MaterialPageRoute(
+                                builder: (context) => RequestsPage()));
+                      },
+
+                    ),
+
+
+                  ),
+                  countRatings   != 0 ? new Positioned(
+                    right: 11,
+                    top: 0,
+                    child: new Container(
+                      padding: EdgeInsets.all(2),
+                      decoration: new BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                      constraints: BoxConstraints(
+                        minWidth: 25,
+                        minHeight: 25,
+                      ),
+                      child: Text(
+                        '$countRatings',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 15,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ): SizedBox(
+                    height: 55,
+                    width: 395,
+
+                    child: RoundedButton(
+                      shapa: 0,
+                      textColor: Colors.white,
+                      colour: Colors.blueAccent,
+                      title: "REQUESTS",
+
+                      onPressed: () {
+                        setState(() {
+                          _loadNotifications();
+                        });
+                        Navigator.push(
+                            context,
+                            new MaterialPageRoute(
+                                builder: (context) => RequestsPage()));
+                      },
+
+                    ),
+
+
+                  ),
+                ],
               ),
-            )
-          ],
-        );
+
+
+
+
+            ]);
+
       },
     );
   }
 }
-
-/*
-@override
-  Widget build(BuildContext context) {
-    return FutureBuilder<DocumentSnapshot>(
-      future: widget.detailsUserTutor
-          .get(), // a previously-obtained Future<String> or null
-      builder: (BuildContext context, snapshot) {
-        Size screenSize = MediaQuery.of(context).size;
-        return Scaffold(
-          appBar: AppBar(
-            iconTheme: IconThemeData(color: Colors.white),
-            actions: <Widget>[
-              IconButton(
-                onPressed: () {
-                  _gSignIn.signOut();
-                  print('Signed out');
-                  Navigator.pop(context);
-                },
-                icon: Icon(
-                  Icons.exit_to_app,
-                  size: 20.0,
-                  color: Colors.white,
-                ),
-              ),
-            ],
-          ),
-          drawer: ActualDrawer(
-            accName: Text(
-                snapshot.data == null ? "" : snapshot.data.data["displayName"]),
-            accEmail:
-                Text(snapshot.data == null ? "" : snapshot.data.data["email"]),
-            accImage: NetworkImage(
-                snapshot.data == null ? "" : snapshot.data.data["photoURL"]),
-          ),
-          body: Stack(
-            children: <Widget>[
-              _buildCoverImage(screenSize),
-              SafeArea(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: <Widget>[
-                      SizedBox(height: screenSize.height / 14),
-                      _buildProfileImage(),
-                      _buildFullName(),
-                      _buildStatus(context),
-                      _buildStarRating(),
-                      _buildBio(context),
-                      _buildSeparator(screenSize),
-                      SizedBox(height: 10.0),
-                      SizedBox(height: 8.0),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-    return FutureBuilder<DocumentSnapshot>(
-      future: widget.detailsUserTutor
-          .get(), // a previously-obtained Future<String> or null
-      builder: (BuildContext context, snapshot) {
-        Size screenSize = MediaQuery.of(context).size;
-  },
-    );
-*/

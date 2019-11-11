@@ -192,7 +192,6 @@ class _getConsultationsState extends State<getConsultations> {
                                   "Tutor: $tut\nStudent: $stud\nDay: $day\nVenue:$ven\nTime:$time\nComment: $com"),
                               actions: <Widget>[
                                 FlatButton(
-                                  child: FlatButton(
                                     child: new Text(
                                       'CLOSE',
                                       style: TextStyle(color: Colors.blue),
@@ -201,7 +200,7 @@ class _getConsultationsState extends State<getConsultations> {
                                       Navigator.of(context).pop();
                                     },
                                   ),
-                                )
+                                
                               ],
                             )
                           ],

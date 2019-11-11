@@ -277,8 +277,7 @@ class _getRequestsState extends State<getRequests> {
                               content: Text(
                                   'Module: $modu\nDay: $day\nTime: $time\nVen: $ven\nDetails: \n$com'),
                               actions: <Widget>[
-                                FlatButton(
-                                  child:
+                                
 
                                   FlatButton(
                                     child: new Text(
@@ -290,7 +289,7 @@ class _getRequestsState extends State<getRequests> {
                                       Navigator.of(context).pop();
                                     },
                                   ),
-                                )],
+                                ],
                             )
 
                           ],
@@ -363,8 +362,7 @@ class _getCompletedState extends State<getCompleted> {
                               content: Text(
                                   'Module: $modu\nDay: $day\nTime: $time\nVen: $ven\nDetails: \n$com'),
                               actions: <Widget>[
-                                FlatButton(
-                                  child:
+                                
 
                                 FlatButton(
                                   child: new Text(
@@ -376,7 +374,7 @@ class _getCompletedState extends State<getCompleted> {
                                     Navigator.of(context).pop();
                                   },
                                 ),
-                                )],
+                                ],
                             )
 
                           ],
@@ -449,8 +447,6 @@ class _getDeclinedState extends State<getDeclined> {
                               content: Text(
                                   'Module: $modu\nDay: $day\nTime: $time\nVen: $ven\nDetails: \n$com'),
                               actions: <Widget>[
-                                FlatButton(
-                                  child:
 
                                   FlatButton(
                                     child: new Text(
@@ -462,7 +458,7 @@ class _getDeclinedState extends State<getDeclined> {
                                       Navigator.of(context).pop();
                                     },
                                   ),
-                                )],
+                                ],
                             )
 
                           ],
