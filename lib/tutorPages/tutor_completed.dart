@@ -77,7 +77,7 @@ class _getCompletedSessionsState extends State<getCompletedSessions> {
           String ven = widget.documents[index].data['Venue'].toString();
           String tut = widget.documents[index].data['Tutor'].toString();
           String userid = widget.documents[index].data['uid'].toString();
-          String com = widget.documents[index].data['Comment'].toString();
+          
 
           return ListTile(
             //leading: Text(documents[index].data['displayName'].toString()),
