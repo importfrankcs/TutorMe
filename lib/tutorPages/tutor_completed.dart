@@ -110,7 +110,7 @@ class _getCompletedSessionsState extends State<getCompletedSessions> {
                               content: Column(
                                 children: <Widget>[
                                   Text(
-                                      "Tutor: $tut\nStudent: $stud\nDay: $day\nVenue:$ven\nTime:$time\nComment: $com"),
+                                      "Tutor: $tut\nStudent: $stud\nDay: $day\nVenue:$ven\nTime:$time"),
                                   FlatButton(
                                     child: Text(
                                       "CLOSE",
@@ -240,7 +240,7 @@ class _getDeclinedState extends State<getDeclined> {
           String ven = widget.documents[index].data['Venue'].toString();
           String tut = widget.documents[index].data['Tutor'].toString();
           String userid = widget.documents[index].data['uid'].toString();
-          String com = widget.documents[index].data['Comment'].toString();
+          //String com = widget.documents[index].data['Comment'].toString();
 
           return ListTile(
             //leading: Text(documents[index].data['displayName'].toString()),
@@ -269,7 +269,7 @@ class _getDeclinedState extends State<getDeclined> {
                             AlertDialog(
                               title: new Text('Request From:\n$stud',style: TextStyle(color: Colors.blueAccent)),
                               content: Text(
-                                  "Tutor: $tut\nStudent: $stud\nDay: $day\nVenue:$ven\nTime:$time\nComment: $com"),
+                                  "Tutor: $tut\nStudent: $stud\nDay: $day\nVenue:$ven\nTime:$time"),
                               actions: <Widget>[
                                 FlatButton(
                                     child: new Text(

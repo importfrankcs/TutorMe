@@ -329,7 +329,7 @@ class _getCompletedState extends State<getCompleted> {
           String ven = widget.documents[index].data['Venue'].toString();
           String tut = widget.documents[index].data['Tutor'].toString();
           String userid = widget.documents[index].data['uid'].toString();
-          String com = widget.documents[index].data['comment'].toString();
+          //String com = widget.documents[index].data['comment'].toString();
 
           return ListTile(
             //leading: Text(documents[index].data['displayName'].toString()),
@@ -360,7 +360,7 @@ class _getCompletedState extends State<getCompleted> {
                                 color: Colors.blueAccent
                               )),
                               content: Text(
-                                  'Module: $modu\nDay: $day\nTime: $time\nVen: $ven\nDetails: \n$com'),
+                                  'Module: $modu\nDay: $day\nTime: $time\nVenue: $ven'),
                               actions: <Widget>[
                                 
 
@@ -414,7 +414,7 @@ class _getDeclinedState extends State<getDeclined> {
           String ven = widget.documents[index].data['Venue'].toString();
           String tut = widget.documents[index].data['Tutor'].toString();
           String userid = widget.documents[index].data['uid'].toString();
-          String com = widget.documents[index].data['comment'].toString();
+          //String com = widget.documents[index].data['comment'].toString();
 
           return ListTile(
             //leading: Text(documents[index].data['displayName'].toString()),
@@ -445,7 +445,7 @@ class _getDeclinedState extends State<getDeclined> {
                                 color: Colors.blueAccent
                               )),
                               content: Text(
-                                  'Module: $modu\nDay: $day\nTime: $time\nVen: $ven\nDetails: \n$com'),
+                                  'Module: $modu\nDay: $day\nTime: $time\nVenue: $ven'),
                               actions: <Widget>[
 
                                   FlatButton(

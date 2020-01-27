@@ -419,14 +419,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       colour: Colors.blueAccent,
                       title: "REQUESTS",
 
-                      onPressed: () {
+                      onPressed: () async {
                         setState(() {
                           _loadNotifications();
                         });
-                        Navigator.push(
+                       await Navigator.push(
                             context,
                             new MaterialPageRoute(
                                 builder: (context) => RequestsPage()));
+                                _loadNotifications();
                       },
 
                     ),
